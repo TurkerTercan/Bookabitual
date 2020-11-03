@@ -1,1 +1,477 @@
-<mxfile host="app.diagrams.net" modified="2020-11-03T11:43:36.897Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" version="13.8.8" etag="ZqZGK0S9T6QVp37ffYIl" type="github"><diagram id="o6mYOKz96a20LUO6yvRT">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2020-11-03T12:55:45.724Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36" etag="lLCBf2C5SO-dDxA476Xn" version="13.8.8" type="github">
+  <diagram id="o6mYOKz96a20LUO6yvRT" name="Page-1">
+    <mxGraphModel dx="1483" dy="840" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-2" value="Logical Decisions" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="10" width="110" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-4" value="" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="45" width="80" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-5" value="UI Widgets" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="130" y="57.5" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-6" target="Ve-H1bilqi9meHcKyR2J-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-6" value="bookabitual" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="240" y="120" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-7" value="RootWidget&lt;br&gt;State: Auth" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="237.5" y="200" width="85" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-9" value="LoginScreen" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="320" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-11" value="Not Logged In" style="endArrow=classic;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-7" target="Ve-H1bilqi9meHcKyR2J-9">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="190" y="280" as="sourcePoint" />
+            <mxPoint x="200" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-14" value="SignIn &lt;br&gt;Screen" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="427.5" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-15" value="SignUp Screen" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="157.5" y="430" width="80" height="47.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-16" value="Not have an account" style="endArrow=classic;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-9" target="Ve-H1bilqi9meHcKyR2J-15">
+          <mxGeometry x="0.3289" y="1" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="190" y="450" as="sourcePoint" />
+            <mxPoint x="210" y="420" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-17" value="Already have an&lt;br&gt;account" style="endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.438;exitY=1.05;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-9" target="Ve-H1bilqi9meHcKyR2J-14">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="190" y="450" as="sourcePoint" />
+            <mxPoint x="240" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-18" value="Navigation:&lt;br&gt;HomeScreen" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="380" y="280" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-19" value="Logged In" style="endArrow=classic;html=1;entryX=0.254;entryY=0.01;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-7" target="Ve-H1bilqi9meHcKyR2J-18">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="380" y="270" as="sourcePoint" />
+            <mxPoint x="430" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-20" value="&amp;nbsp;Users&#39; &lt;br&gt;Post" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="322.5" y="360" width="77.5" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-21" value="" style="endArrow=classic;html=1;entryX=0.652;entryY=-0.03;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-18" target="Ve-H1bilqi9meHcKyR2J-20">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="380" y="440" as="sourcePoint" />
+            <mxPoint x="430" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-22" value="Create Post" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="280" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-23" value="Users can like and comment them" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="280" y="440" width="80" height="42.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-24" value="" style="endArrow=classic;html=1;entryX=0.421;entryY=-0.004;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.084;exitY=0.863;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-20" target="Ve-H1bilqi9meHcKyR2J-23">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="380" y="410" as="sourcePoint" />
+            <mxPoint x="430" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-25" value="" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-18" target="Ve-H1bilqi9meHcKyR2J-22">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="380" y="250" as="sourcePoint" />
+            <mxPoint x="430" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-26" value="Crete&lt;br&gt;Post&lt;br&gt;Button" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Ve-H1bilqi9meHcKyR2J-25">
+          <mxGeometry x="-0.2778" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-27" value="Choose your post&#39;s type: Quote, Review" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="535" y="360" width="95" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-28" value="Quote Form:&lt;br&gt;Quote, Book, Page Number, Publishers" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="490" y="440" width="90" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-29" value="Anyone can&amp;nbsp; see likes and comments" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="380" y="440" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-30" value="" style="endArrow=classic;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-20" target="Ve-H1bilqi9meHcKyR2J-29">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="560" y="420" as="sourcePoint" />
+            <mxPoint x="610" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-31" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.409;exitY=0.997;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-22" target="Ve-H1bilqi9meHcKyR2J-27">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="560" y="360" as="sourcePoint" />
+            <mxPoint x="610" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-32" value="" style="endArrow=classic;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-27" target="Ve-H1bilqi9meHcKyR2J-28">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="560" y="420" as="sourcePoint" />
+            <mxPoint x="610" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-33" value="Review Form:&lt;br&gt;Review, Book, Publisher, Rating" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="610" y="440" width="90" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-34" value="" style="endArrow=classic;html=1;entryX=0.439;entryY=-0.015;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.63;exitY=1.008;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-27" target="Ve-H1bilqi9meHcKyR2J-33">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="560" y="490" as="sourcePoint" />
+            <mxPoint x="610" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-35" value="Navigation:&lt;br&gt;Search" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="763.5" y="292.5" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-36" value="" style="curved=1;endArrow=classic;html=1;exitX=0.735;exitY=0.012;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-18" target="Ve-H1bilqi9meHcKyR2J-35">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="660" y="290" as="sourcePoint" />
+            <mxPoint x="710" y="240" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="560" y="250" />
+              <mxPoint x="670" y="250" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-37" value="Users can search for another users and book" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="758.5" y="380" width="90" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-38" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-35" target="Ve-H1bilqi9meHcKyR2J-37">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="716.5" y="382.5" as="sourcePoint" />
+            <mxPoint x="766.5" y="332.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-39" value="Another&lt;br&gt;User Profile" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="678.5" y="525" width="91" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-40" value="" style="endArrow=classic;html=1;entryX=0.656;entryY=-0.037;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-37" target="Ve-H1bilqi9meHcKyR2J-39">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="780" y="460" as="sourcePoint" />
+            <mxPoint x="830" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-41" value="Book Page" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="465" width="90" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-45" value="&amp;nbsp;Users&#39; &lt;br&gt;Post" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="621" y="600" width="77.5" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-46" value="Users can like and comment them" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="578.5" y="680" width="80" height="42.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-47" value="" style="endArrow=classic;html=1;entryX=0.421;entryY=-0.004;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.084;exitY=0.863;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-45" target="Ve-H1bilqi9meHcKyR2J-46">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="678.5" y="650" as="sourcePoint" />
+            <mxPoint x="728.5" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-48" value="Anyone can&amp;nbsp; see likes and comments" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="678.5" y="680" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-49" value="" style="endArrow=classic;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-45" target="Ve-H1bilqi9meHcKyR2J-48">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="858.5" y="660" as="sourcePoint" />
+            <mxPoint x="908.5" y="610" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-50" value="Follow Button" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="790" y="610" width="78.5" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-51" value="Current Book&lt;br&gt;State" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="590" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-52" value="The last book that user is reading" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="462" y="675" width="96" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-53" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-51" target="Ve-H1bilqi9meHcKyR2J-52">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="570" y="650" as="sourcePoint" />
+            <mxPoint x="620" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-54" value="Unfollow" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="788.5" y="660" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-56" value="Not Followed" style="endArrow=classic;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-39" target="Ve-H1bilqi9meHcKyR2J-50">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1040" y="530" as="sourcePoint" />
+            <mxPoint x="1090" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-57" value="Followed" style="endArrow=classic;html=1;entryX=0;entryY=0;entryDx=0;entryDy=0;exitX=0.676;exitY=1.083;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-39" target="Ve-H1bilqi9meHcKyR2J-54">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="750" y="530" as="sourcePoint" />
+            <mxPoint x="800" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-58" value="" style="endArrow=classic;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0.739;entryY=-0.038;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-39" target="Ve-H1bilqi9meHcKyR2J-45">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="750" y="530" as="sourcePoint" />
+            <mxPoint x="800" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-59" value="" style="endArrow=classic;html=1;exitX=0.049;exitY=0.764;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-39" target="Ve-H1bilqi9meHcKyR2J-51">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="750" y="530" as="sourcePoint" />
+            <mxPoint x="800" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-60" value="BookShelf&lt;br&gt;Button" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="950" y="549" width="80" height="51" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-61" value="" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-39" target="Ve-H1bilqi9meHcKyR2J-60">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="920" y="530" as="sourcePoint" />
+            <mxPoint x="970" y="480" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-65" value="The user&#39;s &lt;br&gt;library" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="945" y="630" width="90" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-66" value="Book&#39;s current status:&lt;br&gt;Finished, Reading, Will Read, Unfinished" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="930" y="770" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-68" value="Books" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="950" y="700" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-69" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-60" target="Ve-H1bilqi9meHcKyR2J-65">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="890" y="600" as="sourcePoint" />
+            <mxPoint x="940" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-71" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-65" target="Ve-H1bilqi9meHcKyR2J-68">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="890" y="600" as="sourcePoint" />
+            <mxPoint x="940" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-72" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-68" target="Ve-H1bilqi9meHcKyR2J-66">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="890" y="600" as="sourcePoint" />
+            <mxPoint x="940" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-74" value="" style="curved=1;endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-68" target="Ve-H1bilqi9meHcKyR2J-41">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="890" y="600" as="sourcePoint" />
+            <mxPoint x="940" y="550" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1080" y="680" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-75" value="" style="endArrow=classic;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-37" target="Ve-H1bilqi9meHcKyR2J-41">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1000" y="520" as="sourcePoint" />
+            <mxPoint x="1050" y="470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-76" value="Book&#39;s&lt;br&gt;Reviews" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="610" width="100" height="61" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-77" value="Book&#39;s Info:&lt;br&gt;Writer, Publisher,&lt;br&gt;Rating, Number of&lt;br&gt;&amp;nbsp;users who read the book" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="499" width="150" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-78" value="" style="endArrow=classic;html=1;exitX=0.978;exitY=0.687;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.067;entryY=0.272;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-41" target="Ve-H1bilqi9meHcKyR2J-77">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1220" y="580" as="sourcePoint" />
+            <mxPoint x="1270" y="530" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-79" value="Update current read status of the book" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1241" y="622.5" width="110" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-81" value="If you hadn&#39;t the book added to your library, you can add it or finish it" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1236" y="710" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-82" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-79" target="Ve-H1bilqi9meHcKyR2J-81">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1280" y="550" as="sourcePoint" />
+            <mxPoint x="1330" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-83" value="" style="endArrow=classic;html=1;entryX=0.688;entryY=-0.023;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-77" target="Ve-H1bilqi9meHcKyR2J-76">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1280" y="550" as="sourcePoint" />
+            <mxPoint x="1330" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-84" value="" style="endArrow=classic;html=1;exitX=0.659;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.424;entryY=0.032;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-77" target="Ve-H1bilqi9meHcKyR2J-79">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1280" y="550" as="sourcePoint" />
+            <mxPoint x="1330" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-86" value="" style="curved=1;endArrow=classic;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-18" target="Ve-H1bilqi9meHcKyR2J-114">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="750" y="230" as="sourcePoint" />
+            <mxPoint x="1180.0000000000027" y="49.999999999999886" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="660" y="150" />
+              <mxPoint x="920" y="80" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-87" value="The User&#39;s Info" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="524" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-88" value="" style="endArrow=classic;html=1;exitX=-0.002;exitY=0.372;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-39" target="Ve-H1bilqi9meHcKyR2J-87">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="630" y="450" as="sourcePoint" />
+            <mxPoint x="680" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-114" value="Navigation:&lt;br&gt;User Profile" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1108.5" y="115" width="91" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-115" value="&amp;nbsp;Users&#39; &lt;br&gt;Post" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1051" y="190" width="77.5" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-116" value="Users can like and comment them" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1008.5" y="270" width="80" height="42.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-117" value="" style="endArrow=classic;html=1;entryX=0.421;entryY=-0.004;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.084;exitY=0.863;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-115" target="Ve-H1bilqi9meHcKyR2J-116">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1108.5" y="240" as="sourcePoint" />
+            <mxPoint x="1158.5" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-118" value="Anyone can&amp;nbsp; see likes and comments" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1108.5" y="270" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-119" value="" style="endArrow=classic;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-115" target="Ve-H1bilqi9meHcKyR2J-118">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1288.5" y="250" as="sourcePoint" />
+            <mxPoint x="1338.5" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-121" value="Current Book&lt;br&gt;State" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="890" y="180" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-122" value="The last book that user is reading" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="892" y="265" width="96" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-123" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-121" target="Ve-H1bilqi9meHcKyR2J-122">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1000" y="240" as="sourcePoint" />
+            <mxPoint x="1050" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-127" value="" style="endArrow=classic;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=0.739;entryY=-0.038;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-114" target="Ve-H1bilqi9meHcKyR2J-115">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1180" y="120" as="sourcePoint" />
+            <mxPoint x="1230" y="70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-128" value="" style="endArrow=classic;html=1;exitX=0.049;exitY=0.764;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-114" target="Ve-H1bilqi9meHcKyR2J-121">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1180" y="120" as="sourcePoint" />
+            <mxPoint x="1230" y="70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-129" value="BookShelf&lt;br&gt;Button" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="139" width="80" height="51" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-130" value="" style="endArrow=classic;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-114" target="Ve-H1bilqi9meHcKyR2J-129">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1350" y="120" as="sourcePoint" />
+            <mxPoint x="1400" y="70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-131" value="The user&#39;s &lt;br&gt;library" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1375" y="220" width="90" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-132" value="Book&#39;s current status:&lt;br&gt;Finished, Reading, Will Read, Unfinished" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1360" y="360" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-133" value="Books" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="290" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-134" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-129" target="Ve-H1bilqi9meHcKyR2J-131">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1320" y="190" as="sourcePoint" />
+            <mxPoint x="1370" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-135" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-131" target="Ve-H1bilqi9meHcKyR2J-133">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1320" y="190" as="sourcePoint" />
+            <mxPoint x="1370" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-136" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-133" target="Ve-H1bilqi9meHcKyR2J-132">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1320" y="190" as="sourcePoint" />
+            <mxPoint x="1370" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-137" value="The User&#39;s Info" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="950" y="114" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-138" value="" style="endArrow=classic;html=1;exitX=-0.002;exitY=0.372;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-114" target="Ve-H1bilqi9meHcKyR2J-137">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1060" y="40" as="sourcePoint" />
+            <mxPoint x="1110" y="-10" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-139" value="Followers / Followed" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="195" width="110" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-140" value="Information about the followers or followed users and you can visit their page by clicking on them." style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="270" width="120" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-141" value="" style="endArrow=classic;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" target="Ve-H1bilqi9meHcKyR2J-139">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1200" y="160" as="sourcePoint" />
+            <mxPoint x="1210" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-144" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-139" target="Ve-H1bilqi9meHcKyR2J-140">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1160" y="350" as="sourcePoint" />
+            <mxPoint x="1210" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-147" value="Delete Post" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1055" y="330" width="85" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-148" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-115" target="Ve-H1bilqi9meHcKyR2J-147">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1160" y="340" as="sourcePoint" />
+            <mxPoint x="1210" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-149" value="Edit Profile" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1275" y="70" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-150" value="" style="endArrow=classic;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-114" target="Ve-H1bilqi9meHcKyR2J-149">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1200" y="120" as="sourcePoint" />
+            <mxPoint x="1250" y="70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-151" value="Log Out&lt;br&gt;Button" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1110" y="30" width="90" height="47.5" as="geometry" />
+        </mxCell>
+        <mxCell id="Ve-H1bilqi9meHcKyR2J-152" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="Ve-H1bilqi9meHcKyR2J-114" target="Ve-H1bilqi9meHcKyR2J-151">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="870" y="250" as="sourcePoint" />
+            <mxPoint x="920" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
