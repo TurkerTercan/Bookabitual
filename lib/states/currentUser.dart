@@ -14,7 +14,7 @@ class CurrentUser extends ChangeNotifier {
     bool retVal = false;
 
     try {
-      AuthResult _authResult = await _auth.createUserWithEmailAndPassword(email: email, password: email);
+      UserCredential _authResult = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       if (_authResult.user != null) {
         retVal = true;
       }
@@ -28,7 +28,7 @@ class CurrentUser extends ChangeNotifier {
   Future<bool> loginUser(String email, String password) async {
     bool retVal = false;
     try {
-      AuthResult _authResult = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential _authResult = await _auth.signInWithEmailAndPassword(email: email, password: password);
       if (_authResult.user != null) {
         _uid = _authResult.user.uid;
         _email = _authResult.user.email;
