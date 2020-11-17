@@ -1,5 +1,5 @@
 import 'package:bookabitual/screens/login/login.dart';
-import 'package:bookabitual/states/currentState.dart';
+import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/utils/ourTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

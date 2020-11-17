@@ -1,4 +1,4 @@
-import 'package:bookabitual/states/currentState.dart';
+import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/widgets/ProjectContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +21,6 @@ class _SignUpFormState extends State<SignUpForm> {
     try{
       if(await _currentUser.signUpUser(email, password))
         Navigator.pop(context);
-
     } catch(e){
       print(e);
     }
@@ -91,6 +90,7 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
             onPressed: () {
               if (_passwordController.text == _confirmPasswordController.text) {
+                print(_passwordController.text);
                 _signUpUser(_emailController.text, _passwordController.text, context);
               } else {
                 Scaffold.of(context).showSnackBar(
