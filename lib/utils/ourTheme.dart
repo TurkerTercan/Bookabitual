@@ -13,10 +13,10 @@ class ProjectTheme {
       accentColor: _lightGrey,
       hintColor: _lightGrey,
       inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-            borderSide: BorderSide(color: _lightGrey),
-          ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: BorderSide(color: _lightGrey),
+        ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: _lightGreen),
           borderRadius: BorderRadius.circular(20.0),

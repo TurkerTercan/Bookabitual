@@ -23,8 +23,8 @@ class LoginForm extends StatelessWidget {
           ),
           TextFormField(
             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.alternate_email),
-              hintText: "Email"
+                prefixIcon: Icon(Icons.alternate_email),
+                hintText: "Email"
             ),
           ),
           SizedBox(height: 20.0,),

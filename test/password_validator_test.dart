@@ -10,6 +10,6 @@ void main() {
     expect(validator.validatePassword("passwordvalidationtest1234567890"), PasswordValidationResults.TOO_LONG);
     expect(validator.validatePassword("    testempty    "), PasswordValidationResults.NON_VALID);
     expect(validator.validatePassword("avalidpassword"), PasswordValidationResults.VALID);
-    
+
   });
 }
