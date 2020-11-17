@@ -3,8 +3,12 @@ import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/widgets/ProjectContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../home/home.dart';
+
+enum LoginType{
+  email,
+  google,
+}
 
 class LoginForm extends StatefulWidget {
   @override
@@ -15,18 +19,29 @@ class _LoginFormState extends State<LoginForm> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  void _loginUser(String email, String password, BuildContext context) async{
+  void _loginUser(LoginType type, String email, String password, BuildContext context) async{
     CurrentUser _currentUser = Provider.of<CurrentUser>(context, listen: false);
 
     try {
-      if (await _currentUser.loginUser(email, password)) {
+      String _returnString;
+      switch (type) {
+        case LoginType.email:
+          _returnString = await _currentUser.loginUserWithEmail(email, password);
+          break;
+        case LoginType.google:
+          _returnString = await _currentUser.loginUserWithGoogle();
+          break;
+        default:
+      }
+
+      if (_returnString == "Success") {
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => HomeScreen(), )
         );
       } else {
         Scaffold.of(context).showSnackBar(
           SnackBar(
-            content: Text("Incorrect Login Info!"),
+            content: Text(_returnString),
             duration: Duration(seconds: 2),
           ),
         );
@@ -34,6 +49,38 @@ class _LoginFormState extends State<LoginForm> {
     } catch(e) {
       print(e);
     }
+  }
+
+  Widget _googleButton() {
+    return OutlineButton(
+      splashColor: Colors.grey,
+      onPressed: () {
+        _loginUser(LoginType.google ,_emailController.text, _passwordController.text, context);
+      },
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      highlightElevation: 0,
+      borderSide: BorderSide(color: Colors.grey),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(image: AssetImage("assets/google_logo.png"), height: 35.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                'Sign in with Google',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.grey,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -82,9 +129,15 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
             onPressed: () {
-              _loginUser(_emailController.text, _passwordController.text, context);
+              _loginUser(
+                  LoginType.email ,
+                  _emailController.text,
+                  _passwordController.text,
+                  context);
             },
           ),
+          SizedBox(height: 20,),
+          _googleButton(),
           FlatButton(
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpPage()));
