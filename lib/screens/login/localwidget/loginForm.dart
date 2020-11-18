@@ -21,9 +21,8 @@ class _LoginFormState extends State<LoginForm> {
 
   void _loginUser(LoginType type, String email, String password, BuildContext context) async{
     CurrentUser _currentUser = Provider.of<CurrentUser>(context, listen: false);
-
+    String _returnString;
     try {
-      String _returnString;
       switch (type) {
         case LoginType.email:
           _returnString = await _currentUser.loginUserWithEmail(email, password);
@@ -47,6 +46,13 @@ class _LoginFormState extends State<LoginForm> {
         );
       }
     } catch(e) {
+      Scaffold.of(context).showSnackBar(
+        SnackBar(
+          content: Text("No such account for the given email and password is not found. "
+              "Try Again"),
+          duration: Duration(seconds: 3),
+        ),
+      );
       print(e);
     }
   }

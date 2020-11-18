@@ -1,4 +1,4 @@
-import 'package:bookabitual/screens/login/login.dart';
+import 'package:bookabitual/screens/root/root.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/utils/ourTheme.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ProjectTheme().buildTheme(),
-        home: LoginPage(),
+        home: RootPage(),
       ),
     );
   }

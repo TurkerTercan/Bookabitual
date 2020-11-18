@@ -11,6 +11,36 @@ class CurrentUser extends ChangeNotifier {
 
   FirebaseAuth _auth = FirebaseAuth.instance;
 
+  Future<String> onStartUp() async{
+    String retVal = "Error";
+
+    try{
+      User _firebaseUser = _auth.currentUser;
+      _uid = _firebaseUser.uid;
+      _email = _firebaseUser.email;
+      retVal = "Success";
+    } catch(e) {
+      print(e);
+    }
+
+    return retVal;
+  }
+
+  Future<String> signOut() async{
+    String retVal = "Error";
+
+    try{
+      await _auth.signOut();
+      _uid = null;
+      _email = null;
+      retVal = "Success";
+    } catch(e) {
+      print(e);
+    }
+
+    return retVal;
+  }
+
   Future<String> signUpUser(String email, String password) async {
     String retVal = "Error";
 
@@ -19,6 +49,7 @@ class CurrentUser extends ChangeNotifier {
       retVal = "Success";
     } catch(e) {
       retVal = e.message();
+      return retVal;
     }
 
     return retVal;
@@ -34,6 +65,7 @@ class CurrentUser extends ChangeNotifier {
 
     } catch(e) {
       retVal = e.message();
+      return retVal;
     }
     return retVal;
   }
