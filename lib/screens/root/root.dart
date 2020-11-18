@@ -1,4 +1,4 @@
-import 'package:bookabitual/screens/home/home.dart';
+import 'package:bookabitual/screens/home/feed.dart';
 import 'package:bookabitual/screens/login/login.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +39,7 @@ class _RootPageState extends State<RootPage> {
         retVal = LoginPage();
         break;
       case AuthStatus.loggedIn:
-        retVal = HomeScreen();
+        retVal = FeedPage();
         break;
       default:
     }

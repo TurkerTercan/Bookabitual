@@ -1,13 +1,14 @@
+import 'package:bookabitual/models/bookworm.dart';
+import 'package:bookabitual/service/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class CurrentUser extends ChangeNotifier {
-  String _uid;
-  String _email;
+  Bookworm _currentUser = Bookworm();
 
-  String get getUid => _uid;
-  String get getEmail => _email;
+  Bookworm get getCurrentUser => _currentUser;
 
   FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -16,9 +17,12 @@ class CurrentUser extends ChangeNotifier {
 
     try{
       User _firebaseUser = _auth.currentUser;
-      _uid = _firebaseUser.uid;
-      _email = _firebaseUser.email;
-      retVal = "Success";
+      if (_firebaseUser != null) {
+        _currentUser = await BookDatabase().getUserInfo(_firebaseUser.uid);
+        if (_currentUser != null) retVal = "Success";
+      }
+    } on PlatformException catch(e) {
+      retVal = e.message;
     } catch(e) {
       print(e);
     }
@@ -31,8 +35,7 @@ class CurrentUser extends ChangeNotifier {
 
     try{
       await _auth.signOut();
-      _uid = null;
-      _email = null;
+      _currentUser = Bookworm();
       retVal = "Success";
     } catch(e) {
       print(e);
@@ -41,12 +44,20 @@ class CurrentUser extends ChangeNotifier {
     return retVal;
   }
 
-  Future<String> signUpUser(String email, String password) async {
+  Future<String> signUpUser(String email, String password, String username) async {
     String retVal = "Error";
+    Bookworm _user = Bookworm();
 
     try {
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      retVal = "Success";
+      UserCredential _authResult
+        = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      _user.uid = _authResult.user.uid;
+      _user.email = email;
+      _user.username = username;
+      String _returnString = await BookDatabase().createUser(_user);
+      if (_returnString == "Success") {
+        retVal = "Success";
+      }
     } catch(e) {
       retVal = e.message();
       return retVal;
@@ -59,9 +70,8 @@ class CurrentUser extends ChangeNotifier {
     String retVal = "Error";
     try {
       UserCredential _authResult = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      _uid = _authResult.user.uid;
-      _email = _authResult.user.email;
-      retVal = "Success";
+      _currentUser = await BookDatabase().getUserInfo(_authResult.user.uid);
+      if (_currentUser != null) retVal = "Success";
 
     } catch(e) {
       retVal = e.message();
@@ -76,6 +86,8 @@ class CurrentUser extends ChangeNotifier {
       scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly']
     );
 
+    Bookworm _user = Bookworm();
+
     try {
       GoogleSignInAccount _googleUser = await _googleSignIn.signIn();
       GoogleSignInAuthentication _googleAuth = await _googleUser.authentication;
@@ -84,9 +96,14 @@ class CurrentUser extends ChangeNotifier {
           accessToken: _googleAuth.accessToken
       );
       UserCredential _authResult = await _auth.signInWithCredential(credential);
-      _uid = _authResult.user.uid;
-      _email = _authResult.user.email;
-      retVal = "Success";
+      if (_authResult.additionalUserInfo.isNewUser) {
+        _user.uid = _authResult.user.uid;
+        _user.email = _authResult.user.email;
+        _user.username = _authResult.user.displayName;
+        BookDatabase().createUser(_user);
+      }
+      _currentUser = await BookDatabase().getUserInfo(_authResult.user.uid);
+      if (_currentUser != null) retVal = "Success";
 
     } catch(e) {
       retVal = e.message();

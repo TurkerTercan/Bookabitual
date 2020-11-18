@@ -48,7 +48,7 @@ class _LoginFormState extends State<LoginForm> {
     } catch(e) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
-          content: Text("No such account for the given email and password is not found. "
+          content: Text("No such account for the given email and password was not found. "
               "Try Again"),
           duration: Duration(seconds: 3),
         ),
