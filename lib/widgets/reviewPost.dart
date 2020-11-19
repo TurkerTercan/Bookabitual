@@ -4,25 +4,26 @@ import 'package:flutter/material.dart';
 
 import 'ProjectContainer.dart';
 
-class QuotePost extends StatefulWidget {
+class ReviewPost extends StatefulWidget {
   final String profileUrl;
   final String username;
   final Timestamp createTime;
   final String status;
   final String imageUrl;
   final int likeCount;
-  final String quote;
+  final String review;
   final String author;
   final String bookName;
+  final double rating;
 
-  QuotePost({Key key, this.quote, this.author, this.bookName, this.status,
-  this.profileUrl, this.username, this.imageUrl, this.createTime, this.likeCount}) : super(key: key);
+  ReviewPost({Key key, this.review, this.rating,this.author, this.bookName, this.status,
+    this.profileUrl, this.username, this.imageUrl, this.createTime, this.likeCount}) : super(key: key);
 
   @override
-  _QuotePostState createState() => _QuotePostState();
+  _ReviewPostState createState() => _ReviewPostState();
 }
 
-class _QuotePostState extends State<QuotePost> {
+class _ReviewPostState extends State<ReviewPost> {
   bool _isLiked = false;
   @override
   Widget build(BuildContext context) {
@@ -53,10 +54,9 @@ class _QuotePostState extends State<QuotePost> {
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
-
                           ),
                           Text(
-                            " added a quote.",
+                            " added a review.",
                             style: TextStyle(
                               fontSize: 16 ,
                             ),
@@ -101,41 +101,63 @@ class _QuotePostState extends State<QuotePost> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: AutoSizeText(
-                      widget.quote + "\n\n―" + widget.author + " " + widget.bookName,
-                      minFontSize: 14,
-                      maxLines: 12,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.grey[400],
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        textBaseline: TextBaseline.alphabetic,
-                        shadows: [
-                          Shadow(
-                            offset: Offset(-2, -2),
-                            color: Colors.grey[900],
-                          ),
-                          Shadow(
-                            offset: Offset(2, -2),
-                            color: Colors.grey[900],
-                          ),
-                          Shadow(
-                            offset: Offset(2, 2),
-                            color: Colors.grey[900],
-                          ),
-                          Shadow(
-                            offset: Offset(-2, 2),
-                            color: Colors.grey[900],
-                          ),
-                        ],
+                  child: Container(
+                    padding: EdgeInsets.only(bottom: 25),
+                    child: Center(
+                      child: AutoSizeText(
+                        widget.review + "\n\n―" + widget.author + " " + widget.bookName,
+                        overflow: TextOverflow.ellipsis,
+                        minFontSize: 14,
+                        maxLines: 12,
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.grey[500],
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          textBaseline: TextBaseline.alphabetic,
+                          shadows: [
+                            Shadow(
+                              offset: Offset(-2, -2),
+                              color: Colors.grey[900],
+                            ),
+                            Shadow(
+                              offset: Offset(2, -2),
+                              color: Colors.grey[900],
+                            ),
+                            Shadow(
+                              offset: Offset(2, 2),
+                              color: Colors.grey[900],
+                            ),
+                            Shadow(
+                              offset: Offset(-2, 2),
+                              color: Colors.grey[900],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
+              Positioned(
+                bottom: 15,
+                left: 12,
+                child: Row(
+                  children: [
+                    Icon(Icons.star, size: 35, color: Colors.yellow.withOpacity(0.7),),
+                    SizedBox(width: 5,),
+                    Text(
+                      widget.rating.toString(),
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.yellow[300],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
               Positioned(
                 bottom: 10,
                 right: 10,
