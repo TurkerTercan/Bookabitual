@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'ProjectContainer.dart';
 
@@ -15,15 +16,19 @@ class ReviewPost extends StatefulWidget {
   final String author;
   final String bookName;
   final double rating;
+  var date;
 
   ReviewPost({Key key, this.review, this.rating,this.author, this.bookName, this.status,
-    this.profileUrl, this.username, this.imageUrl, this.createTime, this.likeCount}) : super(key: key);
+    this.profileUrl, this.username, this.imageUrl, this.createTime, this.likeCount}) : super(key: key) {
+    date = DateTime.fromMillisecondsSinceEpoch(createTime.millisecondsSinceEpoch);
+  }
 
   @override
   _ReviewPostState createState() => _ReviewPostState();
 }
 
 class _ReviewPostState extends State<ReviewPost> {
+  
   bool _isLiked = false;
   @override
   Widget build(BuildContext context) {
@@ -64,7 +69,7 @@ class _ReviewPostState extends State<ReviewPost> {
                         ],
                       ),
                       Text(
-                        widget.createTime.toDate().toString() + " ~ " + widget.status,
+                        DateFormat.yMMMd().format(widget.date) + " ~ " + widget.status,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,

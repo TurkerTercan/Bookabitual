@@ -1,9 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'ProjectContainer.dart';
+import 'package:intl/intl.dart';
 
+// ignore: must_be_immutable
 class QuotePost extends StatefulWidget {
   final String profileUrl;
   final String username;
@@ -14,9 +15,12 @@ class QuotePost extends StatefulWidget {
   final String quote;
   final String author;
   final String bookName;
+  var date;
 
   QuotePost({Key key, this.quote, this.author, this.bookName, this.status,
-  this.profileUrl, this.username, this.imageUrl, this.createTime, this.likeCount}) : super(key: key);
+  this.profileUrl, this.username, this.imageUrl, this.createTime, this.likeCount}) : super(key: key) {
+    date = DateTime.fromMillisecondsSinceEpoch(createTime.millisecondsSinceEpoch);
+  }
 
   @override
   _QuotePostState createState() => _QuotePostState();
@@ -64,7 +68,7 @@ class _QuotePostState extends State<QuotePost> {
                         ],
                       ),
                       Text(
-                        widget.createTime.toDate().toString() + " ~ " + widget.status,
+                        DateFormat.yMMMd().format(widget.date) + " ~ " + widget.status,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
