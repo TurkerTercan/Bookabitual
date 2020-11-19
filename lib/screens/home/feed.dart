@@ -12,6 +12,7 @@ class FeedPage extends StatefulWidget{
 }
 
 class _FeedPageState extends State<FeedPage> {
+  int _selectedItemIndex = 0;
   List<Widget> postList = [
     QuotePost(
       author: "J.R.R. Tolkien",
@@ -36,8 +37,8 @@ class _FeedPageState extends State<FeedPage> {
       review: "I realise this might be of minority interest if, unlike me, you haven’t spent your whole adult life with epilepsy being front and centre, but bear with me."
           "\nIt’s part thorough history of the condition, part look into what it actually is and how it works and part movingly human story about"
           " Grant’s own personal interest in epilepsy through the story of his brother.",
-      status: "Reading",
-      username: "Tom Smith",
+      status: "Finished",
+      username: "Alan Wake",
       rating: 3.5,
     ),
   ];
@@ -83,6 +84,55 @@ class _FeedPageState extends State<FeedPage> {
               ),
             ),
           ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: Container(
+        height: 50,
+        child: FittedBox(
+          child: FloatingActionButton(
+            onPressed: () {},
+            child: Icon(Icons.add),
+            elevation: 15,
+          ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 1,
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            buildNavBarItem(Icons.home, 0),
+            buildNavBarItem(Icons.search, 1),
+            buildNavBarItem(Icons.person, 2),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildNavBarItem(IconData icon, int index) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedItemIndex = index;
+        });
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width / 3,
+        height: 50,
+        child: Container(
+          child: Icon(
+            icon,
+            size: 30,
+            color: index == _selectedItemIndex ? Colors.black : Colors.grey,
+          ),
         ),
       ),
     );
