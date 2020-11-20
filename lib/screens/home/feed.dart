@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:bookabitual/states/currentUser.dart';
-import 'package:bookabitual/widgets/ProjectContainer.dart';
 import 'package:bookabitual/widgets/QuotePost.dart';
+import 'package:bookabitual/widgets/bookScaffold.dart';
 import 'package:bookabitual/widgets/reviewPost.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,7 +14,6 @@ class FeedPage extends StatefulWidget{
 }
 
 class _FeedPageState extends State<FeedPage> {
-  int _selectedItemIndex = 0;
   List<Widget> postList = [
     QuotePost(
       author: "J.R.R. Tolkien",
@@ -43,34 +42,12 @@ class _FeedPageState extends State<FeedPage> {
       username: "Alan Wake",
       rating: 3.5,
     ),
-
-
   ];
   @override
   Widget build(BuildContext context) {
     ScrollController _scrollController = new ScrollController();
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).accentColor,
-        title: Text(
-          "bookabitual",
-          style: TextStyle(
-            fontSize: 22,
-            fontWeight:
-            FontWeight.bold,
-            fontStyle: FontStyle.italic,
-            color: Theme.of(context).bottomAppBarColor,
-          ),
-        ),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(10),
-              bottomLeft: Radius.circular(10),
-            ),
-        ),
-        centerTitle: true,
-
-      ),
+    return BookScaffold(
+      pageIndex: 0,
       body: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,23 +96,6 @@ class _FeedPageState extends State<FeedPage> {
               ),
             ),
           ),
-        ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 1,
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            buildNavBarItem(Icons.home, 0),
-            buildNavBarItem(Icons.search, 1),
-            buildNavBarItem(Icons.person, 2),
-          ],
         ),
       ),
     );
@@ -374,27 +334,5 @@ class _FeedPageState extends State<FeedPage> {
         ),
       );
     });
-  }
-
-
-  Widget buildNavBarItem(IconData icon, int index) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedItemIndex = index;
-        });
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width / 3,
-        height: 50,
-        child: Container(
-          child: Icon(
-            icon,
-            size: 30,
-            color: index == _selectedItemIndex ? Colors.black : Colors.grey,
-          ),
-        ),
-      ),
-    );
   }
 }

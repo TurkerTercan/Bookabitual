@@ -7,7 +7,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class CurrentUser extends ChangeNotifier {
   Bookworm _currentUser = Bookworm();
-
   Bookworm get getCurrentUser => _currentUser;
 
   FirebaseAuth _auth = FirebaseAuth.instance;
