@@ -18,10 +18,10 @@ class _FeedPageState extends State<FeedPage> {
       bookName: "The Hobbit, or There and Back Again",
       createTime: Timestamp.now(),
       imageUrl:
-          "https://images-na.ssl-images-amazon.com/images/I/A1E+USP9f8L.jpg",
+      "https://images-na.ssl-images-amazon.com/images/I/A1E+USP9f8L.jpg",
       likeCount: 245,
       profileUrl:
-          "https://images.pexels.com/photos/1499327/pexels-photo-1499327.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "https://images.pexels.com/photos/1499327/pexels-photo-1499327.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
       quote: "“There is nothing like looking, if you want to find something. "
           "You certainly usually find something, if you look, but it is not always quite "
           "the something you were after.”",
@@ -35,9 +35,9 @@ class _FeedPageState extends State<FeedPage> {
       imageUrl: "https://img.rasset.ie/000d7a28-614.jpg?ratio=0.6",
       likeCount: 476,
       profileUrl:
-          "https://images.pexels.com/photos/1081685/pexels-photo-1081685.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "https://images.pexels.com/photos/1081685/pexels-photo-1081685.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
       review:
-          "I realise this might be of minority interest if, unlike me, you haven’t spent your whole adult life with epilepsy being front and centre, but bear with me."
+      "I realise this might be of minority interest if, unlike me, you haven’t spent your whole adult life with epilepsy being front and centre, but bear with me."
           "\nIt’s part thorough history of the condition, part look into what it actually is and how it works and part movingly human story about"
           " Grant’s own personal interest in epilepsy through the story of his brother.",
       status: "Finished",
@@ -122,7 +122,7 @@ class _FeedPageState extends State<FeedPage> {
     TextEditingController _imageUrl = TextEditingController();
     TextEditingController _text = TextEditingController();
 
-    showModalBottomSheet<dynamic>(
+    showModalBottomSheet(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.red[100],
@@ -139,278 +139,275 @@ class _FeedPageState extends State<FeedPage> {
                   bottom: MediaQuery.of(context).viewInsets.bottom),
               child: StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
-                return Wrap(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(25),
-                          topRight: const Radius.circular(25),
-                        ),
-                      ),
-                      margin: EdgeInsets.only(left: 5, right: 5),
-                      child: _firstChoice
-                          ? Column(
-                              children: [
-                                SizedBox(
-                                  height: 5,
+                    return Wrap(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: const Radius.circular(25),
+                              topRight: const Radius.circular(25),
+                            ),
+                          ),
+                          margin: EdgeInsets.only(left: 5, right: 5),
+                          child: _firstChoice ? Column(
+                            children: [
+                              SizedBox(height: 5,),
+                              Text("Create a Post",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey[700],
                                 ),
-                                Text(
-                                  "Create a Post",
+                              ),
+                              SizedBox(height: 10,),
+                              Column(
+                                children: [
+                                  SizedBox(height: 5,),
+                                  Text("Select",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey[700],
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(height: MediaQuery.of(context).size.width / 20,),
+                                      ButtonTheme(minWidth: MediaQuery.of(context).size.width / 3,
+                                        height: 40,
+                                        child: RaisedButton(
+                                          color: Colors.redAccent,
+                                          onPressed: () {
+                                            setState(() {
+                                              _firstChoice = false;
+                                              _secondChoice = true;
+                                            });
+                                          },
+                                          child: Text("Quote",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              color: Colors.grey[300],
+                                            ),
+                                          ),
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0),),
+                                        ),
+                                      ),
+                                      SizedBox(height: MediaQuery.of(context).size.width / 20,),
+                                      ButtonTheme(
+                                        minWidth: MediaQuery.of(context).size.width / 3,
+                                        height: 40,
+                                        child: RaisedButton(
+                                          color: Colors.redAccent,
+                                          onPressed: () {
+                                            setState(() {
+                                              _firstChoice = false;
+                                              _secondChoice = false;
+                                            });
+                                          },
+                                          child: Text("Review",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                              color: Colors.grey[300],
+                                            ),
+                                          ),
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0),),
+                                        ),
+                                      ),
+                                      SizedBox(height: MediaQuery.of(context).size.width / 20,),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ) : Container(
+                            child: _secondChoice ? Column(
+                              children: [
+                                SizedBox(height: 5,),
+                                Text("Create a Quote",
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.grey[700],
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 10,
+                                SizedBox(height: 10,),
+                                TextFormField(
+                                  controller: _author,
+                                  decoration: InputDecoration(
+                                    prefixIcon:
+                                    Icon(Icons.person_outline),
+                                    hintText: "Author",
+                                  ),
                                 ),
-                                Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "Select",
+                                SizedBox(height: 10,),
+                                TextFormField(
+                                  controller: _book,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.book),
+                                    hintText: "Book Name",
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                                TextFormField(
+                                  controller: _imageUrl,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.link),
+                                    hintText: "Image URL",
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                                TextFormField(
+                                  controller: _profileUrl,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.link),
+                                    hintText: "Profile URL",
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                                TextFormField(
+                                  maxLines: 5,
+                                  controller: _text,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.link),
+                                    hintText: "Quote",
+                                  ),
+                                ),
+                                ButtonTheme(minWidth: MediaQuery.of(context).size.width / 3,
+                                  height: 40,
+                                  child: RaisedButton(
+                                    color: Colors.redAccent,
+                                    onPressed: () {
+                                      viewState(() {
+                                        postList.insert(0, QuotePost(
+                                          username: Provider.of<CurrentUser>(context, listen: false).getCurrentUser.username,
+                                          status: "Reading",
+                                          profileUrl: _profileUrl.text,
+                                          quote: _text.text,
+                                          likeCount: 0,
+                                          imageUrl: _imageUrl.text,
+                                          createTime: Timestamp.now(),
+                                          bookName: _book.text,
+                                          author: _author.text,
+                                        ));
+                                        control.animateTo(0.0, curve: Curves.bounceOut, duration: const Duration(milliseconds: 1000),);
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text("Share",
                                       style: TextStyle(
-                                        fontSize: 20,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.grey[700],
+                                        fontSize: 20,
+                                        color: Colors.grey[300],
                                       ),
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              20,
-                                        ),
-                                        ButtonTheme(
-                                          minWidth: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              3,
-                                          height: 40,
-                                          child: RaisedButton(
-                                            color: Colors.redAccent,
-                                            onPressed: () {
-                                              setState(() {
-                                                _firstChoice = false;
-                                                _secondChoice = true;
-                                              });
-                                            },
-                                            child: Text(
-                                              "Quote",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                                color: Colors.grey[300],
-                                              ),
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(18.0),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              20,
-                                        ),
-                                        ButtonTheme(
-                                          minWidth: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              3,
-                                          height: 40,
-                                          child: RaisedButton(
-                                            color: Colors.redAccent,
-                                            onPressed: () {
-                                              setState(() {
-                                                _firstChoice = false;
-                                                _secondChoice = false;
-                                              });
-                                            },
-                                            child: Text(
-                                              "Review",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                                color: Colors.grey[300],
-                                              ),
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(18.0),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              20,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0),),
+                                  ),
                                 ),
+                                SizedBox(height: 5,),
+                              ],
+                            ) : Column(
+                              children: [
+                                SizedBox(height: 5,),
+                                Text("Create a Review",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey[700],
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                                TextFormField(
+                                  controller: _author,
+                                  decoration: InputDecoration(
+                                    prefixIcon:
+                                    Icon(Icons.person_outline),
+                                    hintText: "Author",
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                                TextFormField(
+                                  controller: _book,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.book),
+                                    hintText: "Book Name",
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                                TextFormField(
+                                  controller: _imageUrl,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.link),
+                                    hintText: "Image URL",
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                                TextFormField(
+                                  controller: _profileUrl,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.link),
+                                    hintText: "Profile URL",
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                                TextFormField(
+                                  controller: _rating,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.rate_review),
+                                    hintText: "Rating",
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                                TextFormField(
+                                  maxLines: 5,
+                                  controller: _text,
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.link),
+                                    hintText: "Review",
+                                  ),
+                                ),
+                                ButtonTheme(minWidth: MediaQuery.of(context).size.width / 3,
+                                  height: 40,
+                                  child: RaisedButton(
+                                    color: Colors.redAccent,
+                                    onPressed: () {
+                                      viewState(() {
+                                        postList.insert(0, ReviewPost(
+                                          username: Provider.of<CurrentUser>(context, listen: false).getCurrentUser.username,
+                                          status: "Reading",
+                                          profileUrl: _profileUrl.text,
+                                          review: _text.text,
+                                          likeCount: 0,
+                                          rating: double.parse(_rating.text),
+                                          imageUrl: _imageUrl.text,
+                                          createTime: Timestamp.now(),
+                                          bookName: _book.text,
+                                          author: _author.text,
+                                        ));
+                                        control.animateTo(0.0, curve: Curves.bounceOut, duration: const Duration(milliseconds: 1000),);
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text("Share",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.grey[300],
+                                      ),
+                                    ),
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0),),
+                                  ),
+                                ),
+                                SizedBox(height: 5,),
                               ],
                             )
-                          : Container(
-                              child: _secondChoice
-                                  ? Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Text(
-                                          "Create a Quote",
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey[700],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        TextFormField(
-                                          controller: _author,
-                                          decoration: InputDecoration(
-                                            prefixIcon:
-                                                Icon(Icons.person_outline),
-                                            hintText: "Author",
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        TextFormField(
-                                          controller: _book,
-                                          decoration: InputDecoration(
-                                            prefixIcon: Icon(Icons.book),
-                                            hintText: "Book Name",
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        TextFormField(
-                                          controller: _imageUrl,
-                                          decoration: InputDecoration(
-                                            prefixIcon: Icon(Icons.link),
-                                            hintText: "Image URL",
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        TextFormField(
-                                          controller: _profileUrl,
-                                          decoration: InputDecoration(
-                                            prefixIcon: Icon(Icons.link),
-                                            hintText: "Profile URL",
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        TextFormField(
-                                          maxLines: 5,
-                                          controller: _text,
-                                          decoration: InputDecoration(
-                                            prefixIcon: Icon(Icons.link),
-                                            hintText: "Quote",
-                                          ),
-                                        ),
-                                        ButtonTheme(
-                                          minWidth: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              3,
-                                          height: 40,
-                                          child: RaisedButton(
-                                            color: Colors.redAccent,
-                                            onPressed: () {
-                                              viewState(() {
-                                                postList.insert(
-                                                    0,
-                                                    QuotePost(
-                                                      username: Provider.of<
-                                                                  CurrentUser>(
-                                                              context,
-                                                              listen: false)
-                                                          .getCurrentUser
-                                                          .username,
-                                                      status: "Reading",
-                                                      profileUrl:
-                                                          _profileUrl.text,
-                                                      quote: _text.text,
-                                                      likeCount: 0,
-                                                      imageUrl: _imageUrl.text,
-                                                      createTime:
-                                                          Timestamp.now(),
-                                                      bookName: _book.text,
-                                                      author: _author.text,
-                                                    ));
-                                                control.animateTo(
-                                                  0.0,
-                                                  curve: Curves.bounceOut,
-                                                  duration: const Duration(
-                                                      milliseconds: 1000),
-                                                );
-                                              });
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text(
-                                              "Share",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                                color: Colors.grey[300],
-                                              ),
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(18.0),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                      ],
-                                    )
-                                  : Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Text(
-                                          "Create a Quote",
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey[700],
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                      ],
-                                    ),
-                            ),
-                    ),
-                  ],
-                );
-              }),
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
             ),
           );
         });
