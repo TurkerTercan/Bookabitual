@@ -1,6 +1,6 @@
-import 'package:bookabitual/screens/home/feed.dart';
 import 'package:bookabitual/screens/login/login.dart';
 import 'package:bookabitual/states/currentUser.dart';
+import 'package:bookabitual/widgets/bookScaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +39,7 @@ class _RootPageState extends State<RootPage> {
         retVal = LoginPage();
         break;
       case AuthStatus.loggedIn:
-        retVal = FeedPage();
+        retVal = BookScaffold();
         break;
       default:
     }
