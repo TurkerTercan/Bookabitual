@@ -31,13 +31,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       SizedBox(width: 5,),
                       IconButton(
-                        onPressed: (){},
-                        icon: Icon(Icons.logout),
-                        color: Colors.amber,
-                        iconSize: 25.0,
-                      ),
-                      SizedBox(width: 5,),
-                      IconButton(
                         onPressed: () async{
                           CurrentUser _current = Provider.of<CurrentUser>(context, listen: false);
                           String _returnString = await _current.signOut();
@@ -49,11 +42,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ), (route) => false);
                           }
                         },
-                        icon: Icon(Icons.power_off),
+                        icon: Icon(Icons.logout),
                         color: Colors.amber,
                         iconSize: 25.0,
                       ),
-                      SizedBox(width: 5,)
+                      SizedBox(width: 5,),
                     ],
                   ),
                   Center(
