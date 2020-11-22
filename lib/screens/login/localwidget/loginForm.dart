@@ -1,9 +1,9 @@
 import 'package:bookabitual/screens/signup/signup.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/widgets/ProjectContainer.dart';
+import 'package:bookabitual/widgets/bookScaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../home/home.dart';
 
 enum LoginType{
   email,
@@ -35,7 +35,7 @@ class _LoginFormState extends State<LoginForm> {
 
       if (_returnString == "Success") {
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => HomeScreen(), )
+          MaterialPageRoute(builder: (context) => BookScaffold(), )
         );
       } else {
         Scaffold.of(context).showSnackBar(

@@ -1,15 +1,20 @@
+import 'package:bookabitual/screens/root/root.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/bookworm.dart';
 import '../../states/currentUser.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     Bookworm _currentUser = Provider.of<CurrentUser>(context).getCurrentUser;
-    return Scaffold(
-      body: Container(
+    return Container(
         child: ListView(
           children: <Widget>[
             Column(
@@ -24,12 +29,31 @@ class ProfilePage extends StatelessWidget {
                         color: Colors.amber,
                         iconSize: 25.0,
                       ),
+                      SizedBox(width: 5,),
                       IconButton(
                         onPressed: (){},
                         icon: Icon(Icons.logout),
                         color: Colors.amber,
                         iconSize: 25.0,
                       ),
+                      SizedBox(width: 5,),
+                      IconButton(
+                        onPressed: () async{
+                          CurrentUser _current = Provider.of<CurrentUser>(context, listen: false);
+                          String _returnString = await _current.signOut();
+                          if (_returnString == "Success") {
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RootPage()
+                                ), (route) => false);
+                          }
+                        },
+                        icon: Icon(Icons.power_off),
+                        color: Colors.amber,
+                        iconSize: 25.0,
+                      ),
+                      SizedBox(width: 5,)
                     ],
                   ),
                   Center(
@@ -145,7 +169,6 @@ class ProfilePage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }
