@@ -34,7 +34,7 @@ class _LoginFormState extends State<LoginForm> {
       }
 
       if (_returnString == "Success") {
-        Navigator.of(context).push(
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => BookScaffold(), )
         );
       } else {
