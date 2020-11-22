@@ -29,7 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: Colors.amber,
                         iconSize: 25.0,
                       ),
-                      SizedBox(width: 5,),
+                      SizedBox(width: 5),
                       IconButton(
                         onPressed: () async{
                           CurrentUser _current = Provider.of<CurrentUser>(context, listen: false);
@@ -46,13 +46,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: Colors.amber,
                         iconSize: 25.0,
                       ),
-                      SizedBox(width: 5,),
+                      SizedBox(width: 5),
                     ],
                   ),
                   Center(
                     child: CircleAvatar(
                       backgroundImage: AssetImage('assets/profilePhoto.jpg'),
-                      radius: 50.0,
+                      radius: 40.0,
                     ),
                   ),
                   Divider(
@@ -60,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Colors.green[100],
                   ),
                   Text(
-                    'John',
+                    'Emily',
                     style: TextStyle(
                         fontSize: 20.0,
                         color: Colors.black,
@@ -74,13 +74,32 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Colors.green[100],
                   ),
                   Text(
-                    '@john123',
+                    _currentUser.username,
                     style: TextStyle(
                         fontSize: 20.0,
                         color: Colors.black45,
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.normal
                     ),
+                  ),
+
+                  Divider(
+                    height: 12,
+                    color: Colors.green[100],
+                  ),
+                  Text(
+                    'I am reading The Lord of the Rings',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.purple[400],
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.bold
+                    ),
+                  ),
+
+                  Divider(
+                    height: 20,
+                    color: Colors.green[100],
                   ),
 
                   Row(
