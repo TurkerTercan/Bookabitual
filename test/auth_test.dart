@@ -17,20 +17,6 @@ setupFirebaseAuthMocks([Callback customHandlers]) {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   MethodChannelFirebase.channel.setMockMethodCallHandler((call) async {
-    if (call.method == 'Firebase#initializeCore') {
-      return [
-        {
-          'name': 'bookabitual',
-          'options': {
-            'apiKey': 'AIzaSyCeOiLUnQc1CohxP3_OrbZs4KR0tlMRsfE',
-            'appId': '1:128508211625:android:632c13a69ad88d014c54b8',
-            'messagingSenderId': '128508211625',
-            'projectId': 'bookabitual-55ad2',
-          },
-          'pluginConstants': {},
-        }
-      ];
-    }
 
     if (call.method == 'Firebase#initializeApp') {
       return {
