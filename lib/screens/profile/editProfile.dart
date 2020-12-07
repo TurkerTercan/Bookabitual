@@ -1,4 +1,3 @@
-import 'package:bookabitual/screens/root/root.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +8,6 @@ class EditProfile extends StatefulWidget {
   @override
   // ignore: missing_return
   State<StatefulWidget> createState() => _EditProfileState();
-
 }
 
 class _EditProfileState extends State<EditProfile> {
@@ -36,27 +34,35 @@ class _EditProfileState extends State<EditProfile> {
         ),
         centerTitle: true,
       ),
-      body: ListView(
+      body: Stack(
         children: <Widget>[
-          Row(
-            children:<Widget>[
-              editPhoto(),
-
-            ],
+          Center(
+            child: ListView(
+              padding: EdgeInsets.all(20.0),
+              children: <Widget>[
+                editPhoto(_currentUser),
+                addSpace(),
+                changeName(_currentUser),
+                addSpace(),
+                changeUsername(_currentUser),
+                addSpace(),
+                changePassword(_currentUser),
+                SizedBox(height: 50, width: 30),
+                saveChangedButton(),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
-
-
-  Widget editPhoto() {
+  Widget editPhoto(_currentUser) {
     return Container(
       padding: EdgeInsets.only(top: 20, left: 20),
       child: Stack(
         children: <Widget>[
           CircleAvatar(
-            backgroundImage: AssetImage('assets/profilePhoto5.png'),
+            backgroundImage: AssetImage(_currentUser.photo),
             radius: 40.0,
             ),
 
@@ -65,13 +71,54 @@ class _EditProfileState extends State<EditProfile> {
             shape: CircleBorder(),
             label: Text(''),
             icon: Icon(Icons.add),
-            onPressed: (){},
             color: Colors.blueGrey,
+            onPressed: (){},
           ),
         ],
       ),
+    );
+  }
+  Widget changeName(_currentUser) {
+    return TextFormField(
+      decoration: InputDecoration(labelText: "Name"),
+    //  validator: validateFirstName,
+      onSaved: (String value){
+        _currentUser.name = value;
+      }
+    );
+  }
 
+  Widget changeUsername( _currentUser) {
+    return TextFormField(
+        decoration: InputDecoration(labelText: "Username"),
+        //  validator: validateFirstName,
+        onSaved: (String value){
+          _currentUser.username = value;
+        }
+    );
+  }
 
+  Widget changePassword( _currentUser) {
+    return TextFormField(
+        decoration: InputDecoration(labelText: "Password"),
+        //  validator: validateFirstName,
+        onSaved: (String value){
+          _currentUser.password= value;
+        }
+    );
+  }
+
+  Widget addSpace() {
+    return SizedBox(height: 20, width: 20);
+  }
+
+  Widget saveChangedButton() {
+    return RaisedButton(
+      onPressed: (){},
+      child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 100),
+        child: Text("SAVE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
+      ),
     );
   }
 }

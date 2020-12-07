@@ -56,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   SizedBox(height: 20),
                   Center(
                     child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/profilePhoto5.png'),
+                      backgroundImage: AssetImage(_currentUser.photo),
                       radius: 40.0,
                     ),
                   ),
@@ -65,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Colors.green[100],
                   ),
                   Text(
-                    'Admin',
+                    _currentUser.name,
                     style: TextStyle(
                         fontSize: 20.0,
                         color: Colors.black,
