@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class QuotePost extends StatefulWidget {
+  final String quoteId;
+  final String ownerId;
   final String profileUrl;
   final String username;
   final Timestamp createTime;
@@ -17,7 +19,7 @@ class QuotePost extends StatefulWidget {
   final String bookName;
   var date;
 
-  QuotePost({Key key, this.quote, this.author, this.bookName, this.status,
+  QuotePost({Key key, this.quoteId, this.ownerId, this.quote, this.author, this.bookName, this.status,
   this.profileUrl, this.username, this.imageUrl, this.createTime, this.likeCount}) : super(key: key) {
     date = DateTime.fromMillisecondsSinceEpoch(createTime.millisecondsSinceEpoch);
   }
@@ -49,7 +51,7 @@ class _QuotePostState extends State<QuotePost> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             widget.username,
