@@ -11,7 +11,7 @@ class BookDatabase {
     await _firestorePost.document(quote.ownerId).collection("usersQuotes").document(quote.quoteId).setData({
       "quoteId" : quote.quoteId,
       "ownerId" : quote.ownerId,
-      "profileUrl" : quote.profileUrl,
+      "userAvatarIndex" : quote.userAvatarIndex,
       "username" : quote.username,
       "createTime" : quote.createTime,
       "status" : quote.status,
@@ -28,11 +28,11 @@ class BookDatabase {
     await _firestorePost.document(review.ownerId).collection("usersReviews").document(review.reviewId).setData({
       "quoteId" : review.reviewId,
       "ownerId" : review.ownerId,
-      "profileUrl" : review.profileUrl,
+      "userAvatarIndex" : review.userAvatarIndex,
       "username" : review.username,
       "createTime" : review.createTime,
       "status" : review.status,
-      "imageUrl" : review.imageUrl,
+      "imageIndex" : review.imageUrl,
       "likeCount" : review.likeCount,
       "quote" : review.review,
       "author" : review.author,

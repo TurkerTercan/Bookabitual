@@ -24,8 +24,7 @@ class _FeedPageState extends State<FeedPage> {
       imageUrl:
       "https://images-na.ssl-images-amazon.com/images/I/A1E+USP9f8L.jpg",
       likeCount: 245,
-      profileUrl:
-      "https://images.pexels.com/photos/1499327/pexels-photo-1499327.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      userAvatarIndex: 5,
       quote: "“There is nothing like looking, if you want to find something. "
           "You certainly usually find something, if you look, but it is not always quite "
           "the something you were after.”",
@@ -38,8 +37,7 @@ class _FeedPageState extends State<FeedPage> {
       createTime: Timestamp.now(),
       imageUrl: "https://img.rasset.ie/000d7a28-614.jpg?ratio=0.6",
       likeCount: 476,
-      profileUrl:
-      "https://images.pexels.com/photos/1081685/pexels-photo-1081685.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      userAvatarIndex: 14,
       review:
       "I realise this might be of minority interest if, unlike me, you haven’t spent your whole adult life with epilepsy being front and centre, but bear with me."
           "\nIt’s part thorough history of the condition, part look into what it actually is and how it works and part movingly human story about"
@@ -123,7 +121,6 @@ class _FeedPageState extends State<FeedPage> {
     TextEditingController _author = TextEditingController();
     TextEditingController _book = TextEditingController();
     TextEditingController _rating = TextEditingController();
-    TextEditingController _profileUrl = TextEditingController();
     TextEditingController _imageUrl = TextEditingController();
     TextEditingController _text = TextEditingController();
 
@@ -265,14 +262,6 @@ class _FeedPageState extends State<FeedPage> {
                                 ),
                                 SizedBox(height: 10,),
                                 TextFormField(
-                                  controller: _profileUrl,
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(Icons.link),
-                                    hintText: "Profile URL",
-                                  ),
-                                ),
-                                SizedBox(height: 10,),
-                                TextFormField(
                                   maxLines: 5,
                                   controller: _text,
                                   decoration: InputDecoration(
@@ -291,7 +280,7 @@ class _FeedPageState extends State<FeedPage> {
                                           ownerId: Provider.of<CurrentUser>(context, listen: false).getCurrentUser.uid,
                                           username: Provider.of<CurrentUser>(context, listen: false).getCurrentUser.username,
                                           status: "Reading",
-                                          profileUrl: _profileUrl.text,
+                                          userAvatarIndex: Provider.of<CurrentUser>(context, listen: false).getCurrentUser.photoIndex,
                                           quote: _text.text,
                                           likeCount: 0,
                                           imageUrl: _imageUrl.text,
@@ -357,14 +346,6 @@ class _FeedPageState extends State<FeedPage> {
                                 ),
                                 SizedBox(height: 10,),
                                 TextFormField(
-                                  controller: _profileUrl,
-                                  decoration: InputDecoration(
-                                    prefixIcon: Icon(Icons.link),
-                                    hintText: "Profile URL",
-                                  ),
-                                ),
-                                SizedBox(height: 10,),
-                                TextFormField(
                                   controller: _rating,
                                   decoration: InputDecoration(
                                     prefixIcon: Icon(Icons.rate_review),
@@ -391,7 +372,7 @@ class _FeedPageState extends State<FeedPage> {
                                           ownerId: Provider.of<CurrentUser>(context, listen: false).getCurrentUser.uid,
                                           username: Provider.of<CurrentUser>(context, listen: false).getCurrentUser.username,
                                           status: "Reading",
-                                          profileUrl: _profileUrl.text,
+                                          userAvatarIndex: Provider.of<CurrentUser>(context, listen: false).getCurrentUser.photoIndex,
                                           review: _text.text,
                                           likeCount: 0,
                                           rating: double.parse(_rating.text),

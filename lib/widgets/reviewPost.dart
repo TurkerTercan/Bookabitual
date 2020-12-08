@@ -2,13 +2,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
+import '../utils/avatarPictures.dart';
 import 'ProjectContainer.dart';
 
 class ReviewPost extends StatefulWidget {
   final String reviewId;
   final String ownerId;
-  final String profileUrl;
+  final int userAvatarIndex;
   final String username;
   final Timestamp createTime;
   final String status;
@@ -21,7 +21,7 @@ class ReviewPost extends StatefulWidget {
   var date;
 
   ReviewPost({Key key, this.reviewId, this.ownerId, this.review, this.rating,this.author, this.bookName, this.status,
-    this.profileUrl, this.username, this.imageUrl, this.createTime, this.likeCount}) : super(key: key) {
+    this.userAvatarIndex, this.username, this.imageUrl, this.createTime, this.likeCount}) : super(key: key) {
     date = DateTime.fromMillisecondsSinceEpoch(createTime.millisecondsSinceEpoch);
   }
 
@@ -46,7 +46,7 @@ class _ReviewPostState extends State<ReviewPost> {
                 children: [
                   CircleAvatar(
                     radius: 20,
-                    backgroundImage: NetworkImage(widget.profileUrl),
+                    backgroundImage: AssetImage(avatars[widget.userAvatarIndex]),
                   ),
                   SizedBox(width: 5,),
                   Column(

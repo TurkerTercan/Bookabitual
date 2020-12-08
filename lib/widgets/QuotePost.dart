@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../utils/avatarPictures.dart';
 import 'ProjectContainer.dart';
 import 'package:intl/intl.dart';
 
@@ -8,7 +9,7 @@ import 'package:intl/intl.dart';
 class QuotePost extends StatefulWidget {
   final String quoteId;
   final String ownerId;
-  final String profileUrl;
+  final int userAvatarIndex;
   final String username;
   final Timestamp createTime;
   final String status;
@@ -20,7 +21,7 @@ class QuotePost extends StatefulWidget {
   var date;
 
   QuotePost({Key key, this.quoteId, this.ownerId, this.quote, this.author, this.bookName, this.status,
-  this.profileUrl, this.username, this.imageUrl, this.createTime, this.likeCount}) : super(key: key) {
+  this.userAvatarIndex, this.username, this.imageUrl, this.createTime, this.likeCount}) : super(key: key) {
     date = DateTime.fromMillisecondsSinceEpoch(createTime.millisecondsSinceEpoch);
   }
 
@@ -44,7 +45,7 @@ class _QuotePostState extends State<QuotePost> {
                 children: [
                   CircleAvatar(
                     radius: 20,
-                    backgroundImage: NetworkImage(widget.profileUrl),
+                    backgroundImage: AssetImage(avatars[widget.userAvatarIndex]),
                   ),
                   SizedBox(width: 5,),
                   Column(
