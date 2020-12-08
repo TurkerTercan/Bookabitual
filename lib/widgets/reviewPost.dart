@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'ProjectContainer.dart';
 
 class ReviewPost extends StatefulWidget {
+  final String reviewId;
+  final String ownerId;
   final String profileUrl;
   final String username;
   final Timestamp createTime;
@@ -18,7 +20,7 @@ class ReviewPost extends StatefulWidget {
   final double rating;
   var date;
 
-  ReviewPost({Key key, this.review, this.rating,this.author, this.bookName, this.status,
+  ReviewPost({Key key, this.reviewId, this.ownerId, this.review, this.rating,this.author, this.bookName, this.status,
     this.profileUrl, this.username, this.imageUrl, this.createTime, this.likeCount}) : super(key: key) {
     date = DateTime.fromMillisecondsSinceEpoch(createTime.millisecondsSinceEpoch);
   }
@@ -51,7 +53,7 @@ class _ReviewPostState extends State<ReviewPost> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             widget.username,
