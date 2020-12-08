@@ -14,6 +14,10 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     Bookworm _currentUser = Provider.of<CurrentUser>(context).getCurrentUser;
+    TextEditingController _photoController = TextEditingController();
+    TextEditingController _usernameController = TextEditingController();
+    TextEditingController _passwordController = TextEditingController();
+    TextEditingController _confirmPasswordController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).accentColor,
@@ -64,7 +68,7 @@ class _EditProfileState extends State<EditProfile> {
           CircleAvatar(
             backgroundImage: AssetImage(_currentUser.photo),
             radius: 40.0,
-            ),
+          ),
 
           RaisedButton.icon(
             padding: EdgeInsets.only(top: 2, left: 8),
@@ -80,11 +84,11 @@ class _EditProfileState extends State<EditProfile> {
   }
   Widget changeName(_currentUser) {
     return TextFormField(
-      decoration: InputDecoration(labelText: "Name"),
-    //  validator: validateFirstName,
-      onSaved: (String value){
-        _currentUser.name = value;
-      }
+        decoration: InputDecoration(labelText: "Name"),
+        //  validator: validateFirstName,
+        onSaved: (String value){
+          _currentUser.name = value;
+        }
     );
   }
 
@@ -116,7 +120,7 @@ class _EditProfileState extends State<EditProfile> {
     return RaisedButton(
       onPressed: (){},
       child: Padding(
-      padding: EdgeInsets.symmetric(horizontal: 100),
+        padding: EdgeInsets.symmetric(horizontal: 100),
         child: Text("SAVE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
       ),
     );
