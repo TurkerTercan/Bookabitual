@@ -99,7 +99,6 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
             onPressed: () {
               if (_passwordController.text == _confirmPasswordController.text) {
-                print(_passwordController.text);
                 _signUpUser(_emailController.text, _passwordController.text, _usernameController.text, context);
               } else {
                 Scaffold.of(context).showSnackBar(

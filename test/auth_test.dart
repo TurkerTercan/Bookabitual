@@ -1,18 +1,32 @@
-// Copyright 2020 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
+import 'package:bookabitual/main.dart';
 import 'package:bookabitual/models/bookworm.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+
+import 'mock.dart';
 
 class MockUser extends Mock implements Bookworm {}
 final MockUser _mockUser = MockUser();
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
-void main() {
+Future<void> main() async{
+
+  setUpAll(() async {
+    await Firebase.initializeApp(
+      name: 'test',
+      options: const FirebaseOptions(
+        projectId: 'bookabitual-55ad2',
+        apiKey: 'AIzaSyA6t5DvLicRwfyDcImpXdJp6MHtz0w0-ZE',
+        messagingSenderId: '128508211625',
+        appId: '1:128508211625:android:632c13a69ad88d014c54b8',
+      ),
+    );
+  });
+
   final MockFirebaseAuth mockFirebaseAuth = MockFirebaseAuth();
   final CurrentUser auth = CurrentUser();
   setUp(() {});

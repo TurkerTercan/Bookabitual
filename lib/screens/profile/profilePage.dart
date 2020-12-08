@@ -1,9 +1,9 @@
 import 'package:bookabitual/screens/root/root.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/bookworm.dart';
 import '../../states/currentUser.dart';
-import 'editProfile.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -15,24 +15,21 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     Bookworm _currentUser = Provider.of<CurrentUser>(context).getCurrentUser;
     return Container(
-      child: Stack(
-        children: <Widget>[
-           Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Column(
-                    children: <Widget>[
+        child: ListView(
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
                       IconButton(
-                        onPressed: (){
-                          Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => EditProfile()),
-                          );
-                        },
-                        icon: Icon(Icons.edit),
+                        onPressed: (){},
+                        icon: Icon(Icons.auto_fix_high),
                         color: Colors.amber,
                         iconSize: 25.0,
                       ),
+                      SizedBox(width: 5),
                       IconButton(
                         onPressed: () async{
                           CurrentUser _current = Provider.of<CurrentUser>(context, listen: false);
@@ -40,23 +37,21 @@ class _ProfilePageState extends State<ProfilePage> {
                           if (_returnString == "Success") {
                             Navigator.pushAndRemoveUntil(
                                 context,
-                                MaterialPageRoute(builder: (context) => RootPage()), (route) => false);
+                                MaterialPageRoute(
+                                    builder: (context) => RootPage()
+                                ), (route) => false);
                           }
                         },
                         icon: Icon(Icons.logout),
                         color: Colors.amber,
                         iconSize: 25.0,
                       ),
+                      SizedBox(width: 5),
                     ],
                   ),
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  SizedBox(height: 20),
                   Center(
                     child: CircleAvatar(
-                      backgroundImage: AssetImage(_currentUser.photo),
+                      backgroundImage: AssetImage('assets/profilePhoto.jpg'),
                       radius: 40.0,
                     ),
                   ),
@@ -65,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Colors.green[100],
                   ),
                   Text(
-                    _currentUser.name,
+                    'Emily',
                     style: TextStyle(
                         fontSize: 20.0,
                         color: Colors.black,
@@ -103,18 +98,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
 
                   Divider(
-                    height: 10,
+                    height: 20,
                     color: Colors.green[100],
                   ),
 
                   Row(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(left: 40.0, right: 15.0, top: 10.0),
-                        width: 100.0,
-                        height: 20.0,
-                        child: GestureDetector(
-                          onTap: (){},
+                        margin: EdgeInsets.only(left: 40.0, right: 15.0, top: 15.0),
+                        width: 150.0,
+                        height: 35.0,
+                        child: RaisedButton(
+                          onPressed: (){},
                           child: Text("Followers",
                             style: TextStyle(
                                 fontSize: 22.0,
@@ -123,14 +118,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                 fontWeight: FontWeight.normal
                             ),
                           ),
+
+                          color: Colors.blueGrey,
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(right: 15.0, left: 10.0, top: 10.0),
-                        width: 100.0,
-                        height: 20.0,
-                        child: GestureDetector(
-                          onTap: (){},
+                        margin: EdgeInsets.only(right: 15.0, left: 10.0, top: 15.0),
+                        width: 150.0,
+                        height: 35.0,
+                        child: RaisedButton(
+                          onPressed: (){},
                           child: Text("Following",
                             style: TextStyle(
                                 fontSize: 22.0,
@@ -139,52 +136,51 @@ class _ProfilePageState extends State<ProfilePage> {
                                 fontWeight: FontWeight.normal
                             ),
                           ),
+                          color: Colors.blueGrey,
                         ),
+
                       ),
                     ],
                   ),
                 ],
-              ),
-
-          Container(
-            height: 30.0,
-            margin: EdgeInsets.only(top: 280.0, ),
-            padding: EdgeInsets.only(left: 25.0, right: 25.0,),
-            child: DefaultTabController(
-              length: 2,
-              child: TabBar(
-                  labelPadding: EdgeInsets.all(0),
-                  indicatorPadding: EdgeInsets.all(10),
-                  isScrollable: true,
-                  labelColor: Colors.black,
-                  unselectedLabelColor: Colors.grey,
-                  labelStyle: TextStyle(fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                  unselectedLabelStyle: TextStyle(fontSize: 18.0,
-                      color: Colors.grey),
-                  indicator: UnderlineTabIndicator(borderSide: BorderSide(width: 2.0, color: Colors.blueGrey), insets: EdgeInsets.only(right: 10.0, left: 40.0)
-                  ),
-                  tabs: [
-                    Tab(
-                      child: Container(
-                        height: 50,
-                        margin: EdgeInsets.only(right: 25.0, left: 60.0, top: 5),
-                        child: Text("My Posts"),
-                      ),
-                    ),
-                    Tab(
-                      child: Container(
-                        height: 50,
-                        margin: EdgeInsets.only(right: 25.0, left: 60.0, top: 5),
-                        child: Text("My Library"),
-                      ),
-                    ),
-                  ]),
             ),
-          ),
-        ],
-      ),
-    );
+
+            Container(
+              height: 30.0,
+              margin: EdgeInsets.only(top: 30.0),
+              padding: EdgeInsets.only(left: 25.0, right: 25.0),
+              child: DefaultTabController(
+                length: 2,
+                child: TabBar(
+                    labelPadding: EdgeInsets.all(0),
+                    indicatorPadding: EdgeInsets.all(0),
+                    isScrollable: true,
+                    labelColor: Colors.black,
+                    unselectedLabelColor: Colors.grey,
+                    labelStyle: TextStyle(fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                    unselectedLabelStyle: TextStyle(fontSize: 18.0,
+                        color: Colors.grey),
+
+                    tabs: [
+                  Tab(
+                    child: Container(
+                      margin: EdgeInsets.only(right: 25.0, left: 60.0),
+                      child: Text("My Posts"),
+                    ),
+                  ),
+                  Tab(
+                    child: Container(
+                      margin: EdgeInsets.only(right: 25.0, left: 60.0),
+                      child: Text("My Library"),
+                    ),
+                  ),
+                ]),
+              ),
+            ),
+          ],
+        ),
+      );
   }
 }
