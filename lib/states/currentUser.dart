@@ -20,6 +20,7 @@ class CurrentUser extends ChangeNotifier {
         _currentUser = await BookDatabase().getUserInfo(_firebaseUser.uid);
         if (_currentUser != null) retVal = "Success";
       }
+      print(_currentUser.username);
     } on PlatformException catch (e) {
       retVal = e.message;
     } catch (e) {
@@ -55,7 +56,7 @@ class CurrentUser extends ChangeNotifier {
       _user.email = email.trim();
       _user.username = username.trim();
       _user.name = _user.username;
-      _user.photoIndex = 0;
+      _user.photoIndex = 15;
       String _returnString = await BookDatabase().createUser(_user);
       if (_returnString == "Success") {
         retVal = "Success";
@@ -98,9 +99,9 @@ class CurrentUser extends ChangeNotifier {
       if (_authResult.additionalUserInfo.isNewUser) {
         _user.uid = _authResult.user.uid;
         _user.email = _authResult.user.email;
-        _user.name = _authResult.user.displayName;
         _user.username = _authResult.user.displayName;
-        _user.photoIndex = 0;
+        _user.name = _user.username;
+        _user.photoIndex = 15;
         BookDatabase().createUser(_user);
       }
       _currentUser = await BookDatabase().getUserInfo(_authResult.user.uid);

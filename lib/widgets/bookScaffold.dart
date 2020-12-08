@@ -1,7 +1,9 @@
 import 'package:bookabitual/screens/home/feed.dart';
 import 'package:bookabitual/screens/profile/profilePage.dart';
 import 'package:bookabitual/screens/search/searchPage.dart';
+import 'package:bookabitual/states/currentUser.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class BookScaffold extends StatefulWidget {
@@ -24,6 +26,7 @@ class _BookScaffoldState extends State<BookScaffold> {
 
   @override
   Widget build(BuildContext context) {
+    //Provider.of<CurrentUser>(context).signOut();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).accentColor,

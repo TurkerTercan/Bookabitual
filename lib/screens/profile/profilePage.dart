@@ -1,4 +1,5 @@
 import 'package:bookabitual/screens/root/root.dart';
+import 'package:bookabitual/utils/avatarPictures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../models/bookworm.dart';
@@ -11,6 +12,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
   @override
   Widget build(BuildContext context) {
     Bookworm _currentUser = Provider.of<CurrentUser>(context).getCurrentUser;
@@ -56,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(height: 20),
               Center(
                 child: CircleAvatar(
-                  backgroundImage: AssetImage("assets/profilePhoto1.jpg"),
+                  backgroundImage: AssetImage(avatars[_currentUser.photoIndex]),
                   radius: 40.0,
                 ),
               ),
@@ -87,7 +89,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     fontWeight: FontWeight.normal
                 ),
               ),
-
               Divider(
                 height: 12,
                 color: Colors.green[100],

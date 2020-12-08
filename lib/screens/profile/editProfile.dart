@@ -1,3 +1,5 @@
+import 'package:bookabitual/utils/avatarPictures.dart';
+import 'package:bookabitual/validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,13 +13,15 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+
+  TextEditingController _photoController = TextEditingController();
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _confirmPasswordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Bookworm _currentUser = Provider.of<CurrentUser>(context).getCurrentUser;
-    TextEditingController _photoController = TextEditingController();
-    TextEditingController _usernameController = TextEditingController();
-    TextEditingController _passwordController = TextEditingController();
-    TextEditingController _confirmPasswordController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).accentColor,
@@ -48,9 +52,6 @@ class _EditProfileState extends State<EditProfile> {
                 addSpace(),
                 changeName(_currentUser),
                 addSpace(),
-                changeUsername(_currentUser),
-                addSpace(),
-                changePassword(_currentUser),
                 SizedBox(height: 50, width: 30),
                 saveChangedButton(),
               ],
@@ -60,13 +61,13 @@ class _EditProfileState extends State<EditProfile> {
       ),
     );
   }
-  Widget editPhoto(_currentUser) {
+  Widget editPhoto(Bookworm _currentUser) {
     return Container(
       padding: EdgeInsets.only(top: 20, left: 20),
       child: Stack(
         children: <Widget>[
           CircleAvatar(
-            backgroundImage: AssetImage(_currentUser.photo),
+            backgroundImage: AssetImage(avatars[_currentUser.photoIndex]),
             radius: 40.0,
           ),
 
@@ -87,27 +88,9 @@ class _EditProfileState extends State<EditProfile> {
         decoration: InputDecoration(labelText: "Name"),
         //  validator: validateFirstName,
         onSaved: (String value){
-          _currentUser.name = value;
-        }
-    );
-  }
-
-  Widget changeUsername( _currentUser) {
-    return TextFormField(
-        decoration: InputDecoration(labelText: "Username"),
-        //  validator: validateFirstName,
-        onSaved: (String value){
-          _currentUser.username = value;
-        }
-    );
-  }
-
-  Widget changePassword( _currentUser) {
-    return TextFormField(
-        decoration: InputDecoration(labelText: "Password"),
-        //  validator: validateFirstName,
-        onSaved: (String value){
-          _currentUser.password= value;
+          if(value != null) {
+            _currentUser.name = value;
+          }
         }
     );
   }
@@ -118,7 +101,8 @@ class _EditProfileState extends State<EditProfile> {
 
   Widget saveChangedButton() {
     return RaisedButton(
-      onPressed: (){},
+      onPressed: (){
+      },
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 100),
         child: Text("SAVE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
