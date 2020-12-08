@@ -32,7 +32,7 @@ class BookDatabase {
       "username" : review.username,
       "createTime" : review.createTime,
       "status" : review.status,
-      "imageIndex" : review.imageUrl,
+      "imageUrl" : review.imageUrl,
       "likeCount" : review.likeCount,
       "quote" : review.review,
       "author" : review.author,
