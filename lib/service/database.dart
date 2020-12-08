@@ -49,6 +49,10 @@ class BookDatabase {
         'username' : user.username,
         'email' : user.email,
         'accountCreated' : Timestamp.now(),
+        'profilePic' : 0,
+        'name': user.username,
+        'photoIndex': user.photoIndex,
+        'name': user.name,
       });
       retVal = "Success";
     }catch(e) {
@@ -66,6 +70,9 @@ class BookDatabase {
       retVal.username = _docSnapshot.get("username");
       retVal.email = _docSnapshot.get("email");
       retVal.accountCreated = _docSnapshot.get("accountCreated");
+      retVal.photoIndex = _docSnapshot.get("photoIndex");
+      retVal.name = _docSnapshot.get("name");
+      retVal.photoIndex = _docSnapshot.get("photoIndex");
     } catch(e) {
       print(e);
     }
