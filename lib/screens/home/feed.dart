@@ -1,10 +1,12 @@
 import 'dart:ui';
+import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/widgets/QuotePost.dart';
 import 'package:bookabitual/widgets/reviewPost.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class FeedPage extends StatefulWidget {
   @override
@@ -12,100 +14,9 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
+  String postId = Uuid().v4();
+
   List<Widget> postList = [
-    QuotePost(
-      author: "J.R.R. Tolkien",
-      bookName: "The Hobbit, or There and Back Again",
-      createTime: Timestamp.now(),
-      imageUrl:
-      "https://images-na.ssl-images-amazon.com/images/I/A1E+USP9f8L.jpg",
-      likeCount: 245,
-      profileUrl:
-      "https://images.pexels.com/photos/1499327/pexels-photo-1499327.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      quote: "“There is nothing like looking, if you want to find something. "
-          "You certainly usually find something, if you look, but it is not always quite "
-          "the something you were after.”",
-      status: "Reading",
-      username: "Tom Smith",
-    ),
-    ReviewPost(
-      author: "Colin Grant",
-      bookName: "A Smell Of Burning",
-      createTime: Timestamp.now(),
-      imageUrl: "https://img.rasset.ie/000d7a28-614.jpg?ratio=0.6",
-      likeCount: 476,
-      profileUrl:
-      "https://images.pexels.com/photos/1081685/pexels-photo-1081685.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      review:
-      "I realise this might be of minority interest if, unlike me, you haven’t spent your whole adult life with epilepsy being front and centre, but bear with me."
-          "\nIt’s part thorough history of the condition, part look into what it actually is and how it works and part movingly human story about"
-          " Grant’s own personal interest in epilepsy through the story of his brother.",
-      status: "Finished",
-      username: "Alan Wake",
-      rating: 3.5,
-    ),
-    QuotePost(
-      author: "J.R.R. Tolkien",
-      bookName: "The Hobbit, or There and Back Again",
-      createTime: Timestamp.now(),
-      imageUrl:
-      "https://images-na.ssl-images-amazon.com/images/I/A1E+USP9f8L.jpg",
-      likeCount: 245,
-      profileUrl:
-      "https://images.pexels.com/photos/1499327/pexels-photo-1499327.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      quote: "“There is nothing like looking, if you want to find something. "
-          "You certainly usually find something, if you look, but it is not always quite "
-          "the something you were after.”",
-      status: "Reading",
-      username: "Tom Smith",
-    ),
-    ReviewPost(
-      author: "Colin Grant",
-      bookName: "A Smell Of Burning",
-      createTime: Timestamp.now(),
-      imageUrl: "https://img.rasset.ie/000d7a28-614.jpg?ratio=0.6",
-      likeCount: 476,
-      profileUrl:
-      "https://images.pexels.com/photos/1081685/pexels-photo-1081685.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      review:
-      "I realise this might be of minority interest if, unlike me, you haven’t spent your whole adult life with epilepsy being front and centre, but bear with me."
-          "\nIt’s part thorough history of the condition, part look into what it actually is and how it works and part movingly human story about"
-          " Grant’s own personal interest in epilepsy through the story of his brother.",
-      status: "Finished",
-      username: "Alan Wake",
-      rating: 3.5,
-    ),
-    QuotePost(
-      author: "J.R.R. Tolkien",
-      bookName: "The Hobbit, or There and Back Again",
-      createTime: Timestamp.now(),
-      imageUrl:
-      "https://images-na.ssl-images-amazon.com/images/I/A1E+USP9f8L.jpg",
-      likeCount: 245,
-      profileUrl:
-      "https://images.pexels.com/photos/1499327/pexels-photo-1499327.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      quote: "“There is nothing like looking, if you want to find something. "
-          "You certainly usually find something, if you look, but it is not always quite "
-          "the something you were after.”",
-      status: "Reading",
-      username: "Tom Smith",
-    ),
-    ReviewPost(
-      author: "Colin Grant",
-      bookName: "A Smell Of Burning",
-      createTime: Timestamp.now(),
-      imageUrl: "https://img.rasset.ie/000d7a28-614.jpg?ratio=0.6",
-      likeCount: 476,
-      profileUrl:
-      "https://images.pexels.com/photos/1081685/pexels-photo-1081685.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      review:
-      "I realise this might be of minority interest if, unlike me, you haven’t spent your whole adult life with epilepsy being front and centre, but bear with me."
-          "\nIt’s part thorough history of the condition, part look into what it actually is and how it works and part movingly human story about"
-          " Grant’s own personal interest in epilepsy through the story of his brother.",
-      status: "Finished",
-      username: "Alan Wake",
-      rating: 3.5,
-    ),
     QuotePost(
       author: "J.R.R. Tolkien",
       bookName: "The Hobbit, or There and Back Again",
@@ -203,6 +114,7 @@ class _FeedPageState extends State<FeedPage> {
       ),
     );
   }
+
 
   void _onButtonPressed(
       List<Widget> postList, StateSetter viewState, ScrollController control) {
@@ -373,8 +285,10 @@ class _FeedPageState extends State<FeedPage> {
                                   child: RaisedButton(
                                     color: Colors.redAccent,
                                     onPressed: () {
-                                      viewState(() {
-                                        postList.insert(0, QuotePost(
+                                      viewState(() async {
+                                        QuotePost _quote = QuotePost(
+                                          quoteId: postId,
+                                          ownerId: Provider.of<CurrentUser>(context, listen: false).getCurrentUser.uid,
                                           username: Provider.of<CurrentUser>(context, listen: false).getCurrentUser.username,
                                           status: "Reading",
                                           profileUrl: _profileUrl.text,
@@ -384,11 +298,16 @@ class _FeedPageState extends State<FeedPage> {
                                           createTime: Timestamp.now(),
                                           bookName: _book.text,
                                           author: _author.text,
-                                        ));
+                                        );
+                                        await BookDatabase().createQuote(_quote);
+                                        setState(() {
+                                          postId = Uuid().v4();
+                                        });
                                         control.animateTo(0.0, curve: Curves.bounceOut, duration: const Duration(milliseconds: 1000),);
                                       });
                                       Navigator.pop(context);
                                     },
+
                                     child: Text("Share",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
@@ -466,8 +385,10 @@ class _FeedPageState extends State<FeedPage> {
                                   child: RaisedButton(
                                     color: Colors.redAccent,
                                     onPressed: () {
-                                      viewState(() {
-                                        postList.insert(0, ReviewPost(
+                                      viewState(() async {
+                                        ReviewPost _review = ReviewPost(
+                                          reviewId: postId,
+                                          ownerId: Provider.of<CurrentUser>(context, listen: false).getCurrentUser.uid,
                                           username: Provider.of<CurrentUser>(context, listen: false).getCurrentUser.username,
                                           status: "Reading",
                                           profileUrl: _profileUrl.text,
@@ -478,7 +399,11 @@ class _FeedPageState extends State<FeedPage> {
                                           createTime: Timestamp.now(),
                                           bookName: _book.text,
                                           author: _author.text,
-                                        ));
+                                        );
+                                        await BookDatabase().createReview(_review);
+                                        setState(() {
+                                        postId = Uuid().v4();
+                                        });
                                         control.animateTo(0.0, curve: Curves.bounceOut, duration: const Duration(milliseconds: 1000),);
                                       });
                                       Navigator.pop(context);
