@@ -61,28 +61,52 @@ class _EditProfileState extends State<EditProfile> {
       ),
     );
   }
+
   Widget editPhoto(Bookworm _currentUser) {
     return Container(
-      padding: EdgeInsets.only(top: 20, left: 20),
-      child: Stack(
-        children: <Widget>[
-          CircleAvatar(
-            backgroundImage: AssetImage(avatars[_currentUser.photoIndex]),
-            radius: 40.0,
+      padding: EdgeInsets.only(top: 20, left: 10),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 90,
+        child: Row(
+          children: [
+            Container(
+              width: 100,
+              height: 100,
+              padding: EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                color: Colors.blueGrey,
+              ),
+              child: CircleAvatar(
+                backgroundImage: AssetImage(avatars[_currentUser.photoIndex]),
+                radius: 40.0,
+              ),
+            ),
+            Expanded(
+              child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                SizedBox(width: 20),
+                CircleAvatar(
+                  backgroundImage: AssetImage(avatars[0]),
+                  radius: 40.0,
+                ),
+                SizedBox(width: 10),
+                CircleAvatar(
+                  backgroundImage: AssetImage(avatars[1]),
+                  radius: 40.0,
+                ),
+              ],
           ),
-
-          RaisedButton.icon(
-            padding: EdgeInsets.only(top: 2, left: 8),
-            shape: CircleBorder(),
-            label: Text(''),
-            icon: Icon(Icons.add),
-            color: Colors.blueGrey,
-            onPressed: (){},
-          ),
-        ],
+            ),
+          ]
+        ),
       ),
     );
   }
+
+
   Widget changeName(_currentUser) {
     return TextFormField(
         decoration: InputDecoration(labelText: "Name"),
