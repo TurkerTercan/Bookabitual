@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bookabitual/utils/avatarPictures.dart';
 import 'package:bookabitual/validator.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,10 +20,12 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
+  int index;
 
   @override
   Widget build(BuildContext context) {
     Bookworm _currentUser = Provider.of<CurrentUser>(context).getCurrentUser;
+    index = 0;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).accentColor,
@@ -46,7 +50,7 @@ class _EditProfileState extends State<EditProfile> {
         children: <Widget>[
           Center(
             child: ListView(
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(30.0),
               children: <Widget>[
                 editPhoto(_currentUser),
                 addSpace(),
@@ -71,36 +75,64 @@ class _EditProfileState extends State<EditProfile> {
         child: Row(
           children: [
             Container(
-              width: 100,
-              height: 100,
+              width: 80,
+              height: 80,
               padding: EdgeInsets.all(3),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
+                borderRadius: BorderRadius.circular(80),
                 color: Colors.blueGrey,
               ),
-              child: CircleAvatar(
-                backgroundImage: AssetImage(avatars[_currentUser.photoIndex]),
-                radius: 40.0,
-              ),
+                child: CircleAvatar(
+                  backgroundImage: AssetImage(avatars[index]),
+                  radius: 25.0,
+                ),
             ),
             Expanded(
               child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                SizedBox(width: 20),
-                CircleAvatar(
-                  backgroundImage: AssetImage(avatars[0]),
-                  radius: 40.0,
+                SizedBox(width : 3.0),
+                GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      index = 0;
+                    });
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage(avatars[0]),
+                    radius: 40.0,
+                  ),
                 ),
-                SizedBox(width: 10),
-                CircleAvatar(
-                  backgroundImage: AssetImage(avatars[1]),
-                  radius: 40.0,
+                SizedBox(width : 3.0),
+                GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      index = 1;
+                    });
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage(avatars[1]),
+                    radius: 40.0,
+                  ),
+                ),
+                SizedBox(width : 13.0),
+                GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      imageCache.clear();
+                      index = 2;
+                      print(index);
+                    });
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage(avatars[2]),
+                    radius: 40.0,
+                  ),
                 ),
               ],
-          ),
+             ),
             ),
-          ]
+          ],
         ),
       ),
     );
@@ -120,7 +152,7 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   Widget addSpace() {
-    return SizedBox(height: 20, width: 20);
+    return SizedBox(height: 30, width: 30);
   }
 
   Widget saveChangedButton() {

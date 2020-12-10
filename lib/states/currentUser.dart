@@ -111,4 +111,5 @@ class CurrentUser extends ChangeNotifier {
     }
     return retVal;
   }
+  //Future<Void> saveInfo(int index , String newName){}
 }
