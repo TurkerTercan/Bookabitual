@@ -21,6 +21,7 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
   int index;
+  int i = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +69,9 @@ class _EditProfileState extends State<EditProfile> {
 
   Widget editPhoto(Bookworm _currentUser) {
     return Container(
-      padding: EdgeInsets.only(top: 20, left: 10),
+      padding: EdgeInsets.only(top: 20, left: 20),
       child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 90,
+        height: 80,
         child: Row(
           children: [
             Container(
@@ -90,51 +90,48 @@ class _EditProfileState extends State<EditProfile> {
             Expanded(
               child: ListView(
               scrollDirection: Axis.horizontal,
-              children: [
-                SizedBox(width : 3.0),
-                GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      index = 0;
-                    });
-                  },
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage(avatars[0]),
-                    radius: 40.0,
-                  ),
-                ),
-                SizedBox(width : 3.0),
-                GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      index = 1;
-                    });
-                  },
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage(avatars[1]),
-                    radius: 40.0,
-                  ),
-                ),
-                SizedBox(width : 13.0),
-                GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      imageCache.clear();
-                      index = 2;
-                      print(index);
-                    });
-                  },
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage(avatars[2]),
-                    radius: 40.0,
-                  ),
-                ),
+              children:<Widget> [
+                getAvatars(_currentUser , 0),
+                getAvatars(_currentUser , 1),
+                getAvatars(_currentUser , 2),
+                getAvatars(_currentUser , 3),
+                getAvatars(_currentUser , 4),
+                getAvatars(_currentUser , 5),
+                getAvatars(_currentUser , 6),
+                getAvatars(_currentUser , 7),
+                getAvatars(_currentUser , 8),
+                getAvatars(_currentUser , 9),
+                getAvatars(_currentUser , 10),
+                getAvatars(_currentUser , 11),
+                getAvatars(_currentUser , 12),
+                getAvatars(_currentUser , 13),
+                getAvatars(_currentUser , 14),
+                getAvatars(_currentUser , 15),
               ],
              ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+
+
+  getAvatars(Bookworm _user , int index){
+    return MaterialButton(
+      shape: CircleBorder(),
+      padding: EdgeInsets.only(left: 0.0 , right : 10.0 , top : 0.0 , bottom: 0.0),
+      minWidth: 0,
+      child: CircleAvatar(
+        backgroundImage: AssetImage(avatars[index]),
+        radius: 40.0,
+      ),
+      onPressed: () {
+        _user.photoIndex = index;
+        print('Firebase e kaydetmeyi unutma.');
+        print(index);
+      },
     );
   }
 
