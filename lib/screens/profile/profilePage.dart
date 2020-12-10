@@ -129,7 +129,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Container(
                     margin: EdgeInsets.only(right: 15.0, left: 10.0, top: 10.0),
                     width: 100.0,
-                    height: 20.0,
+                    height: 25.0,
                     child: GestureDetector(
                       onTap: (){},
                       child: Text("Following",
