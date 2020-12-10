@@ -10,7 +10,6 @@ import '../../states/currentUser.dart';
 
 class EditProfile extends StatefulWidget {
   @override
-  // ignore: missing_return
   State<StatefulWidget> createState() => _EditProfileState();
 }
 
@@ -26,6 +25,7 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     Bookworm _currentUser = Provider.of<CurrentUser>(context).getCurrentUser;
     index = 0;
+    _usernameController.text = _currentUser.name;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).accentColor,
@@ -52,9 +52,9 @@ class _EditProfileState extends State<EditProfile> {
             child: ListView(
               padding: EdgeInsets.all(30.0),
               children: <Widget>[
-                editPhoto(_currentUser),
+                editPhoto(),
                 addSpace(),
-                changeName(_currentUser),
+                changeName(),
                 addSpace(),
                 SizedBox(height: 50, width: 30),
                 saveChangedButton(),
@@ -66,7 +66,7 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  Widget editPhoto(Bookworm _currentUser) {
+  Widget editPhoto() {
     return Container(
       padding: EdgeInsets.only(top: 20, left: 10),
       child: Container(
@@ -121,11 +121,37 @@ class _EditProfileState extends State<EditProfile> {
                     setState(() {
                       imageCache.clear();
                       index = 2;
-                      print(index);
                     });
                   },
                   child: CircleAvatar(
                     backgroundImage: AssetImage(avatars[2]),
+                    radius: 40.0,
+                  ),
+                ),
+                SizedBox(width : 3.0),
+                GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      imageCache.clear();
+                      index = 3;
+                    });
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage(avatars[3]),
+                    radius: 40.0,
+                  ),
+                ),
+                SizedBox(width : 3.0),
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: (){
+                    setState(() {
+                      index = 4;
+                      print(index);
+                    });
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage(avatars[4]),
                     radius: 40.0,
                   ),
                 ),
@@ -138,16 +164,11 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-
-  Widget changeName(_currentUser) {
+  Widget changeName() {
     return TextFormField(
         decoration: InputDecoration(labelText: "Name"),
         //  validator: validateFirstName,
-        onSaved: (String value){
-          if(value != null) {
-            _currentUser.name = value;
-          }
-        }
+        controller: _usernameController,
     );
   }
 
@@ -158,6 +179,7 @@ class _EditProfileState extends State<EditProfile> {
   Widget saveChangedButton() {
     return RaisedButton(
       onPressed: (){
+        Provider.of<CurrentUser>(context, listen: false).saveInfo(index, _usernameController.text);
       },
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 100),

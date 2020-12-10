@@ -5,10 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BookDatabase {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final _firestorePost = Firestore.instance.collection("Posts");
+  final _firestorePost = FirebaseFirestore.instance.collection("Posts");
 
   Future createQuote(QuotePost quote) async {
-    await _firestorePost.document(quote.ownerId).collection("usersQuotes").document(quote.quoteId).setData({
+    await _firestorePost.doc(quote.ownerId).collection("usersQuotes").doc(quote.quoteId).set({
       "quoteId" : quote.quoteId,
       "ownerId" : quote.ownerId,
       "userAvatarIndex" : quote.userAvatarIndex,
@@ -25,7 +25,7 @@ class BookDatabase {
   }
 
   Future createReview(ReviewPost review) async {
-    await _firestorePost.document(review.ownerId).collection("usersReviews").document(review.reviewId).setData({
+    await _firestorePost.doc(review.ownerId).collection("usersReviews").doc(review.reviewId).set({
       "quoteId" : review.reviewId,
       "ownerId" : review.ownerId,
       "userAvatarIndex" : review.userAvatarIndex,
@@ -75,5 +75,18 @@ class BookDatabase {
     }
 
     return retVal;
+  }
+
+  Future<void> setUserInfo(String uid ,int index, String name) async {
+    print(index);
+    print(name);
+    try{
+      await _firestore.collection("users").doc(uid).update({
+        'photoIndex': index,
+        'name': name,
+      });
+    }catch(e){
+      print(e);
+    }
   }
 }
