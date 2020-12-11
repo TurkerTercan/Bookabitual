@@ -148,6 +148,7 @@ class _EditProfileState extends State<EditProfile> {
     return RaisedButton(
       onPressed: (){
         Provider.of<CurrentUser>(context, listen: false).saveInfo(currentIndex, _nameController.text);
+        Navigator.maybePop(context);
       },
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 100),
