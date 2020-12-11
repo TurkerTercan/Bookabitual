@@ -78,6 +78,7 @@ class BookDatabase {
   }
 
   Future<void> setUserInfo(String uid ,int index, String name) async {
+    print(uid);
     print(index);
     print(name);
     try{

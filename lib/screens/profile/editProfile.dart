@@ -10,23 +10,19 @@ import '../../states/currentUser.dart';
 
 class EditProfile extends StatefulWidget {
   @override
-  // ignore: missing_return
   State<StatefulWidget> createState() => _EditProfileState();
 }
 
 class _EditProfileState extends State<EditProfile> {
-
-  TextEditingController _photoController = TextEditingController();
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
-  int index;
-  int i = 0;
+  TextEditingController _nameController = TextEditingController();
+  Bookworm _currentUser;
+  int currentIndex;
 
   @override
   Widget build(BuildContext context) {
-    Bookworm _currentUser = Provider.of<CurrentUser>(context).getCurrentUser;
-    index = 0;
+    _currentUser = Provider.of<CurrentUser>(context).getCurrentUser;
+    _nameController.text = _currentUser.name;
+    currentIndex = _currentUser.photoIndex;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).accentColor,
@@ -53,9 +49,9 @@ class _EditProfileState extends State<EditProfile> {
             child: ListView(
               padding: EdgeInsets.all(30.0),
               children: <Widget>[
-                editPhoto(_currentUser),
+                editPhoto(),
                 addSpace(),
-                changeName(_currentUser),
+                changeName(),
                 addSpace(),
                 SizedBox(height: 50, width: 30),
                 saveChangedButton(),
@@ -67,7 +63,7 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  Widget editPhoto(Bookworm _currentUser) {
+  Widget editPhoto() {
     return Container(
       padding: EdgeInsets.only(top: 20, left: 20),
       child: Container(
@@ -83,7 +79,7 @@ class _EditProfileState extends State<EditProfile> {
                 color: Colors.blueGrey,
               ),
                 child: CircleAvatar(
-                  backgroundImage: AssetImage(avatars[index]),
+                  backgroundImage: AssetImage(avatars[currentIndex]),
                   radius: 25.0,
                 ),
             ),
@@ -91,22 +87,22 @@ class _EditProfileState extends State<EditProfile> {
               child: ListView(
               scrollDirection: Axis.horizontal,
               children:<Widget> [
-                getAvatars(_currentUser , 0),
-                getAvatars(_currentUser , 1),
-                getAvatars(_currentUser , 2),
-                getAvatars(_currentUser , 3),
-                getAvatars(_currentUser , 4),
-                getAvatars(_currentUser , 5),
-                getAvatars(_currentUser , 6),
-                getAvatars(_currentUser , 7),
-                getAvatars(_currentUser , 8),
-                getAvatars(_currentUser , 9),
-                getAvatars(_currentUser , 10),
-                getAvatars(_currentUser , 11),
-                getAvatars(_currentUser , 12),
-                getAvatars(_currentUser , 13),
-                getAvatars(_currentUser , 14),
-                getAvatars(_currentUser , 15),
+                getAvatars(0),
+                getAvatars(1),
+                getAvatars(2),
+                getAvatars(3),
+                getAvatars(4),
+                getAvatars(5),
+                getAvatars(6),
+                getAvatars(7),
+                getAvatars(8),
+                getAvatars(9),
+                getAvatars(10),
+                getAvatars(11),
+                getAvatars(12),
+                getAvatars(13),
+                getAvatars(14),
+                getAvatars(15),
               ],
              ),
             ),
@@ -116,9 +112,7 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-
-
-  getAvatars(Bookworm _user , int index){
+  getAvatars(int index){
     return MaterialButton(
       shape: CircleBorder(),
       padding: EdgeInsets.only(left: 0.0 , right : 10.0 , top : 0.0 , bottom: 0.0),
@@ -128,23 +122,17 @@ class _EditProfileState extends State<EditProfile> {
         radius: 40.0,
       ),
       onPressed: () {
-        _user.photoIndex = index;
-        print('Firebase e kaydetmeyi unutma.');
+        currentIndex = index;
         print(index);
       },
     );
   }
 
-
-  Widget changeName(_currentUser) {
+  Widget changeName() {
     return TextFormField(
         decoration: InputDecoration(labelText: "Name"),
         //  validator: validateFirstName,
-        onSaved: (String value){
-          if(value != null) {
-            _currentUser.name = value;
-          }
-        }
+        controller: _nameController,
     );
   }
 
@@ -155,6 +143,7 @@ class _EditProfileState extends State<EditProfile> {
   Widget saveChangedButton() {
     return RaisedButton(
       onPressed: (){
+        Provider.of<CurrentUser>(context, listen: false).saveInfo(currentIndex, _nameController.text);
       },
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 100),
