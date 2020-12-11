@@ -43,29 +43,32 @@ class _EditProfileState extends State<EditProfile> {
         ),
         centerTitle: true,
       ),
-      body: Stack(
-        children: <Widget>[
-          Center(
-            child: ListView(
-              padding: EdgeInsets.all(30.0),
-              children: <Widget>[
-                editPhoto(),
-                addSpace(),
-                changeName(),
-                addSpace(),
-                SizedBox(height: 50, width: 30),
-                saveChangedButton(),
-              ],
+      body: Container(
+        child: ListView(
+          padding: EdgeInsets.all(30.0),
+          children: <Widget>[
+            Text(
+              "Change Picture",
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 15,
+              ),
             ),
-          ),
-        ],
+            editPhoto(),
+            addSpace(),
+            changeName(),
+            addSpace(),
+            SizedBox(height: 20, width: 30),
+            saveChangedButton(),
+          ],
+        ),
       ),
     );
   }
 
   Widget editPhoto() {
     return Container(
-      padding: EdgeInsets.only(top: 20, left: 20),
+      padding: EdgeInsets.only(top: 5, left: 3),
       child: Container(
         height: 80,
         child: Row(
@@ -83,6 +86,7 @@ class _EditProfileState extends State<EditProfile> {
                   radius: 25.0,
                 ),
             ),
+            SizedBox(width: 10,),
             Expanded(
               child: ListView(
               scrollDirection: Axis.horizontal,
