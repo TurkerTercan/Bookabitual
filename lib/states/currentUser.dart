@@ -111,4 +111,12 @@ class CurrentUser extends ChangeNotifier {
     }
     return retVal;
   }
+  Future<void> saveInfo(int index , String newName) async {
+    try{
+      BookDatabase().setUserInfo(_currentUser.uid, index, newName);
+      _currentUser = await BookDatabase().getUserInfo(_currentUser.uid);
+    }catch(e){
+      print(e);
+    }
+  }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bookabitual/utils/avatarPictures.dart';
 import 'package:bookabitual/validator.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,20 +10,19 @@ import '../../states/currentUser.dart';
 
 class EditProfile extends StatefulWidget {
   @override
-  // ignore: missing_return
   State<StatefulWidget> createState() => _EditProfileState();
 }
 
 class _EditProfileState extends State<EditProfile> {
-
-  TextEditingController _photoController = TextEditingController();
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  Bookworm _currentUser;
+  int currentIndex;
 
   @override
   Widget build(BuildContext context) {
-    Bookworm _currentUser = Provider.of<CurrentUser>(context).getCurrentUser;
+    _currentUser = Provider.of<CurrentUser>(context).getCurrentUser;
+    _nameController.text = _currentUser.name;
+    currentIndex = _currentUser.photoIndex;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).accentColor,
@@ -42,66 +43,112 @@ class _EditProfileState extends State<EditProfile> {
         ),
         centerTitle: true,
       ),
-      body: Stack(
-        children: <Widget>[
-          Center(
-            child: ListView(
-              padding: EdgeInsets.all(20.0),
-              children: <Widget>[
-                editPhoto(_currentUser),
-                addSpace(),
-                changeName(_currentUser),
-                addSpace(),
-                SizedBox(height: 50, width: 30),
-                saveChangedButton(),
-              ],
+      body: Container(
+        child: ListView(
+          padding: EdgeInsets.all(30.0),
+          children: <Widget>[
+            Text(
+              "Change Picture",
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 15,
+              ),
             ),
-          ),
-        ],
+            editPhoto(),
+            addSpace(),
+            changeName(),
+            addSpace(),
+            SizedBox(height: 20, width: 30),
+            saveChangedButton(),
+          ],
+        ),
       ),
     );
   }
-  Widget editPhoto(Bookworm _currentUser) {
-    return Container(
-      padding: EdgeInsets.only(top: 20, left: 20),
-      child: Stack(
-        children: <Widget>[
-          CircleAvatar(
-            backgroundImage: AssetImage(avatars[_currentUser.photoIndex]),
-            radius: 40.0,
-          ),
 
-          RaisedButton.icon(
-            padding: EdgeInsets.only(top: 2, left: 8),
-            shape: CircleBorder(),
-            label: Text(''),
-            icon: Icon(Icons.add),
-            color: Colors.blueGrey,
-            onPressed: (){},
-          ),
-        ],
+  Widget editPhoto() {
+    return Container(
+      padding: EdgeInsets.only(top: 5, left: 3),
+      child: Container(
+        height: 80,
+        child: Row(
+          children: [
+            Container(
+              width: 80,
+              height: 80,
+              padding: EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(80),
+                color: Colors.blueGrey,
+              ),
+                child: CircleAvatar(
+                  backgroundImage: AssetImage(avatars[currentIndex]),
+                  radius: 25.0,
+                ),
+            ),
+            SizedBox(width: 10,),
+            Expanded(
+              child: ListView(
+              scrollDirection: Axis.horizontal,
+              children:<Widget> [
+                getAvatars(0),
+                getAvatars(1),
+                getAvatars(2),
+                getAvatars(3),
+                getAvatars(4),
+                getAvatars(5),
+                getAvatars(6),
+                getAvatars(7),
+                getAvatars(8),
+                getAvatars(9),
+                getAvatars(10),
+                getAvatars(11),
+                getAvatars(12),
+                getAvatars(13),
+                getAvatars(14),
+                getAvatars(15),
+              ],
+             ),
+            ),
+          ],
+        ),
       ),
     );
   }
-  Widget changeName(_currentUser) {
+
+  getAvatars(int index){
+    return MaterialButton(
+      shape: CircleBorder(),
+      padding: EdgeInsets.only(left: 0.0 , right : 10.0 , top : 0.0 , bottom: 0.0),
+      minWidth: 0,
+      child: CircleAvatar(
+        backgroundImage: AssetImage(avatars[index]),
+        radius: 40.0,
+      ),
+      onPressed: () {
+        currentIndex = index;
+        print(index);
+      },
+    );
+  }
+
+  Widget changeName() {
     return TextFormField(
         decoration: InputDecoration(labelText: "Name"),
         //  validator: validateFirstName,
-        onSaved: (String value){
-          if(value != null) {
-            _currentUser.name = value;
-          }
-        }
+        controller: _nameController,
     );
   }
 
   Widget addSpace() {
-    return SizedBox(height: 20, width: 20);
+    return SizedBox(height: 30, width: 30);
   }
 
   Widget saveChangedButton() {
     return RaisedButton(
       onPressed: (){
+        Provider.of<CurrentUser>(context, listen: false).saveInfo(currentIndex, _nameController.text);
+        Navigator.maybePop(context);
       },
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 100),
