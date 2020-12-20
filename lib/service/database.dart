@@ -26,7 +26,7 @@ class BookDatabase {
 
   Future createReview(ReviewPost review) async {
     await _firestorePost.doc(review.ownerId).collection("usersReviews").doc(review.reviewId).set({
-      "quoteId" : review.reviewId,
+      "reviewId" : review.reviewId,
       "ownerId" : review.ownerId,
       "userAvatarIndex" : review.userAvatarIndex,
       "username" : review.username,
