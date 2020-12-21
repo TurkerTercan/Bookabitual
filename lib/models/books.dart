@@ -17,8 +17,9 @@ class Booksdetail {
   String author;
   String publisher;
   String img;
+  int color;
 
-  Booksdetail({this.charId, this.name, this.author, this.publisher, this.img});
+  Booksdetail(this.charId, this.name, this.author, this.publisher, this.img,this.color);
 
   Booksdetail.fromJson(Map<String, dynamic> json) {
     charId = json['char_id'];
@@ -38,3 +39,35 @@ class Booksdetail {
     return data;
   }
 }
+
+List<Booksdetail> book = booksdetail
+    .map((item) => Booksdetail(item['charId'],item['name'],item['author'],item['publisher'], item['img'],item['color']))
+    .toList();
+
+var booksdetail = [
+  {
+    "name": "You’re A Miracle",
+    "author": "Mike McHargue",
+    "publisher": "Mike McHargue",
+    "charId": 20,
+    "img": "assets/images/img_popular_book1.png",
+    "color": 0xFFFFD3B6,
+  },
+  {
+    "name": "Pattern Maker",
+    "author": "Kerry Johnston",
+    "publisher": "Kerry Johnston",
+    "charId": 40,
+    "img": "assets/images/img_popular_book2.png",
+    "color": 0xFF2B325C,
+  },
+  {
+    "name": "Pa/percra/f",
+    "author": "Mike Brown",
+    "publisher": "Mike Brown",
+    "charId": 60,
+    "img": "assets/images/img_popular_book3.png",
+    "color": 0xFF2B325C,
+  }
+];
+
