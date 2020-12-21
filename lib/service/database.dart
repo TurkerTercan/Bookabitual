@@ -3,12 +3,14 @@ import 'package:bookabitual/widgets/QuotePost.dart';
 import 'package:bookabitual/widgets/reviewPost.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+final userReference = FirebaseFirestore.instance.collection("users");
+final postReference = FirebaseFirestore.instance.collection("Posts");
+final activityFeedReference = FirebaseFirestore.instance.collection("feed");
+
 class BookDatabase {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final _firestorePost = FirebaseFirestore.instance.collection("Posts");
 
   Future createQuote(QuotePost quote) async {
-    await _firestorePost.doc(quote.ownerId).collection("usersQuotes").doc(quote.quoteId).set({
+    await postReference.doc(quote.ownerId).collection("usersQuotes").doc(quote.quoteId).set({
       "quoteId" : quote.quoteId,
       "ownerId" : quote.ownerId,
       "userAvatarIndex" : quote.userAvatarIndex,
@@ -16,7 +18,7 @@ class BookDatabase {
       "createTime" : quote.createTime,
       "status" : quote.status,
       "imageUrl" : quote.imageUrl,
-      "likeCount" : quote.likeCount,
+      "likes" : quote.likes,
       "quote" : quote.quote,
       "author" : quote.author,
       "bookName" : quote.bookName,
@@ -25,15 +27,15 @@ class BookDatabase {
   }
 
   Future createReview(ReviewPost review) async {
-    await _firestorePost.doc(review.ownerId).collection("usersReviews").doc(review.reviewId).set({
-      "quoteId" : review.reviewId,
+    await postReference.doc(review.ownerId).collection("usersReviews").doc(review.reviewId).set({
+      "reviewId" : review.reviewId,
       "ownerId" : review.ownerId,
       "userAvatarIndex" : review.userAvatarIndex,
       "username" : review.username,
       "createTime" : review.createTime,
       "status" : review.status,
       "imageUrl" : review.imageUrl,
-      "likeCount" : review.likeCount,
+      "likes" : review.likes,
       "review" : review.review,
       "author" : review.author,
       "bookName" : review.bookName,
@@ -45,7 +47,7 @@ class BookDatabase {
   Future<String> createUser(Bookworm user) async {
     String retVal = "Error";
     try{
-      await _firestore.collection("users").doc(user.uid).set({
+      await userReference.doc(user.uid).set({
         'username' : user.username,
         'email' : user.email,
         'accountCreated' : Timestamp.now(),
@@ -59,11 +61,21 @@ class BookDatabase {
     return retVal;
   }
 
+  Future<QuerySnapshot> getUserQuotes(String uid) async{
+    QuerySnapshot queryQuoteSnapshot = await postReference.doc(uid).collection("usersQuotes").orderBy("createTime", descending: true).get();
+    return queryQuoteSnapshot;
+  }
+
+  Future<QuerySnapshot> getUserReviews(String uid) async{
+    QuerySnapshot queryReviewSnapshot = await postReference.doc(uid).collection("usersReviews").orderBy("createTime", descending: true).get();
+    return queryReviewSnapshot;
+  }
+
   Future<Bookworm> getUserInfo(String uid) async{
     Bookworm retVal = Bookworm();
 
     try{
-      DocumentSnapshot _docSnapshot = await _firestore.collection("users").doc(uid).get();
+      DocumentSnapshot _docSnapshot = await userReference.doc(uid).get();
       retVal.uid = uid;
       retVal.username = _docSnapshot.get("username");
       retVal.email = _docSnapshot.get("email");
@@ -82,7 +94,7 @@ class BookDatabase {
     print(index);
     print(name);
     try{
-      await _firestore.collection("users").doc(uid).update({
+      await userReference.doc(uid).update({
         'photoIndex': index,
         'name': name,
       });

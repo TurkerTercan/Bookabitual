@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import '../../states/currentUser.dart';
 
 class FeedPage extends StatefulWidget {
   @override
@@ -14,9 +15,18 @@ class FeedPage extends StatefulWidget {
 }
 
 class _FeedPageState extends State<FeedPage> {
+  final String currentOnlineUserId = currentBookworm.uid;
   String postId = Uuid().v4();
+  int countPost = 0;
+  List<QuotePost> quotePosts = [];
+  List<ReviewPost> reviewPosts = [];
+  List<Widget> postList = [];
 
-  List<Widget> postList = [
+  void initState(){
+    getAllPosts(currentOnlineUserId);
+  }
+
+  /*List<Widget> postList = [
     QuotePost(
       author: "J.R.R. Tolkien",
       bookName: "The Hobbit, or There and Back Again",
@@ -46,7 +56,7 @@ class _FeedPageState extends State<FeedPage> {
       username: "Alan Wake",
       rating: 3.5,
     ),
-  ];
+  ];*/
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +121,19 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
+  getAllPosts(String uid) async {
+    QuerySnapshot queryQuoteSnapshot = await BookDatabase().getUserQuotes(uid);
+    QuerySnapshot queryReviewSnapshot = await BookDatabase().getUserReviews(uid);
+
+    setState(() {
+      countPost = queryQuoteSnapshot.docs.length;
+      quotePosts = queryQuoteSnapshot.docs.map((documentSnapshot) => QuotePost.fromDocument(documentSnapshot)).toList();
+      reviewPosts = queryReviewSnapshot.docs.map((documentSnapshot) => ReviewPost.fromDocument(documentSnapshot)).toList();
+      countPost = countPost + queryReviewSnapshot.docs.length;
+      postList.addAll(quotePosts);
+      postList.addAll(reviewPosts);
+    });
+  }
 
   void _onButtonPressed(
       List<Widget> postList, StateSetter viewState, ScrollController control) {
@@ -280,7 +303,7 @@ class _FeedPageState extends State<FeedPage> {
                                           status: "Reading",
                                           userAvatarIndex: Provider.of<CurrentUser>(context, listen: false).getCurrentUser.photoIndex,
                                           quote: _text.text,
-                                          likeCount: 0,
+                                          likes: {},
                                           imageUrl: _imageUrl.text,
                                           createTime: Timestamp.now(),
                                           bookName: _book.text,
@@ -372,7 +395,7 @@ class _FeedPageState extends State<FeedPage> {
                                           status: "Reading",
                                           userAvatarIndex: Provider.of<CurrentUser>(context, listen: false).getCurrentUser.photoIndex,
                                           review: _text.text,
-                                          likeCount: 0,
+                                          likes: {},
                                           rating: double.parse(_rating.text),
                                           imageUrl: _imageUrl.text,
                                           createTime: Timestamp.now(),

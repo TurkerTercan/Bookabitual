@@ -1,4 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bookabitual/states/currentUser.dart';
+import 'package:bookabitual/service/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -13,7 +15,7 @@ class ReviewPost extends StatefulWidget {
   final Timestamp createTime;
   final String status;
   final String imageUrl;
-  final int likeCount;
+  final dynamic likes;
   final String review;
   final String author;
   final String bookName;
@@ -21,19 +23,85 @@ class ReviewPost extends StatefulWidget {
   var date;
 
   ReviewPost({Key key, this.reviewId, this.ownerId, this.review, this.rating,this.author, this.bookName, this.status,
-    this.userAvatarIndex, this.username, this.imageUrl, this.createTime, this.likeCount}) : super(key: key) {
+    this.userAvatarIndex, this.username, this.imageUrl, this.createTime, this.likes}) : super(key: key) {
     date = DateTime.fromMillisecondsSinceEpoch(createTime.millisecondsSinceEpoch);
   }
 
+  factory ReviewPost.fromDocument(DocumentSnapshot documentSnapshot){
+    return ReviewPost(
+      reviewId: documentSnapshot["reviewId"],
+      ownerId: documentSnapshot["ownerId"],
+      userAvatarIndex: documentSnapshot["userAvatarIndex"],
+      username: documentSnapshot["username"],
+      createTime: documentSnapshot["createTime"],
+      status: documentSnapshot["status"],
+      imageUrl: documentSnapshot["imageUrl"],
+      likes: documentSnapshot["likes"],
+      review: documentSnapshot["review"],
+      author: documentSnapshot["author"],
+      bookName: documentSnapshot["bookName"],
+      rating: documentSnapshot["rating"],
+    );
+  }
+
+  int getTotalNumberOfLikes(likes){
+    if(likes == null){
+      return 0;
+    }
+    int counter = 0;
+    likes.values.forEach((value){
+      counter = counter + 1;
+    });
+    return counter;
+  }
+
   @override
-  _ReviewPostState createState() => _ReviewPostState();
+  _ReviewPostState createState() => _ReviewPostState(
+    reviewId: this.reviewId,
+    ownerId: this.ownerId,
+    review: this.review,
+    author: this.author,
+    bookName: this.bookName,
+    status: this.status,
+    userAvatarIndex: this.userAvatarIndex,
+    username: this.username,
+    imageUrl: this.imageUrl,
+    rating: this.rating,
+    likes: this.likes,
+    likeCount: getTotalNumberOfLikes(this.likes),
+  );
 }
 
 class _ReviewPostState extends State<ReviewPost> {
-  
+  final String reviewId;
+  final String ownerId;
+  final int userAvatarIndex;
+  final String username;
+  final String status;
+  final String imageUrl;
+  Map likes;
+  final String review;
+  final String author;
+  final String bookName;
+  final double rating;
+  int likeCount;
   bool _isLiked = false;
+  final currentOnlineUserId = currentBookworm.uid;
+
+  _ReviewPostState({this.reviewId, this.ownerId, this.review, this.rating,this.author, this.bookName, this.status,
+    this.userAvatarIndex, this.username, this.imageUrl, this.likes, this.likeCount});
+
   @override
   Widget build(BuildContext context) {
+    bool isQuoteOwner = currentOnlineUserId == ownerId;
+
+    if(likes[currentOnlineUserId] != null){
+      _isLiked = likes[currentOnlineUserId] == true;
+    }
+    else{
+      _isLiked = false;
+    }
+
     return ProjectContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,7 +150,10 @@ class _ReviewPostState extends State<ReviewPost> {
                   )
                 ],
               ),
-              Icon(Icons.more_vert),
+              isQuoteOwner ? IconButton(
+                icon: Icon(Icons.more_vert),
+                onPressed: ()=> print("deleted"),
+              ) : Text(""),
             ],
           ),
           SizedBox(height: 10,),
@@ -169,20 +240,16 @@ class _ReviewPostState extends State<ReviewPost> {
                 bottom: 10,
                 right: 10,
                 child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isLiked = !_isLiked;
-                    });
-                  },
-                  icon: _isLiked ? Icon(Icons.favorite, size: 35, color: Colors.white.withOpacity(0.7)) :
-                  Icon(Icons.favorite, size: 35, color: Colors.red.withOpacity(1),),
+                  onPressed: ()=> controlLikeReview(),
+                  icon: _isLiked ? Icon(Icons.favorite, size: 35, color: Colors.red.withOpacity(1)) :
+                  Icon(Icons.favorite, size: 35, color: Colors.white.withOpacity(0.7),),
                 ),
               ),
             ],
           ),
           SizedBox(height: 5,),
           Text(
-            widget.likeCount.toString() + " likes",
+            likeCount.toString() + " likes",
             style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.bold,
@@ -193,4 +260,59 @@ class _ReviewPostState extends State<ReviewPost> {
       ),
     );
   }
+
+  controlLikeReview(){
+    bool _like;
+    if(likes[currentOnlineUserId] != null){
+      _like = likes[currentOnlineUserId] == true;
+    }
+    else{
+      _like = false;
+    }
+    if(_like){
+      postReference.doc(ownerId).collection("usersQuotes").doc(reviewId).update({"likes.$currentOnlineUserId": false});
+      removeLike();
+      setState(() {
+        likeCount = likeCount - 1;
+        _isLiked = false;
+        likes[currentOnlineUserId] = false;
+      });
+    }
+    else if(!_like){
+      postReference.doc(ownerId).collection("usersQuotes").doc(reviewId).update({"likes.$currentOnlineUserId": true});
+      addLike();
+      setState(() {
+        likeCount = likeCount + 1;
+        _isLiked = true;
+        likes[currentOnlineUserId] = true;
+      });
+    }
+  }
+
+  removeLike(){
+    bool isNotPostOwner = currentOnlineUserId != ownerId;
+    if(isNotPostOwner){
+      activityFeedReference.doc(ownerId).collection("feedItems").doc(reviewId).get().then((document){
+        if(document.exists){
+          document.reference.delete();
+        }
+      });
+    }
+  }
+
+  addLike(){
+    bool isNotPostOwner = currentOnlineUserId != ownerId;
+    if(isNotPostOwner){
+      activityFeedReference.doc(ownerId).collection("feedItems").doc(reviewId).set({
+        "type": "like",
+        "username": currentBookworm.username,
+        "userId": currentBookworm.uid,
+        "timestamp": Timestamp.now(),
+        "url": imageUrl,
+        "quoteId": reviewId,
+        "userAvatarIndex": currentBookworm.photoIndex,
+      });
+    }
+  }
+
 }

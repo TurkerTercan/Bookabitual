@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+Bookworm currentBookworm;
+
 class CurrentUser extends ChangeNotifier {
   Bookworm _currentUser = Bookworm();
   Bookworm get getCurrentUser => _currentUser;
@@ -18,6 +20,7 @@ class CurrentUser extends ChangeNotifier {
       User _firebaseUser = _auth.currentUser;
       if (_firebaseUser != null) {
         _currentUser = await BookDatabase().getUserInfo(_firebaseUser.uid);
+        currentBookworm = _currentUser;
         if (_currentUser != null) retVal = "Success";
       }
       print(_currentUser.username);

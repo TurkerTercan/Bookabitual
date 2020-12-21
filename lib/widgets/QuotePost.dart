@@ -1,4 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bookabitual/models/bookworm.dart';
+import 'package:bookabitual/service/database.dart';
+import 'package:bookabitual/states/currentUser.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../utils/avatarPictures.dart';
@@ -14,25 +17,89 @@ class QuotePost extends StatefulWidget {
   final Timestamp createTime;
   final String status;
   final String imageUrl;
-  final int likeCount;
+  final dynamic likes;
   final String quote;
   final String author;
   final String bookName;
   var date;
 
   QuotePost({Key key, this.quoteId, this.ownerId, this.quote, this.author, this.bookName, this.status,
-  this.userAvatarIndex, this.username, this.imageUrl, this.createTime, this.likeCount}) : super(key: key) {
+    this.userAvatarIndex, this.username, this.imageUrl, this.createTime, this.likes}) : super(key: key) {
     date = DateTime.fromMillisecondsSinceEpoch(createTime.millisecondsSinceEpoch);
   }
 
+  factory QuotePost.fromDocument(DocumentSnapshot documentSnapshot){
+    return QuotePost(
+      quoteId: documentSnapshot["quoteId"],
+      ownerId: documentSnapshot["ownerId"],
+      quote: documentSnapshot["quote"],
+      author: documentSnapshot["author"],
+      bookName: documentSnapshot["bookName"],
+      status: documentSnapshot["status"],
+      userAvatarIndex: documentSnapshot["userAvatarIndex"],
+      username: documentSnapshot["username"],
+      imageUrl: documentSnapshot["imageUrl"],
+      createTime: documentSnapshot["createTime"],
+      likes: documentSnapshot["likes"],
+    );
+  }
+
+  int getTotalNumberOfLikes(likes){
+    if(likes == null){
+      return 0;
+    }
+    int counter = 0;
+    likes.values.forEach((value){
+      counter = counter + 1;
+    });
+    return counter;
+  }
+
   @override
-  _QuotePostState createState() => _QuotePostState();
+  _QuotePostState createState() => _QuotePostState(
+    quoteId: this.quoteId,
+    ownerId: this.ownerId,
+    quote: this.quote,
+    author: this.author,
+    bookName: this.bookName,
+    status: this.status,
+    userAvatarIndex: this.userAvatarIndex,
+    username: this.username,
+    imageUrl: this.imageUrl,
+    likes: this.likes,
+    likeCount: getTotalNumberOfLikes(this.likes),
+  );
 }
 
 class _QuotePostState extends State<QuotePost> {
+  final String quoteId;
+  final String ownerId;
+  final int userAvatarIndex;
+  final String username;
+  final String status;
+  final String imageUrl;
+  Map likes;
+  final String quote;
+  final String author;
+  final String bookName;
+  int likeCount;
   bool _isLiked = false;
+  final currentOnlineUserId = currentBookworm.uid;
+
+  _QuotePostState({this.quoteId, this.ownerId, this.quote, this.author, this.bookName, this.status,
+    this.userAvatarIndex, this.username, this.imageUrl, this.likes, this.likeCount});
+
   @override
   Widget build(BuildContext context) {
+    bool isQuoteOwner = currentOnlineUserId == ownerId;
+
+    if(likes[currentOnlineUserId] != null){
+      _isLiked = likes[currentOnlineUserId] == true;
+    }
+    else{
+      _isLiked = false;
+    }
+
     return ProjectContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,7 +149,10 @@ class _QuotePostState extends State<QuotePost> {
                   )
                 ],
               ),
-              Icon(Icons.more_vert),
+              isQuoteOwner ? IconButton(
+                icon: Icon(Icons.more_vert),
+                onPressed: ()=> print("deleted"),
+              ) : Text(""),
             ],
           ),
           SizedBox(height: 10,),
@@ -147,20 +217,16 @@ class _QuotePostState extends State<QuotePost> {
                 bottom: 10,
                 right: 10,
                 child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isLiked = !_isLiked;
-                    });
-                  },
-                  icon: _isLiked ? Icon(Icons.favorite, size: 35, color: Colors.white.withOpacity(0.7)) :
-                  Icon(Icons.favorite, size: 35, color: Colors.red.withOpacity(1),),
+                  onPressed: ()=> controlLikeQuote(),
+                  icon: _isLiked ? Icon(Icons.favorite, size: 35, color: Colors.red.withOpacity(1)) :
+                  Icon(Icons.favorite, size: 35, color: Colors.white.withOpacity(0.7),),
                 ),
               ),
             ],
           ),
           SizedBox(height: 5,),
           Text(
-            widget.likeCount.toString() + " likes",
+            likeCount.toString() + " likes",
             style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.bold,
@@ -171,4 +237,61 @@ class _QuotePostState extends State<QuotePost> {
       ),
     );
   }
+
+  controlLikeQuote(){
+    bool _like;
+    if(likes[currentOnlineUserId] != null){
+      _like = likes[currentOnlineUserId] == true;
+    }
+    else{
+      _like = false;
+    }
+    if(_like){
+      postReference.doc(ownerId).collection("usersQuotes").doc(quoteId).update({"likes.$currentOnlineUserId": false});
+      removeLike();
+      setState(() {
+        likeCount = likeCount - 1;
+        _isLiked = false;
+        likes[currentOnlineUserId] = false;
+      });
+    }
+    else if(!_like){
+      postReference.doc(ownerId).collection("usersQuotes").doc(quoteId).update({"likes.$currentOnlineUserId": true});
+      addLike();
+      setState(() {
+        likeCount = likeCount + 1;
+        _isLiked = true;
+        likes[currentOnlineUserId] = true;
+      });
+    }
+  }
+
+
+  removeLike(){
+    bool isNotPostOwner = currentOnlineUserId != ownerId;
+    if(isNotPostOwner){
+      activityFeedReference.doc(ownerId).collection("feedItems").doc(quoteId).get().then((document){
+        if(document.exists){
+          document.reference.delete();
+        }
+      });
+    }
+  }
+
+  addLike(){
+    bool isNotPostOwner = currentOnlineUserId != ownerId;
+    if(isNotPostOwner){
+      activityFeedReference.doc(ownerId).collection("feedItems").doc(quoteId).set({
+        "type": "like",
+        "username": currentBookworm.username,
+        "userId": currentBookworm.uid,
+        "timestamp": Timestamp.now(),
+        "url": imageUrl,
+        "quoteId": quoteId,
+        "userAvatarIndex": currentBookworm.photoIndex,
+      });
+    }
+  }
+
 }
+
