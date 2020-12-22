@@ -270,7 +270,7 @@ class _ReviewPostState extends State<ReviewPost> {
       _like = false;
     }
     if(_like){
-      postReference.doc(ownerId).collection("usersQuotes").doc(reviewId).update({"likes.$currentOnlineUserId": false});
+      postReference.doc(ownerId).collection("usersReviews").doc(reviewId).update({"likes.$currentOnlineUserId": false});
       removeLike();
       setState(() {
         likeCount = likeCount - 1;
@@ -279,7 +279,7 @@ class _ReviewPostState extends State<ReviewPost> {
       });
     }
     else if(!_like){
-      postReference.doc(ownerId).collection("usersQuotes").doc(reviewId).update({"likes.$currentOnlineUserId": true});
+      postReference.doc(ownerId).collection("usersReviews").doc(reviewId).update({"likes.$currentOnlineUserId": true});
       addLike();
       setState(() {
         likeCount = likeCount + 1;
