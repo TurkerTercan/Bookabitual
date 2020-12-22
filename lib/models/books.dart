@@ -50,7 +50,7 @@ var booksdetail = [
     "author": "Mike McHargue",
     "publisher": "Mike McHargue",
     "charId": 20,
-    "img": "assets/images/img_popular_book1.png",
+    "img": "assets/profilePhoto15.png",
     "color": 0xFFFFD3B6,
   },
   {
@@ -58,7 +58,7 @@ var booksdetail = [
     "author": "Kerry Johnston",
     "publisher": "Kerry Johnston",
     "charId": 40,
-    "img": "assets/images/img_popular_book2.png",
+    "img": "assets/profilePhoto15.png",
     "color": 0xFF2B325C,
   },
   {
@@ -66,7 +66,7 @@ var booksdetail = [
     "author": "Mike Brown",
     "publisher": "Mike Brown",
     "charId": 60,
-    "img": "assets/images/img_popular_book3.png",
+    "img": "assets/profilePhoto15.png",
     "color": 0xFF2B325C,
   }
 ];
