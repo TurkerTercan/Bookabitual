@@ -3,9 +3,12 @@ import 'package:bookabitual/widgets/QuotePost.dart';
 import 'package:bookabitual/widgets/reviewPost.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../models/books.dart';
+
 final userReference = FirebaseFirestore.instance.collection("users");
 final postReference = FirebaseFirestore.instance.collection("Posts");
 final activityFeedReference = FirebaseFirestore.instance.collection("feed");
+final bookReference = FirebaseFirestore.instance.collection("books");
 
 class BookDatabase {
 
@@ -60,6 +63,25 @@ class BookDatabase {
     }
     return retVal;
   }
+/*
+Book-Author
+"Libby Purves"
+(dize)
+Book-Title
+"How Not to Be a Perfect Mother: The Crafty Mother's Guide to a Quiet Life (How Not to)"
+Image-URL-L
+"http://images.amazon.com/images/P/000636988X.01.LZZZZZZZ.jpg"
+Image-URL-M
+"http://images.amazon.com/images/P/000636988X.01.MZZZZZZZ.jpg"
+Image-URL-S
+"http://images.amazon.com/images/P/000636988X.01.THUMBZZZ.jpg"
+Publisher
+"HarperCollins Publishers"
+Ratings
+"3,65"
+Year-Of-Publication
+1986
+ */
 
   Future<QuerySnapshot> getUserQuotes(String uid) async{
     QuerySnapshot queryQuoteSnapshot = await postReference.doc(uid).collection("usersQuotes").orderBy("createTime", descending: true).get();
@@ -87,6 +109,23 @@ class BookDatabase {
     }
 
     return retVal;
+  }
+
+  Future<Booksdetail> getBookInfo(String uid) async{
+    Booksdetail retValBook = Booksdetail();
+
+    try{
+      DocumentSnapshot _docSnapshot = await bookReference.doc(uid).get();
+      retValBook.charId = _docSnapshot.get("charId");
+      retValBook.name = _docSnapshot.get("name");
+      retValBook.author = _docSnapshot.get("author");
+      retValBook.publisher = _docSnapshot.get("publisher");
+      retValBook.img = _docSnapshot.get("img");
+      retValBook.color = _docSnapshot.get("color");
+    } catch(e) {
+      print(e);
+    }
+    return retValBook;
   }
 
   Future<void> setUserInfo(String uid ,int index, String name) async {

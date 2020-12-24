@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 
 void main() async {
@@ -19,7 +20,19 @@ class Booksdetail {
   String img;
   int color;
 
-  Booksdetail(this.charId, this.name, this.author, this.publisher, this.img,this.color);
+  //Booksdetail(this.charId, this.name, this.author, this.publisher, this.img,this.color);
+  Booksdetail({this.charId, this.name, this.author, this.publisher, this.img,this.color});
+
+  factory Booksdetail.fromDocument(DocumentSnapshot doc){
+    return Booksdetail(
+      charId: doc['charId'],
+      name: doc['name'],
+      author: doc['author'],
+      publisher: doc['publisher'],
+      img: doc['img'],
+      color: doc['color'],
+    );
+  }
 
   Booksdetail.fromJson(Map<String, dynamic> json) {
     charId = json['char_id'];
@@ -39,9 +52,8 @@ class Booksdetail {
     return data;
   }
 }
-
 List<Booksdetail> book = booksdetail
-    .map((item) => Booksdetail(item['charId'],item['name'],item['author'],item['publisher'], item['img'],item['color']))
+    .map((item) => Booksdetail())
     .toList();
 
 var booksdetail = [
@@ -68,6 +80,6 @@ var booksdetail = [
     "charId": 60,
     "img": "assets/profilePhoto15.png",
     "color": 0xFF2B325C,
-  }
+  },
 ];
 
