@@ -23,6 +23,7 @@ class _FeedPageState extends State<FeedPage> {
   List<Widget> postList = [];
 
   void initState(){
+    super.initState();
     getAllPosts(currentOnlineUserId);
   }
 

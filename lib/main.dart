@@ -1,6 +1,7 @@
 import 'package:bookabitual/screens/root/root.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/utils/ourTheme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => CurrentUser(),
+      create: (context) => CurrentUser(auth: FirebaseAuth.instance),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ProjectTheme().buildTheme(),

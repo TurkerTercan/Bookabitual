@@ -9,15 +9,17 @@ Bookworm currentBookworm;
 
 class CurrentUser extends ChangeNotifier {
   Bookworm _currentUser = Bookworm();
+
   Bookworm get getCurrentUser => _currentUser;
 
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseAuth auth;
+  CurrentUser({this.auth});
 
   Future<String> onStartUp() async {
     String retVal = "Error";
 
     try {
-      User _firebaseUser = _auth.currentUser;
+      User _firebaseUser = auth.currentUser;
       if (_firebaseUser != null) {
         _currentUser = await BookDatabase().getUserInfo(_firebaseUser.uid);
         currentBookworm = _currentUser;
@@ -37,7 +39,7 @@ class CurrentUser extends ChangeNotifier {
     String retVal = "Error";
 
     try {
-      await _auth.signOut();
+      await auth.signOut();
       _currentUser = Bookworm();
       retVal = "Success";
     } catch (e) {
@@ -53,7 +55,7 @@ class CurrentUser extends ChangeNotifier {
     Bookworm _user = Bookworm();
 
     try {
-      UserCredential _authResult = await _auth.createUserWithEmailAndPassword(
+      UserCredential _authResult = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
       _user.uid = _authResult.user.uid;
       _user.email = email.trim();
@@ -64,18 +66,19 @@ class CurrentUser extends ChangeNotifier {
       if (_returnString == "Success") {
         retVal = "Success";
       }
-    } catch (e) {
-      retVal = e.message();
+    } on FirebaseAuthException catch (e) {
+      retVal = e.message;
       return retVal;
+    } catch (e) {
+      rethrow;
     }
-
     return retVal;
   }
 
   Future<String> loginUserWithEmail(String email, String password) async {
     String retVal = "Error";
     try {
-      UserCredential _authResult = await _auth.signInWithEmailAndPassword(
+      UserCredential _authResult = await auth.signInWithEmailAndPassword(
           email: email.trim(), password: password.trim());
       _currentUser = await BookDatabase().getUserInfo(_authResult.user.uid);
       if (_currentUser != null) retVal = "Success";
@@ -98,7 +101,7 @@ class CurrentUser extends ChangeNotifier {
       GoogleSignInAuthentication _googleAuth = await _googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
           idToken: _googleAuth.idToken, accessToken: _googleAuth.accessToken);
-      UserCredential _authResult = await _auth.signInWithCredential(credential);
+      UserCredential _authResult = await auth.signInWithCredential(credential);
       if (_authResult.additionalUserInfo.isNewUser) {
         _user.uid = _authResult.user.uid;
         _user.email = _authResult.user.email;

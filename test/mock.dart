@@ -1,22 +1,26 @@
+// Copyright 2020 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
 import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 typedef Callback(MethodCall call);
 
-setupFirebaseAuthMocks([Callback customHandlers]) {
+setupFirebaseAuthMocks([Callback /*?*/ customHandlers]) {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   MethodChannelFirebase.channel.setMockMethodCallHandler((call) async {
     if (call.method == 'Firebase#initializeCore') {
       return [
         {
-          'name': "test",
+          'name': defaultFirebaseAppName,
           'options': {
-            'apiKey': '123',
-            'appId': '123',
-            'messagingSenderId': '123',
-            'projectId': '123',
+            'apiKey': 'AIzaSyA6t5DvLicRwfyDcImpXdJp6MHtz0w0-ZE',
+            'appId': '1:128508211625:android:632c13a69ad88d014c54b8',
+            'messagingSenderId': '128508211625',
+            'projectId': 'bookabitual-55ad2',
           },
           'pluginConstants': {},
         }

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:bookabitual/utils/avatarPictures.dart';
-import 'package:bookabitual/validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

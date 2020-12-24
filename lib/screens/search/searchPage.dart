@@ -56,7 +56,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       body: Container(
         child: Column(
           children: <Widget>[
@@ -133,12 +133,10 @@ class _SearchPageState extends State<SearchPage> {
                   return GestureDetector(
                     onTap: () {
                       print('ListView Tapped');
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              BookPage(
-                                  booksdetail: book[index]),
+                          builder: (context) => BookPage(booksdetail: book[index]),
                         ),
                       );
                     },
