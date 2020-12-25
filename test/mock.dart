@@ -17,10 +17,10 @@ setupFirebaseAuthMocks([Callback /*?*/ customHandlers]) {
         {
           'name': defaultFirebaseAppName,
           'options': {
-            'apiKey': 'AIzaSyA6t5DvLicRwfyDcImpXdJp6MHtz0w0-ZE',
-            'appId': '1:128508211625:android:632c13a69ad88d014c54b8',
-            'messagingSenderId': '128508211625',
-            'projectId': 'bookabitual-55ad2',
+            'apiKey': '123-ZE',
+            'appId': '1:123:123:123',
+            'messagingSenderId': '123',
+            'projectId': '123-132',
           },
           'pluginConstants': {},
         }
