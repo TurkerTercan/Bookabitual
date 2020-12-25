@@ -70,7 +70,7 @@ class CurrentUser extends ChangeNotifier {
       retVal = e.message;
       return retVal;
     } catch (e) {
-      rethrow;
+      return e.toString();
     }
     return retVal;
   }

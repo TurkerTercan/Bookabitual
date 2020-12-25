@@ -1,27 +1,45 @@
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_sign_in_mocks/google_sign_in_mocks.dart';
 import 'package:mockito/mockito.dart';
 
 import 'mock.dart';
 
-class MockFirebaseAuth extends Mock implements FirebaseAuth{}
-
+MockFirebaseAuth mockFirebaseAuth = MockFirebaseAuth();
 
 void main() async {
-  setUpAll(() {});
-  tearDown(() {});
+  setupFirebaseAuthMocks();
+  FirebaseAuth auth;
 
-  final MockFirebaseAuth mockAuth = MockFirebaseAuth();
-  final CurrentUser currentUser = CurrentUser(auth: FirebaseAuth.instance);
 
-  test("create account", () async {
-    when(
-      mockAuth.createUserWithEmailAndPassword(email: "dummy@dummy.com", password: "dummy1"),
-    ).thenAnswer((realInvocation) => null);
-    expect(await currentUser.signUpUser("dummy@dummy.com", "dummy1", "dummy"), "Success");
+  group("$FirebaseAuth", () {
+    setUpAll(() async{
+      await Firebase.initializeApp();
+      auth = FirebaseAuth.instance;
+
+      auth.createUserWithEmailAndPassword(email: "test@test.com", password: "test1234");
+    });
   });
 
-
 }
+
+/*void main() async {
+
+  test("test", () async {
+    final googleSignIn = MockGoogleSignIn();
+    final signinAccount = await googleSignIn.signIn();
+    final googleAuth = await signinAccount.authentication;
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    final auth = MockFirebaseAuth();
+    final result = await auth.signInWithCredential(credential);
+    final user = await result.user;
+    print(user.displayName);
+  });
+
+}*/

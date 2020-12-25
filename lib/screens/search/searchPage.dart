@@ -91,7 +91,6 @@ class _SearchPageState extends State<SearchPage> {
                         fontSize: 14, fontWeight: FontWeight.w700),
                     unselectedLabelStyle: GoogleFonts.openSans(
                         fontSize: 14, fontWeight: FontWeight.w600),
-
                     tabs: [
                       Tab(
                         child: Container(
