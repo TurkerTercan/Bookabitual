@@ -111,9 +111,9 @@ class _ProfilePageState extends State<ProfilePage> {
               Row(
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(left: 40.0, right: 15.0, top: 10.0),
+                    margin: EdgeInsets.only(left: 67.0, right: 30.0, top: 10.0),
                     width: 100.0,
-                    height: 20.0,
+                    height: 30.0,
                     child: GestureDetector(
                       onTap: (){},
                       child: Text("Followers",
@@ -127,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(right: 15.0, left: 10.0, top: 10.0),
+                    margin: EdgeInsets.only(left: 32.0, top: 10.0),
                     width: 100.0,
                     height: 25.0,
                     child: GestureDetector(
