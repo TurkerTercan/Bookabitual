@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bookabitual/models/book.dart';
 import 'package:bookabitual/models/bookworm.dart';
 import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/states/currentUser.dart';
@@ -6,41 +7,34 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../utils/avatarPictures.dart';
 import 'ProjectContainer.dart';
-import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class QuotePost extends StatefulWidget {
-  final String quoteId;
-  final String ownerId;
-  final int userAvatarIndex;
-  final String username;
+  final String isbn;
+  final String uid;
+  final String postID;
+  final String text;
   final Timestamp createTime;
   final String status;
-  final String imageUrl;
   final dynamic likes;
-  final String quote;
-  final String author;
-  final String bookName;
-  var date;
+  Bookworm user;
+  Book book;
 
-  QuotePost({Key key, this.quoteId, this.ownerId, this.quote, this.author, this.bookName, this.status,
-    this.userAvatarIndex, this.username, this.imageUrl, this.createTime, this.likes}) : super(key: key) {
-    date = DateTime.fromMillisecondsSinceEpoch(createTime.millisecondsSinceEpoch);
-  }
+  QuotePost({Key key, this.postID,
+    this.isbn,
+    this.uid, this.text,
+    this.createTime, this.status,
+    this.likes}) : super(key: key);
 
   factory QuotePost.fromDocument(DocumentSnapshot documentSnapshot){
     return QuotePost(
-      quoteId: documentSnapshot["quoteId"],
-      ownerId: documentSnapshot["ownerId"],
-      quote: documentSnapshot["quote"],
-      author: documentSnapshot["author"],
-      bookName: documentSnapshot["bookName"],
-      status: documentSnapshot["status"],
-      userAvatarIndex: documentSnapshot["userAvatarIndex"],
-      username: documentSnapshot["username"],
-      imageUrl: documentSnapshot["imageUrl"],
-      createTime: documentSnapshot["createTime"],
-      likes: documentSnapshot["likes"],
+      isbn: documentSnapshot.data()["isbn"],
+      uid: documentSnapshot.data()["uid"],
+      postID: documentSnapshot.data()["postID"],
+      createTime: documentSnapshot.data()["createTime"],
+      likes: documentSnapshot.data()["likes"],
+      status: documentSnapshot.data()["status"],
+      text: documentSnapshot.data()["text"],
     );
   }
 
@@ -55,43 +49,31 @@ class QuotePost extends StatefulWidget {
     return counter;
   }
 
+  updateInfo() async {
+    user = await BookDatabase().getUserInfo(uid);
+    book = await BookDatabase().getBookInfo(isbn);
+  }
+
   @override
   _QuotePostState createState() => _QuotePostState(
-    quoteId: this.quoteId,
-    ownerId: this.ownerId,
-    quote: this.quote,
-    author: this.author,
-    bookName: this.bookName,
-    status: this.status,
-    userAvatarIndex: this.userAvatarIndex,
-    username: this.username,
-    imageUrl: this.imageUrl,
     likes: this.likes,
     likeCount: getTotalNumberOfLikes(this.likes),
   );
 }
 
 class _QuotePostState extends State<QuotePost> {
-  final String quoteId;
-  final String ownerId;
-  final int userAvatarIndex;
-  final String username;
-  final String status;
-  final String imageUrl;
-  Map likes;
-  final String quote;
-  final String author;
-  final String bookName;
   int likeCount;
   bool _isLiked = false;
+  Map likes;
+
+  Future reviewFuture;
   final currentOnlineUserId = currentBookworm.uid;
 
-  _QuotePostState({this.quoteId, this.ownerId, this.quote, this.author, this.bookName, this.status,
-    this.userAvatarIndex, this.username, this.imageUrl, this.likes, this.likeCount});
+  _QuotePostState({this.likes, this.likeCount});
 
   @override
   Widget build(BuildContext context) {
-    bool isQuoteOwner = currentOnlineUserId == ownerId;
+    bool isQuoteOwner = currentOnlineUserId == widget.uid;
 
     if(likes[currentOnlineUserId] != null){
       _isLiked = likes[currentOnlineUserId] == true;
@@ -112,7 +94,7 @@ class _QuotePostState extends State<QuotePost> {
                 children: [
                   CircleAvatar(
                     radius: 20,
-                    backgroundImage: AssetImage(avatars[widget.userAvatarIndex]),
+                    backgroundImage: AssetImage(avatars[widget.user.photoIndex]),
                   ),
                   SizedBox(width: 5,),
                   Column(
@@ -122,7 +104,7 @@ class _QuotePostState extends State<QuotePost> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.username,
+                            widget.user.username,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -138,7 +120,9 @@ class _QuotePostState extends State<QuotePost> {
                         ],
                       ),
                       Text(
-                        DateFormat.yMMMd().format(widget.date) + " ~ " + widget.status,
+                        "1m ago!",
+                        //TODO : Implement Date format
+                        //DateFormat.yMMMd().format(widget.date) + " ~ " + widget.status,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -172,7 +156,7 @@ class _QuotePostState extends State<QuotePost> {
                   ],
                   image: DecorationImage(
                     colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.7), BlendMode.colorBurn),
-                    image: NetworkImage(widget.imageUrl),
+                    image: NetworkImage(widget.book.imageUrlL),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -180,7 +164,7 @@ class _QuotePostState extends State<QuotePost> {
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
                     child: AutoSizeText(
-                      widget.quote + "\n\n―" + widget.author + " " + widget.bookName,
+                      widget.text + "\n\n―" + widget.book.bookAuthor + " " + widget.book.bookTitle,
                       minFontSize: 14,
                       maxLines: 12,
                       overflow: TextOverflow.ellipsis,
@@ -247,7 +231,7 @@ class _QuotePostState extends State<QuotePost> {
       _like = false;
     }
     if(_like){
-      postReference.doc(ownerId).collection("usersQuotes").doc(quoteId).update({"likes.$currentOnlineUserId": false});
+      postReference.doc(widget.uid).collection("usersQuotes").doc(widget.postID).update({"likes.$currentOnlineUserId": false});
       removeLike();
       setState(() {
         likeCount = likeCount - 1;
@@ -256,7 +240,7 @@ class _QuotePostState extends State<QuotePost> {
       });
     }
     else if(!_like){
-      postReference.doc(ownerId).collection("usersQuotes").doc(quoteId).update({"likes.$currentOnlineUserId": true});
+      postReference.doc(widget.uid).collection("usersQuotes").doc(widget.postID).update({"likes.$currentOnlineUserId": true});
       addLike();
       setState(() {
         likeCount = likeCount + 1;
@@ -268,9 +252,9 @@ class _QuotePostState extends State<QuotePost> {
 
 
   removeLike(){
-    bool isNotPostOwner = currentOnlineUserId != ownerId;
+    bool isNotPostOwner = currentOnlineUserId != widget.uid;
     if(isNotPostOwner){
-      activityFeedReference.doc(ownerId).collection("feedItems").doc(quoteId).get().then((document){
+      activityFeedReference.doc(widget.uid).collection("feedItems").doc(widget.postID).get().then((document){
         if(document.exists){
           document.reference.delete();
         }
@@ -279,15 +263,15 @@ class _QuotePostState extends State<QuotePost> {
   }
 
   addLike(){
-    bool isNotPostOwner = currentOnlineUserId != ownerId;
+    bool isNotPostOwner = currentOnlineUserId != widget.uid;
     if(isNotPostOwner){
-      activityFeedReference.doc(ownerId).collection("feedItems").doc(quoteId).set({
+      activityFeedReference.doc(widget.uid).collection("feedItems").doc(widget.postID).set({
         "type": "like",
         "username": currentBookworm.username,
         "userId": currentBookworm.uid,
         "timestamp": Timestamp.now(),
-        "url": imageUrl,
-        "quoteId": quoteId,
+        "url": widget.book.imageUrlL,
+        "quoteId": widget.postID,
         "userAvatarIndex": currentBookworm.photoIndex,
       });
     }

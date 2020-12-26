@@ -1,9 +1,8 @@
+import 'package:bookabitual/models/book.dart';
 import 'package:bookabitual/models/bookworm.dart';
 import 'package:bookabitual/widgets/QuotePost.dart';
 import 'package:bookabitual/widgets/reviewPost.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../models/books.dart';
 
 final userReference = FirebaseFirestore.instance.collection("users");
 final postReference = FirebaseFirestore.instance.collection("Posts");
@@ -11,39 +10,28 @@ final activityFeedReference = FirebaseFirestore.instance.collection("feed");
 final bookReference = FirebaseFirestore.instance.collection("books");
 
 class BookDatabase {
-
   Future createQuote(QuotePost quote) async {
-    await postReference.doc(quote.ownerId).collection("usersQuotes").doc(quote.quoteId).set({
-      "quoteId" : quote.quoteId,
-      "ownerId" : quote.ownerId,
-      "userAvatarIndex" : quote.userAvatarIndex,
-      "username" : quote.username,
+    await postReference.doc(quote.uid).collection("usersQuotes").doc(quote.postID).set({
+      "isbn" : quote.isbn,
+      "uid" : quote.uid,
+      "postID" : quote.postID,
       "createTime" : quote.createTime,
       "status" : quote.status,
-      "imageUrl" : quote.imageUrl,
       "likes" : quote.likes,
-      "quote" : quote.quote,
-      "author" : quote.author,
-      "bookName" : quote.bookName,
-      "date" : quote.date,
+      "text" : quote.text,
     });
   }
 
   Future createReview(ReviewPost review) async {
-    await postReference.doc(review.ownerId).collection("usersReviews").doc(review.reviewId).set({
-      "reviewId" : review.reviewId,
-      "ownerId" : review.ownerId,
-      "userAvatarIndex" : review.userAvatarIndex,
-      "username" : review.username,
+    await postReference.doc(review.uid).collection("usersReviews").doc(review.postID).set({
+      "isbn" : review.isbn,
+      "uid" : review.uid,
+      "postID" : review.postID,
       "createTime" : review.createTime,
       "status" : review.status,
-      "imageUrl" : review.imageUrl,
       "likes" : review.likes,
-      "review" : review.review,
-      "author" : review.author,
-      "bookName" : review.bookName,
       "rating" : review.rating,
-      "date" : review.date,
+      "text" : review.text,
     });
   }
 
@@ -63,30 +51,12 @@ class BookDatabase {
     }
     return retVal;
   }
-/*
-Book-Author
-"Libby Purves"
-(dize)
-Book-Title
-"How Not to Be a Perfect Mother: The Crafty Mother's Guide to a Quiet Life (How Not to)"
-Image-URL-L
-"http://images.amazon.com/images/P/000636988X.01.LZZZZZZZ.jpg"
-Image-URL-M
-"http://images.amazon.com/images/P/000636988X.01.MZZZZZZZ.jpg"
-Image-URL-S
-"http://images.amazon.com/images/P/000636988X.01.THUMBZZZ.jpg"
-Publisher
-"HarperCollins Publishers"
-Ratings
-"3,65"
-Year-Of-Publication
-1986
- */
 
   Future<QuerySnapshot> getUserQuotes(String uid) async{
     QuerySnapshot queryQuoteSnapshot = await postReference.doc(uid).collection("usersQuotes").orderBy("createTime", descending: true).get();
     return queryQuoteSnapshot;
   }
+
 
   Future<QuerySnapshot> getUserReviews(String uid) async{
     QuerySnapshot queryReviewSnapshot = await postReference.doc(uid).collection("usersReviews").orderBy("createTime", descending: true).get();
@@ -111,17 +81,19 @@ Year-Of-Publication
     return retVal;
   }
 
-  Future<Booksdetail> getBookInfo(String uid) async{
-    Booksdetail retValBook = Booksdetail();
+  Future<Book> getBookInfo(String isbn) async{
+    Book retValBook = Book();
 
     try{
-      DocumentSnapshot _docSnapshot = await bookReference.doc(uid).get();
-      retValBook.charId = _docSnapshot.get("charId");
-      retValBook.name = _docSnapshot.get("name");
-      retValBook.author = _docSnapshot.get("author");
-      retValBook.publisher = _docSnapshot.get("publisher");
-      retValBook.img = _docSnapshot.get("img");
-      retValBook.color = _docSnapshot.get("color");
+      DocumentSnapshot _docSnapshot = await bookReference.doc(isbn).get();
+      retValBook.bookAuthor = _docSnapshot.get("Book-Author");
+      retValBook.bookTitle = _docSnapshot.get("Book-Title");
+      retValBook.imageUrlL = _docSnapshot.get("Image-URL-L");
+      retValBook.imageUrlM = _docSnapshot.get("Image-URL-M");
+      retValBook.imageUrlS = _docSnapshot.get("Image-URL-S");
+      retValBook.publisher = _docSnapshot.get("Publisher");
+      retValBook.ratings = _docSnapshot.get("Ratings");
+      retValBook.yearOfPublication = _docSnapshot.get("Year-Of-Publication");
     } catch(e) {
       print(e);
     }
@@ -129,9 +101,6 @@ Year-Of-Publication
   }
 
   Future<void> setUserInfo(String uid ,int index, String name) async {
-    print(uid);
-    print(index);
-    print(name);
     try{
       await userReference.doc(uid).update({
         'photoIndex': index,

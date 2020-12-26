@@ -1,46 +1,42 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bookabitual/models/book.dart';
+import 'package:bookabitual/models/bookworm.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/service/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../utils/avatarPictures.dart';
 import 'ProjectContainer.dart';
 
+// ignore: must_be_immutable
 class ReviewPost extends StatefulWidget {
-  final String reviewId;
-  final String ownerId;
-  final int userAvatarIndex;
-  final String username;
+  final String isbn;
+  final String uid;
+  final String postID;
+  final String text;
+  final String rating;
   final Timestamp createTime;
   final String status;
-  final String imageUrl;
   final dynamic likes;
-  final String review;
-  final String author;
-  final String bookName;
-  final double rating;
-  var date;
+  Bookworm user;
+  Book book;
 
-  ReviewPost({Key key, this.reviewId, this.ownerId, this.review, this.rating,this.author, this.bookName, this.status,
-    this.userAvatarIndex, this.username, this.imageUrl, this.createTime, this.likes}) : super(key: key) {
-    date = DateTime.fromMillisecondsSinceEpoch(createTime.millisecondsSinceEpoch);
-  }
+  ReviewPost({Key key, this.postID,
+    this.isbn, this.rating,
+    this.uid, this.text,
+    this.createTime, this.status,
+    this.likes}) : super(key: key);
 
-  factory ReviewPost.fromDocument(DocumentSnapshot documentSnapshot){
+  factory ReviewPost.fromDocument(DocumentSnapshot documentSnapshot) {
     return ReviewPost(
-      reviewId: documentSnapshot["reviewId"],
-      ownerId: documentSnapshot["ownerId"],
-      userAvatarIndex: documentSnapshot["userAvatarIndex"],
-      username: documentSnapshot["username"],
-      createTime: documentSnapshot["createTime"],
-      status: documentSnapshot["status"],
-      imageUrl: documentSnapshot["imageUrl"],
-      likes: documentSnapshot["likes"],
-      review: documentSnapshot["review"],
-      author: documentSnapshot["author"],
-      bookName: documentSnapshot["bookName"],
-      rating: documentSnapshot["rating"],
+      isbn: documentSnapshot.data()["isbn"],
+      uid: documentSnapshot.data()["uid"],
+      postID: documentSnapshot.data()["postID"],
+      createTime: documentSnapshot.data()["createTime"],
+      likes: documentSnapshot.data()["likes"],
+      rating: documentSnapshot.data()["rating"],
+      status: documentSnapshot.data()["status"],
+      text: documentSnapshot.data()["text"],
     );
   }
 
@@ -55,45 +51,32 @@ class ReviewPost extends StatefulWidget {
     return counter;
   }
 
+  updateInfo() async {
+    user = await BookDatabase().getUserInfo(uid);
+    book = await BookDatabase().getBookInfo(isbn);
+  }
+
   @override
   _ReviewPostState createState() => _ReviewPostState(
-    reviewId: this.reviewId,
-    ownerId: this.ownerId,
-    review: this.review,
-    author: this.author,
-    bookName: this.bookName,
-    status: this.status,
-    userAvatarIndex: this.userAvatarIndex,
-    username: this.username,
-    imageUrl: this.imageUrl,
-    rating: this.rating,
     likes: this.likes,
     likeCount: getTotalNumberOfLikes(this.likes),
   );
 }
 
 class _ReviewPostState extends State<ReviewPost> {
-  final String reviewId;
-  final String ownerId;
-  final int userAvatarIndex;
-  final String username;
-  final String status;
-  final String imageUrl;
-  Map likes;
-  final String review;
-  final String author;
-  final String bookName;
-  final double rating;
   int likeCount;
   bool _isLiked = false;
+  Map likes;
+
+  Future reviewFuture;
+
   final currentOnlineUserId = currentBookworm.uid;
 
-  _ReviewPostState({this.reviewId, this.ownerId, this.review, this.rating,this.author, this.bookName, this.status,
-    this.userAvatarIndex, this.username, this.imageUrl, this.likes, this.likeCount});
+  _ReviewPostState({this.likes, this.likeCount});
 
   @override
   Widget build(BuildContext context) {
-    bool isQuoteOwner = currentOnlineUserId == ownerId;
+    bool isQuoteOwner = currentOnlineUserId == widget.uid;
 
     if(likes[currentOnlineUserId] != null){
       _isLiked = likes[currentOnlineUserId] == true;
@@ -114,7 +97,7 @@ class _ReviewPostState extends State<ReviewPost> {
                 children: [
                   CircleAvatar(
                     radius: 20,
-                    backgroundImage: AssetImage(avatars[widget.userAvatarIndex]),
+                    backgroundImage: AssetImage(avatars[widget.user.photoIndex]),
                   ),
                   SizedBox(width: 5,),
                   Column(
@@ -124,7 +107,7 @@ class _ReviewPostState extends State<ReviewPost> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.username,
+                            widget.user.username,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -139,7 +122,9 @@ class _ReviewPostState extends State<ReviewPost> {
                         ],
                       ),
                       Text(
-                        DateFormat.yMMMd().format(widget.date) + " ~ " + widget.status,
+                        "1m ago",
+                        //TODO : Implement Date format
+                        //DateFormat.yMMMd().format(widget.date) + " ~ " + widget.status,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -173,7 +158,7 @@ class _ReviewPostState extends State<ReviewPost> {
                   ],
                   image: DecorationImage(
                     colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.7), BlendMode.colorBurn),
-                    image: NetworkImage(widget.imageUrl),
+                    image: NetworkImage(widget.book.imageUrlL),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -183,7 +168,7 @@ class _ReviewPostState extends State<ReviewPost> {
                     padding: EdgeInsets.only(bottom: 25),
                     child: Center(
                       child: AutoSizeText(
-                        widget.review + "\n\n―" + widget.author + " " + widget.bookName,
+                        widget.text + "\n\n―" + widget.book.bookAuthor + ",\n" + widget.book.bookTitle,
                         overflow: TextOverflow.ellipsis,
                         minFontSize: 14,
                         maxLines: 12,
@@ -270,7 +255,10 @@ class _ReviewPostState extends State<ReviewPost> {
       _like = false;
     }
     if(_like){
-      postReference.doc(ownerId).collection("usersReviews").doc(reviewId).update({"likes.$currentOnlineUserId": false});
+      postReference.doc(widget.uid)
+          .collection("usersReviews")
+          .doc(widget.postID)
+          .update({"likes.$currentOnlineUserId": false});
       removeLike();
       setState(() {
         likeCount = likeCount - 1;
@@ -279,7 +267,10 @@ class _ReviewPostState extends State<ReviewPost> {
       });
     }
     else if(!_like){
-      postReference.doc(ownerId).collection("usersReviews").doc(reviewId).update({"likes.$currentOnlineUserId": true});
+      postReference.doc(widget.uid)
+          .collection("usersReviews")
+          .doc(widget.postID)
+          .update({"likes.$currentOnlineUserId": true});
       addLike();
       setState(() {
         likeCount = likeCount + 1;
@@ -290,9 +281,13 @@ class _ReviewPostState extends State<ReviewPost> {
   }
 
   removeLike(){
-    bool isNotPostOwner = currentOnlineUserId != ownerId;
+    bool isNotPostOwner = currentOnlineUserId != widget.uid;
     if(isNotPostOwner){
-      activityFeedReference.doc(ownerId).collection("feedItems").doc(reviewId).get().then((document){
+      activityFeedReference.doc(widget.uid)
+          .collection("feedItems")
+          .doc(widget.postID)
+          .get()
+          .then((document){
         if(document.exists){
           document.reference.delete();
         }
@@ -301,15 +296,19 @@ class _ReviewPostState extends State<ReviewPost> {
   }
 
   addLike(){
-    bool isNotPostOwner = currentOnlineUserId != ownerId;
+    bool isNotPostOwner = currentOnlineUserId != widget.uid;
     if(isNotPostOwner){
-      activityFeedReference.doc(ownerId).collection("feedItems").doc(reviewId).set({
+      activityFeedReference
+          .doc(widget.uid)
+          .collection("feedItems")
+          .doc(widget.postID)
+          .set({
         "type": "like",
         "username": currentBookworm.username,
         "userId": currentBookworm.uid,
         "timestamp": Timestamp.now(),
-        "url": imageUrl,
-        "quoteId": reviewId,
+        "url": widget.book.imageUrlL,
+        "quoteId": widget.postID,
         "userAvatarIndex": currentBookworm.photoIndex,
       });
     }

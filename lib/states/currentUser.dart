@@ -9,7 +9,6 @@ Bookworm currentBookworm;
 
 class CurrentUser extends ChangeNotifier {
   Bookworm _currentUser = Bookworm();
-
   Bookworm get getCurrentUser => _currentUser;
 
   FirebaseAuth auth;

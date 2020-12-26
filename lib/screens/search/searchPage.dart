@@ -1,6 +1,5 @@
 import 'package:bookabitual/screens/book/bookpage.dart';
 import 'package:flutter/material.dart';
-import 'package:bookabitual/models/books.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SearchPage extends StatefulWidget {
@@ -53,8 +52,12 @@ class _SearchPageState extends State<SearchPage> {
       });
     }
   }
-
   @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+
+  /*@override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -204,5 +207,5 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ),
     );
-  }
+  }*/
 }

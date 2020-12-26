@@ -1,5 +1,5 @@
+import 'package:bookabitual/models/book.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:bookabitual/models/books.dart';
 import 'package:flutter/material.dart';
 import 'package:bookabitual/screens/search/searchPage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,10 +8,9 @@ import 'dart:ui';
 
 
 class BookPage extends StatefulWidget {
-  final Booksdetail booksdetail;
+  final Book book;
 
-  BookPage({Key key, @required this.booksdetail})
-      : super(key: key);
+  BookPage({Key key, this.book}) : super(key: key);
 
   @override
   _BookPageState createState() => _BookPageState();
