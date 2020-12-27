@@ -46,6 +46,7 @@ class _LoginFormState extends State<LoginForm> {
       } else {
         Scaffold.of(context).showSnackBar(
           SnackBar(
+            key: Key('LoginSuccess'),
             content: Text(_returnString),
             duration: Duration(seconds: 2),
           ),
@@ -129,6 +130,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
             TextFormField(
+              key: Key('email'),
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
@@ -147,6 +149,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             SizedBox(height: 20.0,),
             TextFormField(
+              key: Key('password'),
               controller: _passwordController,
               decoration: InputDecoration(
                   prefixIcon: Icon(Icons.lock_outline),
@@ -172,6 +175,7 @@ class _LoginFormState extends State<LoginForm> {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 100),
                 child: Text("LOG IN",
+                  key: Key('loginButton'),
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
