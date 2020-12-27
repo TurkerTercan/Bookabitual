@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../validator.dart';
+import 'package:bookabitual/keys.dart';
 
 enum LoginType{
   email,
@@ -41,7 +42,7 @@ class _LoginFormState extends State<LoginForm> {
 
       if (_returnString == "Success") {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => BookScaffold(), )
+          MaterialPageRoute(builder: (context) => BookScaffold(),)
         );
         return "Success";
       } else {
@@ -132,7 +133,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
             TextFormField(
-              key: Key('email'),
+              key: Key(Keys.email),
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
@@ -151,7 +152,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             SizedBox(height: 20.0,),
             TextFormField(
-              key: Key('password'),
+              key: Key(Keys.password),
               controller: _passwordController,
               decoration: InputDecoration(
                   prefixIcon: Icon(Icons.lock_outline),
@@ -177,7 +178,7 @@ class _LoginFormState extends State<LoginForm> {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 100),
                 child: Text("LOG IN",
-                  key: Key('loginButton'),
+                  key: Key(Keys.loginButton),
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -187,6 +188,7 @@ class _LoginFormState extends State<LoginForm> {
               onPressed: () async {
                 _validateInputs();
                 if (_autovalidateMode != AutovalidateMode.always) {
+                  key: Key(Keys.Success);
                   var temp = await _loginUser(
                       LoginType.email,
                       _emailController.text,
