@@ -40,6 +40,7 @@ class CurrentUser extends ChangeNotifier {
     try {
       await auth.signOut();
       _currentUser = Bookworm();
+      currentBookworm = _currentUser;
       retVal = "Success";
     } catch (e) {
       print(e);
@@ -80,6 +81,7 @@ class CurrentUser extends ChangeNotifier {
       UserCredential _authResult = await auth.signInWithEmailAndPassword(
           email: email.trim(), password: password.trim());
       _currentUser = await BookDatabase().getUserInfo(_authResult.user.uid);
+      currentBookworm = _currentUser;
       if (_currentUser != null) retVal = "Success";
     } catch (e) {
       retVal = e.message();
@@ -110,6 +112,7 @@ class CurrentUser extends ChangeNotifier {
         BookDatabase().createUser(_user);
       }
       _currentUser = await BookDatabase().getUserInfo(_authResult.user.uid);
+      currentBookworm = _currentUser;
       if (_currentUser != null) retVal = "Success";
     } catch (e) {
       retVal = e.message();
@@ -120,6 +123,7 @@ class CurrentUser extends ChangeNotifier {
     try{
       BookDatabase().setUserInfo(_currentUser.uid, index, newName);
       _currentUser = await BookDatabase().getUserInfo(_currentUser.uid);
+      currentBookworm = _currentUser;
     }catch(e){
       print(e);
     }

@@ -5,7 +5,7 @@ import 'package:bookabitual/states/currentUser.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
+
 class BookScaffold extends StatefulWidget {
   BookScaffold({Key key}) :super(key: key);
   @override
@@ -15,7 +15,7 @@ class BookScaffold extends StatefulWidget {
 class _BookScaffoldState extends State<BookScaffold> {
   int _selectedItemIndex;
   var _pages = [FeedPage(), SearchPage(), ProfilePage()];
-  PageController _pageController;
+  PageController _pageController = PageController();
 
   @override
   void initState() {

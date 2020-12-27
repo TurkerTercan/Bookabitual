@@ -35,7 +35,8 @@ List<Rating> postRating = <Rating> [
 
 void onButtonPressed(
     BuildContext context, List<Widget> postList,
-    StateSetter viewState, ScrollController controller
+    StateSetter viewState, ScrollController controller,
+    Function function
     ) {
 
   final TextEditingController _isbn = TextEditingController();
@@ -172,6 +173,7 @@ void onButtonPressed(
                             rating: _selectedRating.score,
                             status: "Reading",
                             likes: {},
+                            comments: {},
                             createTime: Timestamp.now(),
                           );
                           await temp.updateInfo();
@@ -188,11 +190,14 @@ void onButtonPressed(
                             status: "Reading",
                             likes: {},
                             createTime: Timestamp.now(),
+                            comments: {},
+                            trigger: function,
                           );
                           await BookDatabase().createQuote(temp);
                           await temp.updateInfo();
                           viewState(() {
                             postList.insert(0, temp);
+
                           });
                         }
                         Navigator.pop(context);

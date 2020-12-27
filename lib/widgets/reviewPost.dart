@@ -1,8 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bookabitual/models/book.dart';
 import 'package:bookabitual/models/bookworm.dart';
+import 'package:bookabitual/screens/comment/reviewComment.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/service/database.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../utils/avatarPictures.dart';
@@ -18,6 +20,8 @@ class ReviewPost extends StatefulWidget {
   final Timestamp createTime;
   final String status;
   final dynamic likes;
+  final dynamic comments;
+  final Function trigger;
   Bookworm user;
   Book book;
 
@@ -25,7 +29,7 @@ class ReviewPost extends StatefulWidget {
     this.isbn, this.rating,
     this.uid, this.text,
     this.createTime, this.status,
-    this.likes}) : super(key: key);
+    this.likes, this.trigger, this.comments}) : super(key: key);
 
   factory ReviewPost.fromDocument(DocumentSnapshot documentSnapshot) {
     return ReviewPost(
@@ -46,7 +50,8 @@ class ReviewPost extends StatefulWidget {
     }
     int counter = 0;
     likes.values.forEach((value){
-      counter = counter + 1;
+      if (value)
+        counter = counter + 1;
     });
     return counter;
   }
@@ -69,10 +74,60 @@ class _ReviewPostState extends State<ReviewPost> {
   Map likes;
 
   Future reviewFuture;
-
   final currentOnlineUserId = currentBookworm.uid;
 
   _ReviewPostState({this.likes, this.likeCount});
+
+  String readTimestamp(int timestamp) {
+    var now = DateTime.now();
+    var date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    var diff = now.difference(date);
+    var time = '';
+
+    if (diff.inSeconds <= 0 || diff.inSeconds > 0 && diff.inMinutes == 0 ) {
+      time = 'JUST NOW';
+    } else if(diff.inMinutes > 0 && diff.inMinutes < 60) {
+      if (diff.inMinutes == 1) {
+        time = diff.inMinutes.toString() + ' MIN AGO';
+      } else {
+        time = diff.inMinutes.toString() + ' MINS AGO';
+      }
+
+    } else if (diff.inHours > 0 && diff.inHours < 24) {
+      if (diff.inHours == 1) {
+        time = diff.inHours.toString() + ' HOUR AGO';
+      } else {
+        time = diff.inHours.toString() + ' HOURS AGO';
+      }
+    } else if (diff.inDays > 0 && diff.inDays < 7) {
+      if (diff.inDays == 1) {
+        time = diff.inDays.toString() + ' DAY AGO';
+      } else {
+        time = diff.inDays.toString() + ' DAYS AGO';
+      }
+    } else {
+      if (diff.inDays == 7) {
+        time = (diff.inDays / 7).floor().toString() + ' WEEK AGO';
+      } else {
+
+        time = (diff.inDays / 7).floor().toString() + ' WEEKS AGO';
+      }
+    }
+    return time;
+  }
+
+  int getTotalNumberOfComments(comments) {
+    if (comments == null) {
+      return 0;
+    }
+    int counter = 0;
+    comments.values.forEach((value) {
+      value.values.forEach((val) {
+        counter = counter + 1;
+      });
+    });
+    return counter;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,9 +177,7 @@ class _ReviewPostState extends State<ReviewPost> {
                         ],
                       ),
                       Text(
-                        "1m ago",
-                        //TODO : Implement Date format
-                        //DateFormat.yMMMd().format(widget.date) + " ~ " + widget.status,
+                        readTimestamp(widget.createTime.seconds),
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -137,8 +190,11 @@ class _ReviewPostState extends State<ReviewPost> {
               ),
               isQuoteOwner ? IconButton(
                 icon: Icon(Icons.more_vert),
-                onPressed: ()=> print("deleted"),
-              ) : Text(""),
+                onPressed: () {
+                  postReference.doc(widget.uid).collection("usersQuotes").doc(widget.postID).delete();
+                  widget.trigger();
+                },
+              ) : Container(),
             ],
           ),
           SizedBox(height: 10,),
@@ -158,7 +214,8 @@ class _ReviewPostState extends State<ReviewPost> {
                   ],
                   image: DecorationImage(
                     colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.7), BlendMode.colorBurn),
-                    image: NetworkImage(widget.book.imageUrlL),
+                    image: CachedNetworkImageProvider(widget.book.imageUrlL),
+                    // image: NetworkImage(widget.book.imageUrlL),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -233,13 +290,45 @@ class _ReviewPostState extends State<ReviewPost> {
             ],
           ),
           SizedBox(height: 5,),
-          Text(
-            likeCount.toString() + " likes",
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[800],
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                likeCount.toString() + " likes",
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[800],
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ReviewComment(
+                        comments: widget.comments,
+                        book: widget.book,
+                        user: widget.user,
+                        text: widget.text,
+                        createTime: widget.createTime,
+                        postID: widget.postID,
+                      ))
+                  );
+                },
+                child: Container(
+                  margin: EdgeInsets.only(right: 7),
+                  child: Text(
+                    "View all "+ getTotalNumberOfComments(widget.comments).toString() + " comments",
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[800],
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
