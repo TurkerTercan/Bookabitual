@@ -3,6 +3,7 @@ import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/widgets/ProjectContainer.dart';
 import 'package:bookabitual/widgets/QuotePost.dart';
 import 'package:bookabitual/widgets/reviewPost.dart';
+import 'package:bookabitual/validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +46,16 @@ void onButtonPressed(
   Item _selectedItem = postChoice[0];
   Rating _selectedRating = postRating[0];
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
+
+  void _validateInputs() {
+    if (_formKey.currentState.validate())
+      _autovalidateMode = AutovalidateMode.disabled;
+    else
+      _autovalidateMode = AutovalidateMode.always;
+  }
+
   showModalBottomSheet<dynamic>(
     context: context,
     isScrollControlled: true,
@@ -82,7 +93,7 @@ void onButtonPressed(
                                   child: Row(
                                     children: [
                                       item.icon,
-                                      SizedBox(width: 10,),
+                                      SizedBox(width: 40,),
                                       Text(item.name, style: TextStyle(color: Colors.black),),
                                     ],
                                   ),
@@ -109,6 +120,12 @@ void onButtonPressed(
                             prefixIcon: Icon(Icons.book),
                             hintText: "Book"
                           ),
+                          validator: (value) {
+                            if (_isbn.text == "")
+                              return "Can not be empty";
+                            else
+                              return "";
+                          },
                         ),
                       ),
                     ),
@@ -116,13 +133,26 @@ void onButtonPressed(
                     Container(
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: ProjectContainer(
-                        child: TextFormField(
-                          maxLines: 5,
-                          controller: _text,
-                          decoration: InputDecoration(
-                            alignLabelWithHint: true,
-                            prefixIcon: Icon(Icons.rate_review),
-                            hintText: _selectedItem == postChoice[0] ? "Quote" : "Review",
+                        child: Form(
+                          key: _formKey,
+                          autovalidateMode: _autovalidateMode,
+                          child: TextFormField(
+                            maxLines: 5,
+                            controller: _text,
+                            decoration: InputDecoration(
+                              alignLabelWithHint: true,
+                              prefixIcon: Icon(Icons.rate_review),
+                              hintText: _selectedItem == postChoice[0] ? "Quote" : "Review",
+                            ),
+                            validator: (value) {
+                              var valid = new Validator();
+                              if (valid.validateText(value) == TextValidationResults.EMPTY)
+                                return "Can not be empty";
+                              else if (valid.validateText(value) == TextValidationResults.VALID)
+                                return "";
+                              else
+                                return "Given text can not be higher than 360 characters";
+                            },
                           ),
                         ),
                       ),
@@ -163,45 +193,55 @@ void onButtonPressed(
                     SizedBox(height: 10,),
                     RaisedButton(
                       onPressed: () async {
-                        String postID = Uuid().v4();
-                        if (_selectedItem == postChoice[1]) {
-                          ReviewPost temp = ReviewPost(
-                            isbn: _isbn.text,
-                            uid: Provider.of<CurrentUser>(context, listen: false).getCurrentUser.uid,
-                            postID: postID,
-                            text: _text.text,
-                            rating: _selectedRating.score,
-                            status: "Reading",
-                            likes: {},
-                            comments: {},
-                            createTime: Timestamp.now(),
-                          );
-                          await temp.updateInfo();
-                          await BookDatabase().createReview(temp);
-                          viewState(() {
-                            postList.insert(0, temp);
-                          });
-                        } else {
-                          QuotePost temp = QuotePost(
-                            isbn: _isbn.text,
-                            uid: Provider.of<CurrentUser>(context, listen: false).getCurrentUser.uid,
-                            postID: postID,
-                            text: _text.text,
-                            status: "Reading",
-                            likes: {},
-                            createTime: Timestamp.now(),
-                            comments: {},
-                            trigger: function,
-                          );
-                          await BookDatabase().createQuote(temp);
-                          await temp.updateInfo();
-                          viewState(() {
-                            postList.insert(0, temp);
+                        _validateInputs();
 
-                          });
+                        if (_autovalidateMode != AutovalidateMode.always) {
+                          String postID = Uuid().v4();
+                          if (_selectedItem == postChoice[1]) {
+                            ReviewPost temp = ReviewPost(
+                              isbn: _isbn.text,
+                              uid: Provider
+                                  .of<CurrentUser>(context, listen: false)
+                                  .getCurrentUser
+                                  .uid,
+                              postID: postID,
+                              text: _text.text,
+                              rating: _selectedRating.score,
+                              status: "Reading",
+                              likes: {},
+                              comments: {},
+                              createTime: Timestamp.now(),
+                            );
+                            await temp.updateInfo();
+                            await BookDatabase().createReview(temp);
+                            viewState(() {
+                              postList.insert(0, temp);
+                            });
+                          } else {
+                            QuotePost temp = QuotePost(
+                              isbn: _isbn.text,
+                              uid: Provider
+                                  .of<CurrentUser>(context, listen: false)
+                                  .getCurrentUser
+                                  .uid,
+                              postID: postID,
+                              text: _text.text,
+                              status: "Reading",
+                              likes: {},
+                              createTime: Timestamp.now(),
+                              comments: {},
+                              trigger: function,
+                            );
+                            await BookDatabase().createQuote(temp);
+                            await temp.updateInfo();
+                            viewState(() {
+                              postList.insert(0, temp);
+                            });
+                          }
+                          Navigator.pop(context);
+                          controller.animateTo(0.0, curve: Curves.bounceOut,
+                            duration: const Duration(milliseconds: 1000),);
                         }
-                        Navigator.pop(context);
-                        controller.animateTo(0.0, curve: Curves.bounceOut, duration: const Duration(milliseconds: 1000),);
                       },
                       color: Colors.purple[300],
                       child: Text(

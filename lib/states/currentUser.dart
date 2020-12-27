@@ -12,7 +12,7 @@ class CurrentUser extends ChangeNotifier {
   Bookworm get getCurrentUser => _currentUser;
 
   FirebaseAuth auth;
-  CurrentUser({this.auth});
+  CurrentUser({Key key, this.auth});
 
   Future<String> onStartUp() async {
     String retVal = "Error";

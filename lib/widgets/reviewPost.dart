@@ -191,7 +191,7 @@ class _ReviewPostState extends State<ReviewPost> {
               isQuoteOwner ? IconButton(
                 icon: Icon(Icons.more_vert),
                 onPressed: () {
-                  postReference.doc(widget.uid).collection("usersQuotes").doc(widget.postID).delete();
+                  postReference.doc(widget.uid).collection("usersReviews").doc(widget.postID).delete();
                   widget.trigger();
                 },
               ) : Container(),

@@ -25,7 +25,7 @@ class _LoginFormState extends State<LoginForm> {
   AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
 
 
-  void _loginUser(LoginType type, String email, String password, BuildContext context) async{
+  Future<String> _loginUser(LoginType type, String email, String password, BuildContext context) async{
     CurrentUser _currentUser = Provider.of<CurrentUser>(context, listen: false);
     String _returnString;
     try {
@@ -43,6 +43,7 @@ class _LoginFormState extends State<LoginForm> {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => BookScaffold(), )
         );
+        return "Success";
       } else {
         Scaffold.of(context).showSnackBar(
           SnackBar(
@@ -51,6 +52,7 @@ class _LoginFormState extends State<LoginForm> {
             duration: Duration(seconds: 2),
           ),
         );
+        return "Error";
       }
     } catch(e) {
       Scaffold.of(context).showSnackBar(
@@ -60,7 +62,7 @@ class _LoginFormState extends State<LoginForm> {
           duration: Duration(seconds: 3),
         ),
       );
-      print(e);
+      return e.message;
     }
   }
 
@@ -182,10 +184,10 @@ class _LoginFormState extends State<LoginForm> {
                       fontSize: 20),
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
                 _validateInputs();
                 if (_autovalidateMode != AutovalidateMode.always) {
-                  _loginUser(
+                  var temp = await _loginUser(
                       LoginType.email,
                       _emailController.text,
                       _passwordController.text,

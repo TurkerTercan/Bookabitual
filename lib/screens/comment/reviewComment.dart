@@ -18,7 +18,16 @@ class ReviewComment extends StatefulWidget {
   final String postID;
   final StateSetter beforeState;
 
-  ReviewComment({Key key, this.text, this.comments, this.book, this.user, this.createTime, this.postID, this.beforeState}) : super(key: key);
+  ReviewComment(
+      {Key key,
+      this.text,
+      this.comments,
+      this.book,
+      this.user,
+      this.createTime,
+      this.postID,
+      this.beforeState})
+      : super(key: key);
 
   @override
   _ReviewCommentState createState() => _ReviewCommentState();
@@ -35,7 +44,6 @@ class _ReviewCommentState extends State<ReviewComment> {
     commentFuture = _getAllComments();
     super.initState();
   }
-
 
   _getAllComments() async {
     List unsorted = [];
@@ -62,7 +70,7 @@ class _ReviewCommentState extends State<ReviewComment> {
     var column = new Container(
       padding: EdgeInsets.only(left: 10, right: 10, top: 10),
       margin: EdgeInsets.only(bottom: 5),
-      child : ProjectContainer(
+      child: ProjectContainer(
         child: Container(
           child: Column(
             children: contained,
@@ -70,8 +78,7 @@ class _ReviewCommentState extends State<ReviewComment> {
         ),
       ),
     );
-    if(contained.length != 0)
-      commentWidgets.add(column);
+    if (contained.length != 0) commentWidgets.add(column);
   }
 
   String readTimestamp(int timestamp) {
@@ -151,13 +158,9 @@ class _ReviewCommentState extends State<ReviewComment> {
                       bottom: 0,
                       child: Container(
                         height: 75,
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width,
-                        decoration: BoxDecoration(color: Theme
-                            .of(context)
-                            .accentColor),
+                        width: MediaQuery.of(context).size.width,
+                        decoration:
+                            BoxDecoration(color: Theme.of(context).accentColor),
                         child: Row(
                           children: [
                             SizedBox(
@@ -166,10 +169,9 @@ class _ReviewCommentState extends State<ReviewComment> {
                             CircleAvatar(
                               radius: 20,
                               backgroundImage: AssetImage(avatars[
-                              Provider
-                                  .of<CurrentUser>(context)
-                                  .getCurrentUser
-                                  .photoIndex]),
+                                  Provider.of<CurrentUser>(context)
+                                      .getCurrentUser
+                                      .photoIndex]),
                             ),
                             SizedBox(
                               width: 7,
@@ -187,20 +189,31 @@ class _ReviewCommentState extends State<ReviewComment> {
                               onPressed: () {
                                 FocusScope.of(context).unfocus();
                                 if (_controller.text != "") {
-                                  var currentUser = Provider.of<CurrentUser>(context, listen: false).getCurrentUser;
-                                  var temp = buildComment(currentUser, _controller.text, Timestamp.now());
+                                  var currentUser = Provider.of<CurrentUser>(
+                                          context,
+                                          listen: false)
+                                      .getCurrentUser;
 
-                                  if (widget.comments[currentUser.uid] == null) {
-                                    widget.comments[currentUser.uid] = new Map<String, Timestamp>();
-                                    widget.comments[currentUser.uid][_controller.text] = Timestamp.now();
+
+                                  if (widget.comments[currentUser.uid] ==
+                                      null) {
+                                    widget.comments[currentUser.uid] =
+                                        new Map<String, Timestamp>();
+                                    widget.comments[currentUser.uid]
+                                        [_controller.text] = Timestamp.now();
                                   } else {
-                                    widget.comments[currentUser.uid][_controller.text] = Timestamp.now();
+                                    widget.comments[currentUser.uid]
+                                        [_controller.text] = Timestamp.now();
                                   }
-                                  postReference.doc(widget.user.uid).collection("usersReviews").doc(widget.postID)
+                                  postReference
+                                      .doc(widget.user.uid)
+                                      .collection("usersReviews")
+                                      .doc(widget.postID)
                                       .update({"comments": widget.comments});
                                   setState(() {
                                     commentWidgets.clear();
                                     commentFuture = _getAllComments();
+                                    _controller.clear();
                                   });
                                 }
                               },
@@ -219,12 +232,12 @@ class _ReviewCommentState extends State<ReviewComment> {
             } else {
               return Center(child: CircularProgressIndicator());
             }
-          }
-      ),
+          }),
     );
   }
 
-  Widget buildComment(Bookworm commentUser, String comment, Timestamp createTime) {
+  Widget buildComment(
+      Bookworm commentUser, String comment, Timestamp createTime) {
     return Container(
       padding: EdgeInsets.only(left: 10, right: 10, top: 10),
       margin: EdgeInsets.only(bottom: 5),
@@ -238,7 +251,8 @@ class _ReviewCommentState extends State<ReviewComment> {
                 children: [
                   CircleAvatar(
                     radius: 18,
-                    backgroundImage: AssetImage(avatars[commentUser.photoIndex]),
+                    backgroundImage:
+                        AssetImage(avatars[commentUser.photoIndex]),
                   ),
                   SizedBox(
                     width: 3,
@@ -265,24 +279,30 @@ class _ReviewCommentState extends State<ReviewComment> {
                   ),
                 ],
               ),
-              widget.user.uid == commentUser.uid ?
-              Padding(
+              commentUser.uid == currentBookworm.uid ? Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: IconButton(icon: Icon(Icons.delete, color: Colors.red[300],), onPressed: () {
-                  widget.comments[commentUser.uid].remove(comment);
-                  if (widget.comments[commentUser.uid].isEmpty)
-                    widget.comments.remove(commentUser.uid);
-                  postReference.doc(widget.user.uid).collection("usersReviews").doc(widget.postID)
-                      .update({"comments": widget.comments});
-                  setState(() {
-                    commentWidgets.clear();
-                    commentFuture = _getAllComments();
-                  });
-                }),
+                child: IconButton(
+                    icon: Icon(Icons.delete, color: Colors.red[300],),
+                    onPressed: () {
+                      widget.comments[commentUser.uid].remove(comment);
+                      if (widget.comments[commentUser.uid].isEmpty)
+                        widget.comments.remove(commentUser.uid);
+                      postReference
+                          .doc(widget.user.uid)
+                          .collection("usersReviews")
+                          .doc(widget.postID)
+                          .update({"comments": widget.comments});
+                      setState(() {
+                        commentWidgets.clear();
+                        commentFuture = _getAllComments();
+                      });
+                    }),
               ) : Container(),
             ],
           ),
-          SizedBox(height: 5,),
+          SizedBox(
+            height: 5,
+          ),
           Container(
             padding: EdgeInsets.all(5),
             child: AutoSizeText(
@@ -298,13 +318,17 @@ class _ReviewCommentState extends State<ReviewComment> {
               ),
             ),
           ),
-          SizedBox(height: 5,),
+          SizedBox(
+            height: 5,
+          ),
           Container(
             height: 3,
             margin: EdgeInsets.only(left: 30, right: 30),
             color: Colors.grey[300],
           ),
-          SizedBox(height: 5,),
+          SizedBox(
+            height: 5,
+          ),
         ],
       ),
     );

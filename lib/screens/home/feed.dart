@@ -138,6 +138,7 @@ class _FeedPageState extends State<FeedPage> {
   getAllUserPost() async {
     postList.clear();
     var temp = await FirebaseFirestore.instance.collection("Posts").get();
+    List unsorted = [];
     await Future.forEach(temp.docs, (element) async {
       QuerySnapshot queryQuoteSnapshot = await BookDatabase().getUserQuotes(element.id);
       QuerySnapshot queryReviewSnapshot = await BookDatabase().getUserReviews(element.id);
@@ -182,11 +183,17 @@ class _FeedPageState extends State<FeedPage> {
         await element.updateInfo();
       });
 
-      postList.addAll(quotePosts);
-      postList.addAll(reviewPosts);
-
+      unsorted.addAll(quotePosts);
+      unsorted.addAll(reviewPosts);
     });
-    print(postList.length);
+    unsorted.sort((a, b) {
+      Timestamp x = a.createTime;
+      Timestamp y = b.createTime;
+      return y.compareTo(x);
+    });
+    unsorted.forEach((element) {
+      postList.add(element);
+    });
   }
 
   getAllPosts(String uid) async {

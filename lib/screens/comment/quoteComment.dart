@@ -201,6 +201,7 @@ class _QuoteCommentState extends State<QuoteComment> {
                                 setState(() {
                                   commentWidgets.clear();
                                   commentFuture = _getAllComments();
+                                  _controller.clear();
                                 });
                               }
                             },
@@ -265,8 +266,7 @@ class _QuoteCommentState extends State<QuoteComment> {
                   ),
                 ],
               ),
-              widget.user.uid == commentUser.uid ?
-              Padding(
+              commentUser.uid == currentBookworm.uid ? Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: IconButton(icon: Icon(Icons.delete, color: Colors.red[300],), onPressed: () {
                   widget.comments[commentUser.uid].remove(comment);

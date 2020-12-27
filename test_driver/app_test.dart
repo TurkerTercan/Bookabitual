@@ -25,6 +25,8 @@ void main() {
 
     test('Test: ', () async {
       // Use the `driver.getText` method to verify the counter starts at 0.
+      driver.
+
       expect(await driver.getText(emailTextFinder), "esra@gmail.com");
       expect(await driver.getText(passwordTextFinder), "esraesr");
     });

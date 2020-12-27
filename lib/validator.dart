@@ -22,6 +22,12 @@ enum UsernameValidationResults{
   USED_USERNAME,
 }
 
+enum TextValidationResults{
+  EMPTY,
+  VALID,
+  NON_VALID,
+}
+
 class Validator {
   var emailList = ["test@admin.com"];
   var usernameList = ["esra"];
@@ -63,5 +69,14 @@ class Validator {
         return UsernameValidationResults.NON_VALID;
     }
     return UsernameValidationResults.VALID;
+  }
+
+  TextValidationResults validateText(String text){
+    if(text.isEmpty)
+      return TextValidationResults.EMPTY;
+    else if(text.length < 360)
+      return TextValidationResults.VALID;
+    else
+      return TextValidationResults.NON_VALID;
   }
 }
