@@ -207,7 +207,7 @@ class _ReviewPostState extends State<ReviewPost> {
                     ),
                   ],
                   image: DecorationImage(
-                    colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.7), BlendMode.colorBurn),
+                    colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.55), BlendMode.darken),
                     image: CachedNetworkImageProvider(widget.book.imageUrlL),
                     // image: NetworkImage(widget.book.imageUrlL),
                     fit: BoxFit.cover,

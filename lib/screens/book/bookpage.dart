@@ -1,4 +1,5 @@
 import 'package:bookabitual/models/book.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:bookabitual/screens/search/searchPage.dart';
@@ -19,8 +20,7 @@ class BookPage extends StatefulWidget {
 class _BookPageState extends State<BookPage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme
               .of(context)
@@ -44,7 +44,7 @@ class _BookPageState extends State<BookPage> {
           ),
           centerTitle: true,
         ),
-        bottomNavigationBar: Container(
+        /*bottomNavigationBar: Container(
           margin: EdgeInsets.only(left: 25, right: 25, bottom: 25),
           height: 69,
           color: Colors.transparent,
@@ -92,100 +92,97 @@ class _BookPageState extends State<BookPage> {
               ),
             ],
           ),
-        ),
-        body: SafeArea(
-          child: Container(
-            child: CustomScrollView(
-              slivers: <Widget>[
-                SliverAppBar(
-                  backgroundColor: Colors.black,
-                  expandedHeight: MediaQuery
+        ),*/
+        body: Container(
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverAppBar(
+                backgroundColor: Colors.black,
+                expandedHeight: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.5,
+                flexibleSpace: Container(
+                  color: Color(0xFFFFD3B6),
+                  height: MediaQuery
                       .of(context)
                       .size
                       .height * 0.5,
-                  flexibleSpace: Container(
-                    color: Color(0xFFFFD3B6),
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.5,
-                    child: Stack(
-                      children: <Widget>[
-                        Positioned(
-                          left: 25,
-                          top: 35,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SearchPage()),
-                                // Navigator.pushReplacementNamed(context, "/searchPage",);
-                              );
-                            },
-                            child: Container(
-                              width: 32,
-                              height: 32,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.transparent),
-                              child: Icon(Icons.arrow_back),
-                            ),
+                  child: Stack(
+                    children: <Widget>[
+                      Positioned(
+                        left: 25,
+                        top: 35,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SearchPage()),
+                              // Navigator.pushReplacementNamed(context, "/searchPage",);
+                            );
+                          },
+                          child: Container(
+                            width: 32,
+                            height: 32,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.transparent),
+                            child: Icon(Icons.arrow_back),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: 62),
-                            width: 172,
-                            height: 225,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                image: AssetImage("assets/profilePhoto15.png"),
-                                //image: AssetImage("bookdetail.img"), normalde bunların çalışması lazım ama hata alıyorum
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                widget.book.imageUrlL
                               ),
                             ),
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
-                SliverList(
-                    delegate: SliverChildListDelegate([
-                      Padding(
-                        padding: EdgeInsets.only(top: 24, left: 25),
-                        child:
-                        Text(
-                          'KORKU',
-                          //bookdetail.name,
-                          style: GoogleFonts.openSans(
-                              fontSize: 27,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w600),
-                        ),
+              ),
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  Padding(
+                    padding: EdgeInsets.only(top: 24, left: 25),
+                    child:
+                    Text(
+                      widget.book.bookTitle,
+                      //bookdetail.name,
+                      style: GoogleFonts.openSans(
+                        fontSize: 27,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 7, left: 25),
-                        child: Text(
-                          'GEORGE ORWELL',
-                          //booksdetail.author,
-                          style: GoogleFonts.openSans(
-                              fontSize: 14,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w400),
-                        ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 7, left: 25),
+                    child: Text(
+                      widget.book.bookAuthor,
+                      //booksdetail.author,
+                      style: GoogleFonts.openSans(
+                        fontSize: 14,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
                       ),
-                    ]
-                    )
-                )
-              ],
-            ),
+                    ),
+                  ),
+                ],
+                ),
+              ),
+            ],
           ),
         ),
-      ),
-    );
+      );
   }
 
   void _onButtonPressed() {

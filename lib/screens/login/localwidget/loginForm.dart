@@ -123,7 +123,7 @@ class _LoginFormState extends State<LoginForm> {
                 vertical: 20.0,
                 horizontal: 8.0,
               ),
-              child: Text("LOG IN",
+              child: Text("LOGIN",
                 style: TextStyle(
                   color: Theme.of(context).secondaryHeaderColor,
                   fontSize: 25.0,
@@ -176,7 +176,7 @@ class _LoginFormState extends State<LoginForm> {
             RaisedButton(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 100),
-                child: Text("LOG IN",
+                child: Text("LOGIN",
                   key: Key(Keys.loginButton),
                   style: TextStyle(
                       color: Colors.white,

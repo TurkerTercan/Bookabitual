@@ -8,10 +8,11 @@ class Book{
   String imageUrlS;
   String publisher;
   String ratings;
+  String isbn;
   int yearOfPublication;
 
   Book({this.bookAuthor, this.bookTitle, this.imageUrlL, this.imageUrlM, this.imageUrlS,
-  this.publisher, this.ratings, this.yearOfPublication});
+  this.publisher, this.ratings, this.yearOfPublication, this.isbn});
 
   factory Book.fromDocument(DocumentSnapshot doc){
     return Book(
