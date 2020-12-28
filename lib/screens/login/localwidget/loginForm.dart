@@ -25,7 +25,6 @@ class _LoginFormState extends State<LoginForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
 
-
   Future<String> _loginUser(LoginType type, String email, String password, BuildContext context) async{
     CurrentUser _currentUser = Provider.of<CurrentUser>(context, listen: false);
     String _returnString;

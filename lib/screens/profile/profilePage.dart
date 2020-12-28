@@ -6,14 +6,11 @@ import 'package:bookabitual/widgets/QuotePost.dart';
 import 'package:bookabitual/widgets/reviewPost.dart';
 import 'package:bookabitual/widgets/smallPostQuote.dart';
 import 'package:bookabitual/widgets/smallPostReview.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import '../../models/bookworm.dart';
 import '../../states/currentUser.dart';
-import 'editProfile.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -58,7 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
     QuerySnapshot queryReviewSnapshot = await BookDatabase().getUserReviews(uid);
 
 
-    List unsorted = [];
+    //List unsorted = [];
     reviewPosts = queryReviewSnapshot.docs.map((documentSnapshot)  {
       ReviewPost reviewPost = ReviewPost(
         isbn: documentSnapshot.data()["isbn"],
@@ -302,7 +299,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: ListView(
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 7),
                                     child: FutureBuilder(
                                       future: profileFuture,
                                       builder: (context, snapshot) {
@@ -345,8 +342,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       int index) {
                                                     return Container(
                                                       padding: EdgeInsets.only(
-                                                          left: 10,
-                                                          right: 10,
+                                                          left: 5,
+                                                          right: 5,
                                                           top: 10),
                                                       margin: EdgeInsets.only(
                                                           bottom: 5),
@@ -528,6 +525,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         if (_nameController.text != "") {
                           Provider.of<CurrentUser>(context, listen: false)
                               .saveInfo(currentIndex, _nameController.text);
+                          Navigator.maybePop(context);
                         }
                       },
                       child: Padding(

@@ -171,6 +171,8 @@ class _SmallPostReviewState extends State<SmallPostReview> {
                   image: CachedNetworkImageProvider(widget.post.book.imageUrlM),
                 ),
                 Container(
+                  height: MediaQuery.of(context).size.width * 0.8,
+                  width: MediaQuery.of(context).size.width * 0.6,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Theme.of(context).primaryColor,
@@ -179,9 +181,10 @@ class _SmallPostReviewState extends State<SmallPostReview> {
                   child: Center(
                     child: AutoSizeText(
                       widget.post.text + "\n\n―" + widget.post.book.bookTitle + "\n " + widget.post.book.bookAuthor,
-                      minFontSize: 16,
-                      maxLines: 8,
-                      overflow: TextOverflow.ellipsis,
+                      minFontSize: 10,
+                      maxLines: 12,
+                      wrapWords: true,
+                      overflow: TextOverflow.clip,
                       style: TextStyle(
                         fontSize: 22,
                         color: Colors.grey[600],

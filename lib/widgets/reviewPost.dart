@@ -132,13 +132,7 @@ class _ReviewPostState extends State<ReviewPost> {
   @override
   Widget build(BuildContext context) {
     bool isQuoteOwner = currentOnlineUserId == widget.uid;
-
-    if(likes[currentOnlineUserId] != null){
-      _isLiked = likes[currentOnlineUserId] == true;
-    }
-    else{
-      _isLiked = false;
-    }
+    _isLiked = likes[currentOnlineUserId] == true;
 
     return ProjectContainer(
       child: Column(
@@ -336,13 +330,8 @@ class _ReviewPostState extends State<ReviewPost> {
   }
 
   controlLikeReview(){
-    bool _like;
-    if(likes[currentOnlineUserId] != null){
-      _like = likes[currentOnlineUserId] == true;
-    }
-    else{
-      _like = false;
-    }
+    bool _like = likes[currentOnlineUserId] == true;
+
     if(_like){
       postReference.doc(widget.uid)
           .collection("usersReviews")

@@ -207,7 +207,12 @@ void onButtonPressed(
                               text: _text.text,
                               rating: _selectedRating.score,
                               status: "Reading",
-                              likes: {},
+                              likes: {
+                                Provider
+                                    .of<CurrentUser>(context, listen: false)
+                                    .getCurrentUser
+                                    .uid : false
+                              },
                               comments: {},
                               createTime: Timestamp.now(),
                             );
@@ -226,7 +231,12 @@ void onButtonPressed(
                               postID: postID,
                               text: _text.text,
                               status: "Reading",
-                              likes: {},
+                              likes: {
+                                Provider
+                                    .of<CurrentUser>(context, listen: false)
+                                    .getCurrentUser
+                                    .uid : false
+                              },
                               createTime: Timestamp.now(),
                               comments: {},
                               trigger: function,
