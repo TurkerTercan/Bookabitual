@@ -196,53 +196,5 @@ class _FeedPageState extends State<FeedPage> {
     });
   }
 
-  getAllPosts(String uid) async {
-    getAllUserPost();
-    QuerySnapshot queryQuoteSnapshot = await BookDatabase().getUserQuotes(uid);
-    QuerySnapshot queryReviewSnapshot = await BookDatabase().getUserReviews(uid);
 
-    countPost = queryReviewSnapshot.docs.length + queryQuoteSnapshot.docs.length;
-
-    reviewPosts = queryReviewSnapshot.docs.map((documentSnapshot)  {
-      ReviewPost reviewPost = ReviewPost(
-        isbn: documentSnapshot.data()["isbn"],
-        uid: documentSnapshot.data()["uid"],
-        postID: documentSnapshot.data()["postID"],
-        createTime: documentSnapshot.data()["createTime"],
-        likes: documentSnapshot.data()["likes"],
-        rating: documentSnapshot.data()["rating"],
-        status: documentSnapshot.data()["status"],
-        text: documentSnapshot.data()["text"],
-        comments: documentSnapshot.data()["comments"],
-        trigger: triggerFuture,
-      );
-      return reviewPost;
-    }).toList();
-
-    await Future.forEach(reviewPosts, (element) async {
-      await element.updateInfo();
-    });
-
-    quotePosts = queryQuoteSnapshot.docs.map((documentSnapshot) {
-      QuotePost quotePost = QuotePost(
-        isbn: documentSnapshot.data()["isbn"],
-        uid: documentSnapshot.data()["uid"],
-        postID: documentSnapshot.data()["postID"],
-        createTime: documentSnapshot.data()["createTime"],
-        likes: documentSnapshot.data()["likes"],
-        status: documentSnapshot.data()["status"],
-        text: documentSnapshot.data()["text"],
-        comments: documentSnapshot.data()["comments"],
-        trigger: triggerFuture,
-      );
-      return quotePost;
-    }).toList();
-
-    await Future.forEach(quotePosts, (element) async {
-      await element.updateInfo();
-    });
-
-    postList.addAll(quotePosts);
-    postList.addAll(reviewPosts);
-  }
 }

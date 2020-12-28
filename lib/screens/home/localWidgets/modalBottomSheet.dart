@@ -149,7 +149,7 @@ void onButtonPressed(
                               if (valid.validateText(value) == TextValidationResults.EMPTY)
                                 return "Can not be empty";
                               else if (valid.validateText(value) == TextValidationResults.VALID)
-                                return "";
+                                return null;
                               else
                                 return "Given text can not be higher than 360 characters";
                             },
@@ -194,7 +194,6 @@ void onButtonPressed(
                     RaisedButton(
                       onPressed: () async {
                         _validateInputs();
-
                         if (_autovalidateMode != AutovalidateMode.always) {
                           String postID = Uuid().v4();
                           if (_selectedItem == postChoice[1]) {
@@ -258,4 +257,6 @@ void onButtonPressed(
       );
     },
   );
+
+
 }

@@ -223,8 +223,8 @@ class _QuotePostState extends State<QuotePost> {
                   child: Center(
                     child: AutoSizeText(
                       widget.text + "\n\n―" + widget.book.bookAuthor + " " + widget.book.bookTitle,
-                      minFontSize: 14,
-                      maxLines: 12,
+                      minFontSize: 12,
+                      maxLines: 7,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 25,

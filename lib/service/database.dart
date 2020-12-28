@@ -11,7 +11,6 @@ final bookReference = FirebaseFirestore.instance.collection("books");
 
 class BookDatabase {
   Future createQuote(QuotePost quote) async {
-
     //Dont delete it
     await postReference.doc(quote.uid).set({});
 
@@ -24,6 +23,12 @@ class BookDatabase {
       "likes" : quote.likes,
       "text" : quote.text,
       "comments" : quote.comments,
+    });
+
+    await bookReference.doc(quote.isbn).update({
+      "posts" : {
+        quote.postID : quote.uid
+      }
     });
   }
 
@@ -40,6 +45,12 @@ class BookDatabase {
       "rating" : review.rating,
       "text" : review.text,
       "comments" : review.comments,
+    });
+
+    await bookReference.doc(review.isbn).update({
+      "posts" : {
+        review.postID : review.uid
+      }
     });
   }
 
