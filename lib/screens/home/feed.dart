@@ -24,7 +24,8 @@ class _FeedPageState extends State<FeedPage> {
   List<Widget> postList = [];
   Future userFuture;
 
-  final GlobalKey<RefreshIndicatorState> _globalKey = new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _globalKey =
+      new GlobalKey<RefreshIndicatorState>();
 
   @override
   void initState() {
@@ -53,41 +54,46 @@ class _FeedPageState extends State<FeedPage> {
                 return Expanded(
                   child: Stack(
                     children: [
-                      postList.length == 0 ? Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: ProjectContainer(
-                            child: Text(
-                              "There is nothing to show here. \nFollow some of your friends or share some of your favorite books!",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                      postList.length == 0
+                          ? Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: ProjectContainer(
+                                  child: Text(
+                                    "There is nothing to show here. \nFollow some of your friends or share some of your favorite books!",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : RefreshIndicator(
+                              key: _globalKey,
+                              onRefresh: () {
+                                return Future.delayed(
+                                        Duration(milliseconds: 50))
+                                    .then((value) => {
+                                          setState(() {
+                                            userFuture = getAllUserPost();
+                                          })
+                                        });
+                              },
+                              child: ListView.builder(
+                                controller: _scrollController,
+                                physics: BouncingScrollPhysics(),
+                                itemCount: postList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    padding: EdgeInsets.only(
+                                        left: 10, right: 10, top: 10),
+                                    margin: EdgeInsets.only(bottom: 5),
+                                    child: postList[index],
+                                  );
+                                },
                               ),
                             ),
-                          ),
-                        ),
-                      ) : RefreshIndicator(
-                        key: _globalKey,
-                        onRefresh: () {
-                          return Future.delayed(Duration(milliseconds: 50)).then((value) => {
-                            setState(() {
-                              userFuture = getAllUserPost();
-                            })
-                          });
-                        },
-                        child: ListView.builder(
-                          controller: _scrollController,
-                          physics: BouncingScrollPhysics(),
-                          itemCount: postList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                              padding: EdgeInsets.only(left: 10, right: 10, top: 10),
-                              margin: EdgeInsets.only(bottom: 5),
-                              child: postList[index],
-                            );
-                          },
-                        ),
-                      ),
                       Positioned(
                         right: 10,
                         bottom: 10,
@@ -103,7 +109,11 @@ class _FeedPageState extends State<FeedPage> {
                                   borderRadius: BorderRadius.circular(18.0),
                                 ),
                                 onPressed: () => onButtonPressed(
-                                    context, postList, setState, _scrollController, triggerFuture),
+                                    context,
+                                    postList,
+                                    setState,
+                                    _scrollController,
+                                    triggerFuture),
                                 child: Row(
                                   children: [
                                     Icon(Icons.add, color: Colors.grey[200]),
@@ -124,11 +134,11 @@ class _FeedPageState extends State<FeedPage> {
                     ],
                   ),
                 );
+              } else {
+                return Expanded(
+                    child: Center(child: CircularProgressIndicator()));
               }
-              else {
-                return Expanded(child: Center(child: CircularProgressIndicator()));
-              }
-            } ,
+            },
           ),
         ],
       ),
@@ -140,11 +150,14 @@ class _FeedPageState extends State<FeedPage> {
     var temp = await FirebaseFirestore.instance.collection("Posts").get();
     List unsorted = [];
     await Future.forEach(temp.docs, (element) async {
-      QuerySnapshot queryQuoteSnapshot = await BookDatabase().getUserQuotes(element.id);
-      QuerySnapshot queryReviewSnapshot = await BookDatabase().getUserReviews(element.id);
-      countPost += queryReviewSnapshot.docs.length + queryQuoteSnapshot.docs.length;
+      QuerySnapshot queryQuoteSnapshot =
+          await BookDatabase().getUserQuotes(element.id);
+      QuerySnapshot queryReviewSnapshot =
+          await BookDatabase().getUserReviews(element.id);
+      countPost +=
+          queryReviewSnapshot.docs.length + queryQuoteSnapshot.docs.length;
 
-      reviewPosts = queryReviewSnapshot.docs.map((documentSnapshot)  {
+      reviewPosts = queryReviewSnapshot.docs.map((documentSnapshot) {
         ReviewPost reviewPost = ReviewPost(
           isbn: documentSnapshot.data()["isbn"],
           uid: documentSnapshot.data()["uid"],
@@ -195,6 +208,4 @@ class _FeedPageState extends State<FeedPage> {
       postList.add(element);
     });
   }
-
-
 }

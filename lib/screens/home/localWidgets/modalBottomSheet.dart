@@ -142,7 +142,9 @@ void onButtonPressed(
                             decoration: InputDecoration(
                               alignLabelWithHint: true,
                               prefixIcon: Icon(Icons.rate_review),
-                              hintText: _selectedItem == postChoice[0] ? "Quote" : "Review",
+                              hintText: _selectedItem == postChoice[0]
+                                  ? "Quote"
+                                  : "Review",
                             ),
                             validator: (value) {
                               var valid = new Validator();
@@ -215,6 +217,7 @@ void onButtonPressed(
                               },
                               comments: {},
                               createTime: Timestamp.now(),
+                              trigger: function,
                             );
                             await temp.updateInfo();
                             await BookDatabase().createReview(temp);

@@ -1,12 +1,16 @@
+import 'dart:ui';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bookabitual/models/book.dart';
 import 'package:bookabitual/models/bookworm.dart';
+import 'package:bookabitual/screens/book/bookpage.dart';
 import 'package:bookabitual/screens/comment/quoteComment.dart';
 import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../utils/avatarPictures.dart';
 import 'ProjectContainer.dart';
 
@@ -194,7 +198,7 @@ class _QuotePostState extends State<QuotePost> {
           Stack(
             children: [
               Container(
-                height: MediaQuery.of(context).size.width - 50,
+                height: MediaQuery.of(context).size.width * 0.88,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [
@@ -206,44 +210,56 @@ class _QuotePostState extends State<QuotePost> {
                     ),
                   ],
                   image: DecorationImage(
-                    image: CachedNetworkImageProvider(widget.book.imageUrlL),
                     colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.55), BlendMode.darken),
-                    //image: NetworkImage(widget.book.imageUrlL),
+                    image: CachedNetworkImageProvider(widget.book.imageUrlL),
+                    // image: NetworkImage(widget.book.imageUrlL),
                     fit: BoxFit.cover,
                   ),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Center(
-                    child: AutoSizeText(
-                      widget.text + "\n\n―" + widget.book.bookAuthor + " " + widget.book.bookTitle,
-                      minFontSize: 12,
-                      maxLines: 7,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.grey[400],
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        textBaseline: TextBaseline.alphabetic,
-                        shadows: [
-                          Shadow(
-                            offset: Offset(-2, -2),
-                            color: Colors.grey[900],
-                          ),
-                          Shadow(
-                            offset: Offset(2, -2),
-                            color: Colors.grey[900],
-                          ),
-                          Shadow(
-                            offset: Offset(2, 2),
-                            color: Colors.grey[900],
-                          ),
-                          Shadow(
-                            offset: Offset(-2, 2),
-                            color: Colors.grey[900],
-                          ),
-                        ],
+                    child: GestureDetector(
+                      onDoubleTap: () {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => BookPage(book: widget.book,),
+                        ),);
+                      },
+                      child: AutoSizeText(
+                        widget.text + "\n\n―" + widget.book.bookTitle + ",\n" + widget.book.bookAuthor,
+                        overflow: TextOverflow.ellipsis,
+                        minFontSize: 8,
+                        maxLines: 17,
+                        textAlign: TextAlign.justify,
+                        style: GoogleFonts.openSans(
+                          fontSize: 25,
+                          color: Colors.grey[400],
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.normal,
+                          textBaseline: TextBaseline.alphabetic,
+                          shadows: [
+                            Shadow(
+                              offset: Offset(-2, -2),
+                              color: Colors.grey[900],
+                              blurRadius: 8,
+                            ),
+                            Shadow(
+                              offset: Offset(2, -2),
+                              color: Colors.grey[900],
+                              blurRadius: 8,
+                            ),
+                            Shadow(
+                              offset: Offset(2, 2),
+                              color: Colors.grey[900],
+                              blurRadius: 8,
+                            ),
+                            Shadow(
+                              offset: Offset(-2, 2),
+                              color: Colors.grey[900],
+                              blurRadius: 8,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

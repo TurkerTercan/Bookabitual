@@ -174,22 +174,34 @@ class _SmallPostQuoteState extends State<SmallPostQuote> {
                   width: MediaQuery.of(context).size.width * 0.6,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: Theme.of(context).primaryColor,
+                    color: Colors.orange[0],
                     border: Border.all(color: Theme.of(context).accentColor),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        spreadRadius: 5,
+                        blurRadius: 50,
+                        offset: Offset(0, 10),
+                      ),
+                    ],
                   ),
-                  child: Center(
-                    child: AutoSizeText(
-                      widget.post.text + "\n\n―" + widget.post.book.bookTitle + "\n " + widget.post.book.bookAuthor,
-                      minFontSize: 10,
-                      maxLines: 12,
-                      wrapWords: true,
-                      overflow: TextOverflow.clip,
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.normal,
-                        textBaseline: TextBaseline.alphabetic,
+                  child: Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Center(
+                      child: AutoSizeText(
+                        widget.post.text + "\n\n―" + widget.post.book.bookTitle + "\n " + widget.post.book.bookAuthor,
+                        minFontSize: 8,
+                        maxLines: 11,
+                        wrapWords: true,
+                        overflow: TextOverflow.clip,
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.grey[600],
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.normal,
+                          textBaseline: TextBaseline.alphabetic,
+                        ),
                       ),
                     ),
                   ),

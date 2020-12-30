@@ -24,12 +24,6 @@ class BookDatabase {
       "text" : quote.text,
       "comments" : quote.comments,
     });
-
-    await bookReference.doc(quote.isbn).update({
-      "posts" : {
-        quote.postID : quote.uid
-      }
-    });
   }
 
   Future createReview(ReviewPost review) async {
@@ -45,12 +39,6 @@ class BookDatabase {
       "rating" : review.rating,
       "text" : review.text,
       "comments" : review.comments,
-    });
-
-    await bookReference.doc(review.isbn).update({
-      "posts" : {
-        review.postID : review.uid
-      }
     });
   }
 
@@ -113,6 +101,7 @@ class BookDatabase {
       retValBook.publisher = _docSnapshot.get("Publisher");
       retValBook.ratings = _docSnapshot.get("Ratings");
       retValBook.yearOfPublication = _docSnapshot.get("Year-Of-Publication");
+      retValBook.isbn = isbn;
     } catch(e) {
       print(e);
     }

@@ -43,6 +43,7 @@ dependencies:
   google_sign_in_mocks: ^0.1.0+2
   flutter_driver_helper: ^1.1.1
   cached_network_image: ^2.5.0
+  flutter_rating_bar: ^3.2.0+1
 
 dev_dependencies:
   flutter_test:

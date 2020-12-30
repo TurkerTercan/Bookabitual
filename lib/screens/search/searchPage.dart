@@ -41,7 +41,7 @@ class _SearchPageState extends State<SearchPage> {
     ),
     new Book(
       isbn: "312868308",
-      bookTitle: "Flesh and GoldFlesh and GoldFlesh and GoldFlesh and Gold",
+      bookTitle: "Flesh and Gold",
       bookAuthor: "Phyllis Gotlieb",
       yearOfPublication: 1999,
       publisher: "Tor Books",
