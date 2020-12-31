@@ -102,10 +102,10 @@ class _ProfilePageState extends State<ProfilePage> {
     postList.addAll(quotePosts);
 
     for (int i = 0; i < postList.length; i++) {
-      var a = postList[i].createTime;
-      for (int j = i + 1; j < postList.length; j++) {
-        var b = postList[i].createTime;
-        if (b < a) {
+      Timestamp a = postList[i].createTime;
+      for (int j = 0 ; j < postList.length; j++) {
+        Timestamp b = postList[j].createTime;
+        if (b.compareTo(a) < 0) {
           var temp1 = postList[i];
           var temp2 = boolList[i];
 
@@ -347,8 +347,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           top: 10),
                                                       margin: EdgeInsets.only(
                                                           bottom: 5),
-                                                      child: boolList[index] ? SmallPostReview(post: postList[index],)
-                                                          : SmallPostQuote(post: postList[index]),
+                                                      child: boolList[index] ? SmallPostReview(post: postList[index], canBeDeleted: true,)
+                                                          : SmallPostQuote(post: postList[index], canBeDeleted: true,),
                                                     );
                                                   },
                                                 ),
@@ -384,7 +384,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: <Widget>[
                         IconButton(
                           onPressed: () {
-                            editModalBottomSheet();
+                            editModalBottomSheet(setState);
                           },
                           icon: Icon(
                             Icons.edit,
@@ -428,7 +428,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  editModalBottomSheet()  {
+  editModalBottomSheet(StateSetter beforeState)  {
      showModalBottomSheet<dynamic>(
       context: context,
       isScrollControlled: true,
@@ -526,6 +526,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           Provider.of<CurrentUser>(context, listen: false)
                               .saveInfo(currentIndex, _nameController.text);
                           Navigator.maybePop(context);
+                          beforeState(() {
+                            currentUser = Provider.of<CurrentUser>(context, listen: false)
+                                .getCurrentUser;
+                            profileFuture = getAllPosts(currentUser.uid);
+                          });
                         }
                       },
                       child: Padding(
@@ -544,15 +549,7 @@ class _ProfilePageState extends State<ProfilePage> {
           );
         });
       },
-    ).then((value) {
-      setState(() {
-        currentIndex = Provider.of<CurrentUser>(context, listen: false)
-            .getCurrentUser
-            .photoIndex;
-        currentUser =
-            Provider.of<CurrentUser>(context, listen: false).getCurrentUser;
-      });
-    });
+    );
   }
 
   getAvatars(int index, StateSetter setState) {

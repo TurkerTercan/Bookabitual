@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:bookabitual/screens/comment/quoteComment.dart';
 import 'package:bookabitual/screens/comment/reviewComment.dart';
 import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/states/currentUser.dart';
@@ -12,8 +11,9 @@ import 'ProjectContainer.dart';
 
 class SmallPostReview extends StatefulWidget {
   final dynamic post;
+  final bool canBeDeleted;
 
-  const SmallPostReview({Key key, this.post}) : super(key: key);
+  const SmallPostReview({Key key, @required this.post, @required this.canBeDeleted}) : super(key: key);
 
   @override
   _SmallPostReviewState createState() => _SmallPostReviewState();
@@ -146,7 +146,7 @@ class _SmallPostReviewState extends State<SmallPostReview> {
                   )
                 ],
               ),
-              IconButton(
+              widget.canBeDeleted ? IconButton(
                 icon: Icon(Icons.more_vert),
                 onPressed: () {
                   postReference
@@ -156,7 +156,7 @@ class _SmallPostReviewState extends State<SmallPostReview> {
                       .delete();
                   widget.post.trigger();
                 },
-              )
+              ) : Container(),
             ],
           ),
           SizedBox(

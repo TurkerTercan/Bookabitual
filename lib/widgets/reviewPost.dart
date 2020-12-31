@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bookabitual/models/book.dart';
 import 'package:bookabitual/models/bookworm.dart';
+import 'package:bookabitual/screens/anotherProfile/anotherProfile.dart';
 import 'package:bookabitual/screens/book/bookpage.dart';
 import 'package:bookabitual/screens/comment/reviewComment.dart';
 import 'package:bookabitual/states/currentUser.dart';
@@ -27,24 +28,19 @@ class ReviewPost extends StatefulWidget {
   Bookworm user;
   Book book;
 
-  ReviewPost({Key key, this.postID,
-    this.isbn, this.rating,
-    this.uid, this.text,
-    this.createTime, this.status,
-    this.likes, this.trigger, this.comments}) : super(key: key);
+  ReviewPost({Key key,
+    @required this.postID,
+    @required this.isbn,
+    @required this.rating,
+    @required this.uid,
+    @required this.text,
+    @required this.createTime,
+    @required this.status,
+    @required this.likes,
+    @required this.trigger,
+    @required this.comments
+  }) : super(key: key);
 
-  factory ReviewPost.fromDocument(DocumentSnapshot documentSnapshot) {
-    return ReviewPost(
-      isbn: documentSnapshot.data()["isbn"],
-      uid: documentSnapshot.data()["uid"],
-      postID: documentSnapshot.data()["postID"],
-      createTime: documentSnapshot.data()["createTime"],
-      likes: documentSnapshot.data()["likes"],
-      rating: documentSnapshot.data()["rating"],
-      status: documentSnapshot.data()["status"],
-      text: documentSnapshot.data()["text"],
-    );
-  }
 
   int getTotalNumberOfLikes(likes){
     if(likes == null){
@@ -71,6 +67,7 @@ class ReviewPost extends StatefulWidget {
 }
 
 class _ReviewPostState extends State<ReviewPost> {
+
   int likeCount;
   bool _isLiked = false;
   Map likes;
@@ -146,9 +143,16 @@ class _ReviewPostState extends State<ReviewPost> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundImage: AssetImage(avatars[widget.user.photoIndex]),
+                  GestureDetector(
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundImage: AssetImage(avatars[widget.user.photoIndex]),
+                    ),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => AnotherProfilePage(user: widget.user,),
+                      ),);
+                    },
                   ),
                   SizedBox(width: 5,),
                   Column(
@@ -197,7 +201,7 @@ class _ReviewPostState extends State<ReviewPost> {
           Stack(
             children: [
               Container(
-                height: MediaQuery.of(context).size.width * 0.88,
+                height: MediaQuery.of(context).size.height * 0.44,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [

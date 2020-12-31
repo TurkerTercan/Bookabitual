@@ -11,8 +11,9 @@ import 'ProjectContainer.dart';
 
 class SmallPostQuote extends StatefulWidget {
   final dynamic post;
+  final bool canBeDeleted;
 
-  const SmallPostQuote({Key key, this.post}) : super(key: key);
+  const SmallPostQuote({Key key, @required this.post, @required this.canBeDeleted}) : super(key: key);
 
   @override
   _SmallPostQuoteState createState() => _SmallPostQuoteState();
@@ -145,7 +146,7 @@ class _SmallPostQuoteState extends State<SmallPostQuote> {
                   )
                 ],
               ),
-              IconButton(
+              widget.canBeDeleted ? IconButton(
                 icon: Icon(Icons.more_vert),
                 onPressed: () {
                   postReference
@@ -155,7 +156,7 @@ class _SmallPostQuoteState extends State<SmallPostQuote> {
                       .delete();
                   widget.post.trigger();
                 },
-              )
+              ) : Container(),
             ],
           ),
           SizedBox(

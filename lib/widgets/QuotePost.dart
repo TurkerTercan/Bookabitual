@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bookabitual/models/book.dart';
 import 'package:bookabitual/models/bookworm.dart';
+import 'package:bookabitual/screens/anotherProfile/anotherProfile.dart';
 import 'package:bookabitual/screens/book/bookpage.dart';
 import 'package:bookabitual/screens/comment/quoteComment.dart';
 import 'package:bookabitual/service/database.dart';
@@ -28,23 +29,15 @@ class QuotePost extends StatefulWidget {
   Bookworm user;
   Book book;
 
-  QuotePost({Key key, this.postID,
-    this.isbn,
-    this.uid, this.text,
-    this.createTime, this.status,
-    this.likes, this.comments, this.trigger}) : super(key: key);
-
-  factory QuotePost.fromDocument(DocumentSnapshot documentSnapshot){
-    return QuotePost(
-      isbn: documentSnapshot.data()["isbn"],
-      uid: documentSnapshot.data()["uid"],
-      postID: documentSnapshot.data()["postID"],
-      createTime: documentSnapshot.data()["createTime"],
-      likes: documentSnapshot.data()["likes"],
-      status: documentSnapshot.data()["status"],
-      text: documentSnapshot.data()["text"],
-    );
-  }
+  QuotePost({Key key, @required  this.postID,
+    @required this.isbn,
+    @required this.uid,
+    @required  this.text,
+    @required this.createTime,
+    @required this.status,
+    @required this.likes,
+    @required this.comments,
+    @required this.trigger,}) : super(key: key);
 
   int getTotalNumberOfLikes(likes){
     if(likes == null){
@@ -146,9 +139,16 @@ class _QuotePostState extends State<QuotePost> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundImage: AssetImage(avatars[widget.user.photoIndex]),
+                  GestureDetector(
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundImage: AssetImage(avatars[widget.user.photoIndex]),
+                    ),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => AnotherProfilePage(user: widget.user,),
+                      ),);
+                    },
                   ),
                   SizedBox(width: 5,),
                   Column(
@@ -198,7 +198,7 @@ class _QuotePostState extends State<QuotePost> {
           Stack(
             children: [
               Container(
-                height: MediaQuery.of(context).size.width * 0.88,
+                height: MediaQuery.of(context).size.height * 0.44,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [
