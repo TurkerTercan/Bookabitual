@@ -190,16 +190,82 @@ class _ReviewPostState extends State<ReviewPost> {
               ),
               isQuoteOwner ? IconButton(
                 icon: Icon(Icons.more_vert),
-                onPressed: () async {
-                  await postReference.doc(widget.uid).collection("userReviews").doc(widget.postID).delete();
-                  var temp = await bookReference.doc(widget.isbn).get();
-                  var postMap = temp.data()["posts"];
-                  postMap[widget.uid].remove(widget.postID);
-                  if (postMap[widget.uid].isEmpty)
-                    postMap.remove(widget.uid);
-                  await bookReference.doc(widget.isbn).update({"posts": postMap});
-                  widget.trigger();
-                },
+                  onPressed: () async {
+                    showDialog(context: context, builder: (context) {
+                      return Dialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height / 5,
+                          width: MediaQuery.of(context).size.width * 0.66,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                child: Text(
+                                  "Do you really want to delete the post you selected?",
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.staatliches(
+                                    color: Colors.black54,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  SizedBox(
+                                    child: FlatButton(
+                                      child: Text(
+                                        "yes",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.staatliches(
+                                          color: Colors.lightBlueAccent,
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        await postReference.doc(widget.uid).collection("usersQuotes").doc(widget.postID).delete();
+                                        var temp = await bookReference.doc(widget.isbn).get();
+                                        var postMap = temp.data()["posts"];
+                                        postMap[widget.uid].remove(widget.postID);
+                                        if (postMap[widget.uid].isEmpty)
+                                          postMap.remove(widget.uid);
+                                        await bookReference.doc(widget.isbn).update({"posts": postMap});
+                                        widget.trigger();
+                                        Navigator.maybePop(context);
+                                      },
+                                    ),
+                                    width: MediaQuery.of(context).size.width * 0.25,
+                                  ),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width * 0.25,
+                                    child: FlatButton(
+                                      child: Text(
+                                        "no",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.staatliches(
+                                          color: Colors.lightBlueAccent,
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.maybePop(context);
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+                  },
               ) : Container(),
             ],
           ),

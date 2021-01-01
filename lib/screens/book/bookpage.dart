@@ -400,7 +400,7 @@ class _BookPageState extends State<BookPage> {
               ],
             ),
             child: Card(
-              color: Colors.grey[300],
+              color: Colors.grey[200],
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),

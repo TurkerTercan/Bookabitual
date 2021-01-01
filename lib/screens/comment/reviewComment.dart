@@ -7,6 +7,7 @@ import 'package:bookabitual/utils/avatarPictures.dart';
 import 'package:bookabitual/widgets/ProjectContainer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class ReviewComment extends StatefulWidget {
@@ -284,7 +285,86 @@ class _ReviewCommentState extends State<ReviewComment> {
                 child: IconButton(
                     icon: Icon(Icons.delete, color: Colors.red[300],),
                     onPressed: () {
-                      widget.comments[commentUser.uid].remove(comment);
+                      showDialog(context: context, builder: (context) {
+                        return Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Container(
+                            height: MediaQuery.of(context).size.height / 5,
+                            width: MediaQuery.of(context).size.width * 0.66,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    "Do you really want to delete the post you selected?",
+                                    textAlign: TextAlign.center,
+                                    style: GoogleFonts.staatliches(
+                                      color: Colors.black54,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    SizedBox(
+                                      child: FlatButton(
+                                        child: Text(
+                                          "yes",
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.staatliches(
+                                            color: Colors.lightBlueAccent,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                        onPressed: () async {
+                                          if (widget.comments[commentUser.uid].isEmpty)
+                                            widget.comments.remove(commentUser.uid);
+                                          postReference
+                                              .doc(widget.user.uid)
+                                              .collection("usersReviews")
+                                              .doc(widget.postID)
+                                              .update({"comments": widget.comments});
+                                          setState(() {
+                                            commentWidgets.clear();
+                                            commentFuture = _getAllComments();
+                                          });
+                                          Navigator.maybePop(context);
+                                        },
+                                      ),
+                                      width: MediaQuery.of(context).size.width * 0.25,
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width * 0.25,
+                                      child: FlatButton(
+                                        child: Text(
+                                          "no",
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.staatliches(
+                                            color: Colors.lightBlueAccent,
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.maybePop(context);
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      });
+
+
+                      /*widget.comments[commentUser.uid].remove(comment);
                       if (widget.comments[commentUser.uid].isEmpty)
                         widget.comments.remove(commentUser.uid);
                       postReference
@@ -295,7 +375,7 @@ class _ReviewCommentState extends State<ReviewComment> {
                       setState(() {
                         commentWidgets.clear();
                         commentFuture = _getAllComments();
-                      });
+                      });*/
                     }),
               ) : Container(),
             ],

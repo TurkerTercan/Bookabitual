@@ -152,18 +152,84 @@ class _SmallPostQuoteState extends State<SmallPostQuote> {
               widget.canBeDeleted ? IconButton(
                 icon: Icon(Icons.more_vert),
                 onPressed: () async {
-                  postReference
-                      .doc(widget.post.uid)
-                      .collection("usersQuotes")
-                      .doc(widget.post.postID)
-                      .delete();
-                  var temp = await bookReference.doc(widget.post.isbn).get();
-                  var postMap = temp.data()["posts"];
-                  postMap[widget.post.uid].remove(widget.post.postID);
-                  if (postMap[widget.post.uid].isEmpty)
-                    postMap.remove(widget.post.uid);
-                  await bookReference.doc(widget.post.isbn).update({"posts": postMap});
-                  widget.post.trigger();
+                  showDialog(context: context, builder: (context) {
+                    return Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height / 5,
+                        width: MediaQuery.of(context).size.width * 0.66,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              child: Text(
+                                "Do you really want to delete the post you selected?",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.staatliches(
+                                  color: Colors.black54,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                SizedBox(
+                                  child: FlatButton(
+                                    child: Text(
+                                      "yes",
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.staatliches(
+                                        color: Colors.lightBlueAccent,
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                    onPressed: () async {
+                                      postReference
+                                          .doc(widget.post.uid)
+                                          .collection("usersQuotes")
+                                          .doc(widget.post.postID)
+                                          .delete();
+                                      var temp = await bookReference.doc(widget.post.isbn).get();
+                                      var postMap = temp.data()["posts"];
+                                      postMap[widget.post.uid].remove(widget.post.postID);
+                                      if (postMap[widget.post.uid].isEmpty)
+                                        postMap.remove(widget.post.uid);
+                                      await bookReference.doc(widget.post.isbn).update({"posts": postMap});
+                                      widget.post.trigger();
+                                      Navigator.maybePop(context);
+                                    },
+                                  ),
+                                  width: MediaQuery.of(context).size.width * 0.25,
+                                ),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width * 0.25,
+                                  child: FlatButton(
+                                    child: Text(
+                                      "no",
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.staatliches(
+                                        color: Colors.lightBlueAccent,
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.maybePop(context);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  });
                 },
               ) : Container(),
             ],
