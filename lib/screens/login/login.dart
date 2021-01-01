@@ -2,7 +2,6 @@ import 'package:bookabitual/screens/login/localwidget/loginForm.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
-  LoginPage();
 
   @override
   Widget build(BuildContext context) {

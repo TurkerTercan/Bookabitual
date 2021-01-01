@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bookabitual/screens/book/bookpage.dart';
 import 'package:bookabitual/screens/comment/reviewComment.dart';
 import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/states/currentUser.dart';
@@ -6,6 +7,7 @@ import 'package:bookabitual/utils/avatarPictures.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'ProjectContainer.dart';
 
@@ -148,12 +150,18 @@ class _SmallPostReviewState extends State<SmallPostReview> {
               ),
               widget.canBeDeleted ? IconButton(
                 icon: Icon(Icons.more_vert),
-                onPressed: () {
+                onPressed: () async {
                   postReference
                       .doc(widget.post.uid)
                       .collection("usersReviews")
                       .doc(widget.post.postID)
                       .delete();
+                  var temp = await bookReference.doc(widget.post.isbn).get();
+                  var postMap = temp.data()["posts"];
+                  postMap[widget.post.uid].remove(widget.post.postID);
+                  if (postMap[widget.post.uid].isEmpty)
+                    postMap.remove(widget.post.uid);
+                  await bookReference.doc(widget.post.isbn).update({"posts": postMap});
                   widget.post.trigger();
                 },
               ) : Container(),
@@ -167,30 +175,39 @@ class _SmallPostReviewState extends State<SmallPostReview> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Image(
-                  image: CachedNetworkImageProvider(widget.post.book.imageUrlM),
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.width * 0.8,
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Theme.of(context).primaryColor,
-                    border: Border.all(color: Theme.of(context).accentColor),
+                GestureDetector(
+                  child: Image(
+                    image: NetworkImage(widget.post.book.imageUrlM),
+                    alignment: Alignment.center,
+                    fit: BoxFit.fitHeight,
                   ),
-                  child: Center(
-                    child: AutoSizeText(
-                      widget.post.text + "\n\n―" + widget.post.book.bookTitle + "\n " + widget.post.book.bookAuthor,
-                      minFontSize: 10,
-                      maxLines: 12,
-                      wrapWords: true,
-                      overflow: TextOverflow.clip,
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.normal,
-                        textBaseline: TextBaseline.alphabetic,
+                  onDoubleTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => BookPage(book: widget.post.book,),
+                    ),);
+                  },
+                ),
+                SizedBox(width: 3),
+                Expanded(
+                  child: Container(
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Center(
+                        child: AutoSizeText(
+                          widget.post.text + "\n\n―" + widget.post.book.bookTitle + "\n " + widget.post.book.bookAuthor,
+                          minFontSize: 8,
+                          maxLines: 11,
+                          wrapWords: true,
+                          overflow: TextOverflow.clip,
+                          textAlign: TextAlign.justify,
+                          style: GoogleFonts.openSans(
+                            fontSize: 22,
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                            textBaseline: TextBaseline.alphabetic,
+                          ),
+                        ),
                       ),
                     ),
                   ),

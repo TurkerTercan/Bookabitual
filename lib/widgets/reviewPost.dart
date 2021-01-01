@@ -190,8 +190,14 @@ class _ReviewPostState extends State<ReviewPost> {
               ),
               isQuoteOwner ? IconButton(
                 icon: Icon(Icons.more_vert),
-                onPressed: () {
-                  postReference.doc(widget.uid).collection("usersReviews").doc(widget.postID).delete();
+                onPressed: () async {
+                  await postReference.doc(widget.uid).collection("userReviews").doc(widget.postID).delete();
+                  var temp = await bookReference.doc(widget.isbn).get();
+                  var postMap = temp.data()["posts"];
+                  postMap[widget.uid].remove(widget.postID);
+                  if (postMap[widget.uid].isEmpty)
+                    postMap.remove(widget.uid);
+                  await bookReference.doc(widget.isbn).update({"posts": postMap});
                   widget.trigger();
                 },
               ) : Container(),

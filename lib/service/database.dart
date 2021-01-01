@@ -24,6 +24,25 @@ class BookDatabase {
       "text" : quote.text,
       "comments" : quote.comments,
     });
+    var temp = await bookReference.doc(quote.isbn).get();
+    var retVal = temp.data();
+
+    if(retVal["posts"] == null) {
+      await bookReference.doc(quote.isbn).update({"posts": {
+        quote.uid : {
+          quote.postID: "userQuotes"
+        }
+      }});
+    } else {
+      var postMap = retVal["posts"];
+      if(postMap[quote.uid] == null) {
+        postMap[quote.uid] = new Map<String, String>();
+        postMap[quote.uid][quote.postID] = "userQuotes";
+      } else {
+        postMap[quote.uid][quote.postID] = "userQuotes";
+      }
+      await bookReference.doc(quote.isbn).update({"posts": postMap});
+    }
   }
 
   Future createReview(ReviewPost review) async {
@@ -40,6 +59,26 @@ class BookDatabase {
       "text" : review.text,
       "comments" : review.comments,
     });
+
+    var temp = await bookReference.doc(review.isbn).get();
+    var retVal = temp.data();
+
+    if(retVal["posts"] == null) {
+      await bookReference.doc(review.isbn).update({"posts": {
+        review.uid : {
+          review.postID: "userReviews"
+        }
+      }});
+    } else {
+      var postMap = retVal["posts"];
+      if(postMap[review.uid] == null) {
+        postMap[review.uid] = new Map<String, String>();
+        postMap[review.uid][review.postID] = "userReviews";
+      } else {
+        postMap[review.uid][review.postID] = "userReviews";
+      }
+      await bookReference.doc(review.isbn).update({"posts": postMap});
+    }
   }
 
   Future<String> createUser(Bookworm user) async {
