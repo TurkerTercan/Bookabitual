@@ -1,3 +1,4 @@
+import 'package:bookabitual/keys.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/widgets/ProjectContainer.dart';
 import 'package:flutter/material.dart';
@@ -75,6 +76,7 @@ class _SignUpFormState extends State<SignUpForm> {
               ),
             ),
             TextFormField(
+              key: Key(Keys.signup_email),
               controller: _emailController,
               decoration: InputDecoration(
                   prefixIcon: Icon(Icons.alternate_email),
@@ -92,6 +94,7 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
             SizedBox(height: 20.0,),
             TextFormField(
+              key: Key(Keys.username),
               controller: _usernameController,
               decoration: InputDecoration(
                   prefixIcon: Icon(Icons.account_circle_outlined),
@@ -113,6 +116,7 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
             SizedBox(height: 20.0,),
             TextFormField(
+              key: Key(Keys.signup_password),
               controller: _passwordController,
               decoration: InputDecoration(
                   prefixIcon: Icon(Icons.lock_outline),
@@ -135,6 +139,7 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
             SizedBox(height: 20.0,),
             TextFormField(
+              key: Key(Keys.signup_confirmPassword),
               controller: _confirmPasswordController,
               decoration: InputDecoration(
                   prefixIcon: Icon(Icons.lock_outline),
@@ -150,6 +155,7 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
             SizedBox(height: 20.0,),
             RaisedButton(
+              key: Key(Keys.signupButton),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 100),
                 child: Text("SIGN UP",

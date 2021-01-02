@@ -1,7 +1,5 @@
 import 'package:bookabitual/screens/login/login.dart';
 import 'package:bookabitual/states/currentUser.dart';
-import 'package:firebase/firebase.dart';
-import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';

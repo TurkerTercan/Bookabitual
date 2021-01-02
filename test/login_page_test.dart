@@ -154,4 +154,5 @@ void main() {
 
     verify(mockCurrent.loginUserWithGoogle()).called(1);
   });
+
 }

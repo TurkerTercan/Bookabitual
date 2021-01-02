@@ -132,7 +132,7 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
             TextFormField(
-              key: Key(Keys.email),
+              key: Key(Keys.login_email),
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
@@ -151,7 +151,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             SizedBox(height: 20.0,),
             TextFormField(
-              key: Key(Keys.password),
+              key: Key(Keys.login_password),
               controller: _passwordController,
               decoration: InputDecoration(
                   prefixIcon: Icon(Icons.lock_outline),
