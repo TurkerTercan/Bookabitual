@@ -15,11 +15,11 @@ import '../../states/currentUser.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  ProfilePageState createState() => ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  TextEditingController _nameController = TextEditingController();
+class ProfilePageState extends State<ProfilePage> {
+  TextEditingController nameController = TextEditingController();
   Bookworm currentUser;
   int currentIndex;
   final List postList = <Widget>[];
@@ -132,7 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     currentUser = Provider.of<CurrentUser>(context).getCurrentUser;
-    _nameController.text = currentUser.name;
+    nameController.text = currentUser.name;
     currentIndex = currentUser.photoIndex;
 
     ScrollController _scrollController = new ScrollController();
@@ -433,6 +433,7 @@ class _ProfilePageState extends State<ProfilePage> {
   editModalBottomSheet(StateSetter beforeState)  {
      showModalBottomSheet<dynamic>(
       context: context,
+      useRootNavigator: true,
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -447,7 +448,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: SingleChildScrollView(
               child: Container(
-                height: MediaQuery.of(context).size.height / 2,
+                height: MediaQuery.of(context).size.height,
                 child: ListView(
                   padding: EdgeInsets.all(10.0),
                   children: <Widget>[
@@ -489,7 +490,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                       scrollDirection: Axis.horizontal,
                                       children: <Widget>[
                                         getAvatars(0, setState),
-                                        getAvatars(1, setState),
+                                        Container(
+                                          key: Key(Keys.SecondAvatarKey),
+                                          child:getAvatars(1, setState),
+                                        ),
                                         getAvatars(2, setState),
                                         getAvatars(3, setState),
                                         getAvatars(4, setState),
@@ -515,7 +519,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           TextFormField(
                             decoration: InputDecoration(labelText: "Name"),
                             //  validator: validateFirstName,
-                            controller: _nameController,
+                            controller: nameController,
                           ),
                         ],
                       ),
@@ -524,20 +528,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     SizedBox(height: 20, width: 30),
                     RaisedButton(
                       onPressed: () {
-                        if (_nameController.text != "") {
-                          Provider.of<CurrentUser>(context, listen: false)
-                              .saveInfo(currentIndex, _nameController.text);
-                          Navigator.maybePop(context);
-                          beforeState(() {
-                            currentUser = Provider.of<CurrentUser>(context, listen: false)
-                                .getCurrentUser;
-                            profileFuture = getAllPosts(currentUser.uid);
-                          });
-                        }
+                        saveFuction(beforeState);
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 100),
                         child: Text("SAVE",
+
+                            key: Key(Keys.SaveButton),
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -552,6 +549,18 @@ class _ProfilePageState extends State<ProfilePage> {
         });
       },
     );
+  }
+  saveFuction(beforeState) {
+    if (nameController.text != "") {
+      Provider.of<CurrentUser>(context, listen: false)
+          .saveInfo(currentIndex, nameController.text);
+      Navigator.maybePop(context);
+      beforeState(() {
+        currentUser = Provider.of<CurrentUser>(context, listen: false)
+            .getCurrentUser;
+        profileFuture = getAllPosts(currentUser.uid);
+      });
+    }
   }
 
   getAvatars(int index, StateSetter setState) {

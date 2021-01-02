@@ -18,6 +18,10 @@ class Keys {
 
   static const String LogoutButton = 'LogoutButton';
   static const String EditButton = 'EditButton';
+  static const String EditModalBottomSheet = 'EditModalBottomSheet';
+  static const String SecondAvatarKey = 'SecondAvatarKey';
+  static const String SaveButton = 'SaveButton';
+
 
 
 

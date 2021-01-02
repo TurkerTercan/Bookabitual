@@ -385,7 +385,7 @@ class _BookPageState extends State<BookPage> {
     return Column(
       children: [
         Container(
-          width: MediaQuery.of(context).size.width * 0.80,
+          width: MediaQuery.of(context).size.width * 0.85,
           child: Container(
             decoration: BoxDecoration(
               boxShadow: [
