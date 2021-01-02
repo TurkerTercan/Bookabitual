@@ -66,9 +66,8 @@ class _LoginFormState extends State<LoginForm> {
     }
   }
 
-  Widget _googleButton(Key key) {
+  Widget googleButton(Key key) {
     return OutlineButton(
-      key: key,
       splashColor: Colors.grey,
       onPressed: () {
         _loginUser(LoginType.google ,_emailController.text, _passwordController.text, context);
@@ -87,6 +86,7 @@ class _LoginFormState extends State<LoginForm> {
               padding: const EdgeInsets.only(left: 10),
               child: Text(
                 'Sign in with Google',
+                key: key,
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.grey,
@@ -188,7 +188,6 @@ class _LoginFormState extends State<LoginForm> {
               onPressed: () async {
                 _validateInputs();
                 if (_autovalidateMode != AutovalidateMode.always) {
-                  key: Key(Keys.Success);
                   var temp = await _loginUser(
                       LoginType.email,
                       _emailController.text,
@@ -198,7 +197,7 @@ class _LoginFormState extends State<LoginForm> {
               },
             ),
             SizedBox(height: 20,),
-            _googleButton(Key(Keys.loginButtonwithGoogle)),
+            googleButton(Key(Keys.loginButtonwithGoogle)),
             FlatButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpPage()));

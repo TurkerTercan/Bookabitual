@@ -8,32 +8,8 @@ import 'package:provider/provider.dart';
 
 class MockCurrentUser extends Mock implements CurrentUser {}
 
-class ProviderTest extends StatelessWidget {
-  final CurrentUser user;
-  final Widget child;
-
-  const ProviderTest({Key key, this.user, this.child}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => user,
-      child: MaterialApp(
-        home: child,
-      ),
-    );
-  }
-}
-
 void main() {
   Provider.debugCheckInvalidValueType = null;
-
-  Widget makeTestableWidget({Widget child, CurrentUser user}) {
-    return ProviderTest(
-      child: child,
-      user: user,
-    );
-  }
 
   testWidgets("Test of sign up successfully", (WidgetTester tester) async {
     SignUpPage page = SignUpPage();
@@ -189,7 +165,7 @@ void main() {
 
     await tester.enterText(emailField, "hello@hello.com");
     await tester.enterText(passwordField, "hello123");
-    await tester.enterText(confirmPasswordField, "hello");
+    await tester.enterText(confirmPasswordField, "hello123");
     await tester.enterText(usernameField, "");
 
     await tester.tap(find.byKey(Key(Keys.signupButton)));
@@ -276,5 +252,36 @@ void main() {
     await tester.tap(find.byKey(Key(Keys.signupButton)));
 
     verifyNever(mockCurrent.signUpUser("", "hello123", "hello123"));
+  });
+
+  testWidgets("The email address is already used by another account", (WidgetTester tester) async {
+    SignUpPage page = SignUpPage();
+    MockCurrentUser mockCurrent = MockCurrentUser();
+
+    when(mockCurrent.signUpUser("hello@hello.com", "hello123", "hello123"))
+        .thenAnswer((realInvocation) => Future.value("The email address is already in use by another account."));
+    await tester.pumpWidget(Provider<CurrentUser>(
+      create: (context) => mockCurrent,
+      child: MaterialApp(
+        home: page,
+      ),
+    ),);
+
+    Finder emailField = find.byKey(Key(Keys.signup_email));
+    Finder passwordField = find.byKey(Key(Keys.signup_password));
+    Finder confirmPasswordField = find.byKey(Key(Keys.signup_confirmPassword));
+    Finder usernameField = find.byKey(Key(Keys.username));
+    Finder snackBarText = find.byKey(Key(Keys.SignUpSnackBar));
+
+    await tester.enterText(emailField, "hello@hello.com");
+    await tester.enterText(passwordField, "hello123");
+    await tester.enterText(confirmPasswordField, "hello123");
+    await tester.enterText(usernameField, "hello123");
+
+    await tester.tap(find.byKey(Key(Keys.signupButton)));
+    await tester.pump();
+    var text = snackBarText.evaluate().single.widget as Text;
+    expect(text.data, "The email address is already in use by another account.");
+    verify(mockCurrent.signUpUser("hello@hello.com", "hello123", "hello123")).called(1);
   });
 }

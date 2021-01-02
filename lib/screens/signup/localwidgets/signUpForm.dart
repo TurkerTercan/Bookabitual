@@ -31,8 +31,8 @@ class _SignUpFormState extends State<SignUpForm> {
       else {
         Scaffold.of(context).showSnackBar(
           SnackBar(
-            content: Text(_returnString),
-            duration: Duration(seconds: 2),
+            content: Text(_returnString, key: Key(Keys.SignUpSnackBar),),
+            duration: Duration(seconds: 5),
           ),
         );
       }
