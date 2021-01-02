@@ -1,3 +1,4 @@
+import 'package:bookabitual/keys.dart';
 import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/widgets/ProjectContainer.dart';
@@ -12,12 +13,23 @@ import 'package:uuid/uuid.dart';
 class Item{
   const Item(this.name, this.icon);
   final String name;
-  final Icon icon;
+  final Widget icon;
 }
 
 List<Item> postChoice = <Item> [
-  const Item("Quote", Icon(Icons.collections_bookmark, color: const Color(0xFF167F67),)),
-  const Item("Review", Icon(Icons.rate_review, color: const Color(0xFF167F67),)),
+  Item("Quote", Container(
+      child: Icon(
+        Icons.collections_bookmark,
+        color: const Color(0xFF167F67),
+        key: Key(Keys.QuoteChoice),
+      )
+  )),
+  Item("Review",
+      Icon(
+        Icons.rate_review,
+        color: const Color(0xFF167F67),
+        key: Key(Keys.ReviewChoice),
+      )),
 ];
 
 
@@ -40,11 +52,11 @@ void onButtonPressed(
     Function function
     ) {
 
-  final TextEditingController _isbn = TextEditingController();
-  final TextEditingController _text = TextEditingController();
+  final TextEditingController isbn = TextEditingController();
+  final TextEditingController text = TextEditingController();
 
-  Item _selectedItem = postChoice[0];
-  Rating _selectedRating = postRating[0];
+  Item selectedItem = postChoice[0];
+  Rating selectedRating = postRating[0];
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
@@ -55,6 +67,68 @@ void onButtonPressed(
     else
       _autovalidateMode = AutovalidateMode.always;
   }
+
+  createPostFunction() async {
+    if (_autovalidateMode != AutovalidateMode.always) {
+      String postID = Uuid().v4();
+      if (selectedItem == postChoice[1]) {
+        ReviewPost temp = ReviewPost(
+          isbn: isbn.text,
+          uid: Provider
+              .of<CurrentUser>(context, listen: false)
+              .getCurrentUser
+              .uid,
+          postID: postID,
+          text: text.text,
+          rating: selectedRating.score,
+          status: "Reading",
+          likes: {
+            Provider
+                .of<CurrentUser>(context, listen: false)
+                .getCurrentUser
+                .uid : false
+          },
+          comments: {},
+          createTime: Timestamp.now(),
+          trigger: function,
+        );
+        await temp.updateInfo();
+        await BookDatabase().createReview(temp);
+        viewState(() {
+          postList.insert(0, temp);
+        });
+      } else {
+        QuotePost temp = QuotePost(
+          isbn: isbn.text,
+          uid: Provider
+              .of<CurrentUser>(context, listen: false)
+              .getCurrentUser
+              .uid,
+          postID: postID,
+          text: text.text,
+          status: "Reading",
+          likes: {
+            Provider
+                .of<CurrentUser>(context, listen: false)
+                .getCurrentUser
+                .uid : false
+          },
+          createTime: Timestamp.now(),
+          comments: {},
+          trigger: function,
+        );
+        await BookDatabase().createQuote(temp);
+        await temp.updateInfo();
+        viewState(() {
+          postList.insert(0, temp);
+        });
+      }
+      Navigator.pop(context);
+      controller.animateTo(0.0, curve: Curves.bounceOut,
+        duration: const Duration(milliseconds: 1000),);
+    }
+  }
+
 
   showModalBottomSheet<dynamic>(
     context: context,
@@ -86,8 +160,9 @@ void onButtonPressed(
                           children: [
                             Text("Category: ", style: TextStyle(color: Colors.black, fontSize: 18),),
                             DropdownButton<Item>(
+                              key: Key(Keys.CategoryDropButton),
                               hint: Text("Choose a category"),
-                              value: _selectedItem,
+                              value: selectedItem,
                               items: postChoice.map((Item item) {
                                 return DropdownMenuItem<Item>(
                                   child: Row(
@@ -102,7 +177,7 @@ void onButtonPressed(
                               }).toList(),
                               onChanged: (Item value) {
                                 setState(() {
-                                  _selectedItem = value;
+                                  selectedItem = value;
                                 });
                               },
                             ),
@@ -115,13 +190,14 @@ void onButtonPressed(
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: ProjectContainer(child:
                         TextFormField(
-                          controller: _isbn,
+                          key: Key(Keys.BooknameField),
+                          controller: isbn,
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.book),
                             hintText: "Book"
                           ),
                           validator: (value) {
-                            if (_isbn.text == "")
+                            if (isbn.text == "")
                               return "Can not be empty";
                             else
                               return "";
@@ -137,12 +213,13 @@ void onButtonPressed(
                           key: _formKey,
                           autovalidateMode: _autovalidateMode,
                           child: TextFormField(
+                            key: Key(Keys.ContentField),
                             maxLines: 5,
-                            controller: _text,
+                            controller: text,
                             decoration: InputDecoration(
                               alignLabelWithHint: true,
                               prefixIcon: Icon(Icons.rate_review),
-                              hintText: _selectedItem == postChoice[0]
+                              hintText: selectedItem == postChoice[0]
                                   ? "Quote"
                                   : "Review",
                             ),
@@ -160,7 +237,7 @@ void onButtonPressed(
                       ),
                     ),
                     SizedBox(height: 10,),
-                    _selectedItem == postChoice[1] ? Container(
+                    selectedItem == postChoice[1] ? Container(
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.9,
                         child: ProjectContainer(child: Row(
@@ -168,11 +245,13 @@ void onButtonPressed(
                           children: [
                             Text("Rating: ", style: TextStyle(color: Colors.black, fontSize: 18),),
                             DropdownButton<Rating>(
+                              key: Key(Keys.RatingDropButton),
                               hint: Text("Choose a rate"),
-                              value: _selectedRating,
+                              value: selectedRating,
                               items: postRating.map((Rating item) {
                                 return DropdownMenuItem<Rating>(
                                   child: Row(
+                                    key: item.score == "3" ? Key(Keys.Rating3) : Key(item.score),
                                     children: [
                                       Icon(Icons.star, color: const Color(0xFF167F67),),
                                       SizedBox(width: 10,),
@@ -184,7 +263,7 @@ void onButtonPressed(
                               }).toList(),
                               onChanged: (Rating value) {
                                 setState(() {
-                                  _selectedRating = value;
+                                  selectedRating = value;
                                 });
                               },
                             ),
@@ -194,65 +273,11 @@ void onButtonPressed(
                     ) : Container(),
                     SizedBox(height: 10,),
                     RaisedButton(
+                      key: Key(Keys.CreatePostButton2),
                       onPressed: () async {
                         _validateInputs();
                         if (_autovalidateMode != AutovalidateMode.always) {
-                          String postID = Uuid().v4();
-                          if (_selectedItem == postChoice[1]) {
-                            ReviewPost temp = ReviewPost(
-                              isbn: _isbn.text,
-                              uid: Provider
-                                  .of<CurrentUser>(context, listen: false)
-                                  .getCurrentUser
-                                  .uid,
-                              postID: postID,
-                              text: _text.text,
-                              rating: _selectedRating.score,
-                              status: "Reading",
-                              likes: {
-                                Provider
-                                    .of<CurrentUser>(context, listen: false)
-                                    .getCurrentUser
-                                    .uid : false
-                              },
-                              comments: {},
-                              createTime: Timestamp.now(),
-                              trigger: function,
-                            );
-                            await temp.updateInfo();
-                            await BookDatabase().createReview(temp);
-                            viewState(() {
-                              postList.insert(0, temp);
-                            });
-                          } else {
-                            QuotePost temp = QuotePost(
-                              isbn: _isbn.text,
-                              uid: Provider
-                                  .of<CurrentUser>(context, listen: false)
-                                  .getCurrentUser
-                                  .uid,
-                              postID: postID,
-                              text: _text.text,
-                              status: "Reading",
-                              likes: {
-                                Provider
-                                    .of<CurrentUser>(context, listen: false)
-                                    .getCurrentUser
-                                    .uid : false
-                              },
-                              createTime: Timestamp.now(),
-                              comments: {},
-                              trigger: function,
-                            );
-                            await BookDatabase().createQuote(temp);
-                            await temp.updateInfo();
-                            viewState(() {
-                              postList.insert(0, temp);
-                            });
-                          }
-                          Navigator.pop(context);
-                          controller.animateTo(0.0, curve: Curves.bounceOut,
-                            duration: const Duration(milliseconds: 1000),);
+                          createPostFunction();
                         }
                       },
                       color: Colors.purple[300],

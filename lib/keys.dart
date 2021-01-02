@@ -13,15 +13,28 @@ class Keys {
   static const String Success = 'Success';
   static const String BookScaffold = 'BookScaffold';
 
-
-
-
+  //ProfilePage keys
   static const String LogoutButton = 'LogoutButton';
   static const String EditButton = 'EditButton';
   static const String EditModalBottomSheet = 'EditModalBottomSheet';
   static const String SecondAvatarKey = 'SecondAvatarKey';
   static const String SaveButton = 'SaveButton';
   static const String UsernameField = 'UsernameField';
+
+  //HomePage keys
+  static const String CreatePostButton = 'CreatePostButton';
+  static const String CategoryDropButton = 'CategoryDropButton';
+  static const String QuoteChoice = 'QuoteChoice';
+  static const String ReviewChoice = 'ReviewChoice';
+  static const String BooknameField = 'BooknameField';
+  static const String ContentField = 'ContentField';
+  static const String RatingDropButton = 'RatingDropButton';
+  static const String Rating3 = 'Rating3';
+  static const String CreatePostButton2 = 'CreatePostButton2';
+
+
+
+
 
 
 

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:bookabitual/keys.dart';
 import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/widgets/ProjectContainer.dart';
@@ -11,17 +12,19 @@ import '../../states/currentUser.dart';
 import 'localWidgets/modalBottomSheet.dart';
 
 class FeedPage extends StatefulWidget {
+  final List<Widget> postList = [];
+
   @override
-  _FeedPageState createState() => _FeedPageState();
+  FeedPageState createState() => FeedPageState();
 }
 
-class _FeedPageState extends State<FeedPage> {
+class FeedPageState extends State<FeedPage> {
   final String currentOnlineUserId = currentBookworm.uid;
   String postId = Uuid().v4();
   int countPost = 0;
   List<QuotePost> quotePosts = [];
   List<ReviewPost> reviewPosts = [];
-  List<Widget> postList = [];
+
   Future userFuture;
 
   final GlobalKey<RefreshIndicatorState> _globalKey =
@@ -54,7 +57,7 @@ class _FeedPageState extends State<FeedPage> {
                 return Expanded(
                   child: Stack(
                     children: [
-                      postList.length == 0
+                      widget.postList.length == 0
                           ? Center(
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
@@ -83,13 +86,13 @@ class _FeedPageState extends State<FeedPage> {
                               child: ListView.builder(
                                 controller: _scrollController,
                                 physics: BouncingScrollPhysics(),
-                                itemCount: postList.length,
+                                itemCount: widget.postList.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Container(
                                     padding: EdgeInsets.only(
                                         left: 10, right: 10, top: 10),
                                     margin: EdgeInsets.only(bottom: 5),
-                                    child: postList[index],
+                                    child: widget.postList[index],
                                   );
                                 },
                               ),
@@ -104,13 +107,14 @@ class _FeedPageState extends State<FeedPage> {
                               minWidth: 100,
                               height: 40,
                               child: RaisedButton(
+                                key: Key(Keys.CreatePostButton),
                                 color: Colors.grey[700],
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(18.0),
                                 ),
                                 onPressed: () => onButtonPressed(
                                     context,
-                                    postList,
+                                    widget.postList,
                                     setState,
                                     _scrollController,
                                     triggerFuture),
@@ -146,7 +150,7 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   getAllUserPost() async {
-    postList.clear();
+    widget.postList.clear();
     var temp = await FirebaseFirestore.instance.collection("Posts").get();
     List unsorted = [];
     await Future.forEach(temp.docs, (element) async {
@@ -205,7 +209,7 @@ class _FeedPageState extends State<FeedPage> {
       return y.compareTo(x);
     });
     unsorted.forEach((element) {
-      postList.add(element);
+      widget.postList.add(element);
     });
   }
 }
