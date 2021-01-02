@@ -21,6 +21,7 @@ class Keys {
   static const String EditModalBottomSheet = 'EditModalBottomSheet';
   static const String SecondAvatarKey = 'SecondAvatarKey';
   static const String SaveButton = 'SaveButton';
+  static const String UsernameField = 'UsernameField';
 
 
 

@@ -23,6 +23,11 @@ class TempCurrentUser extends CurrentUser {
     currentBookworm = currentUser;
     return Future.value("Success");
   }
+  @override
+  Future<String> signOut() {
+    currentUser = new Bookworm();
+    return Future.value("Success");
+  }
 }
 
 class TempProfilePage extends ProfilePage {
@@ -127,12 +132,10 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
 
     Finder secondAvatar = find.byKey(Key(Keys.SecondAvatarKey));
-    print(secondAvatar);
     expect(secondAvatar, findsOneWidget);
     await tester.tap(secondAvatar);
 
     Finder saveButton = find.byKey(Key(Keys.SaveButton));
-    print(saveButton);
     await tester.tap(saveButton);
 
     expect(saveButton, findsOneWidget);
@@ -141,6 +144,88 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
 
     expect(mockCurrent.currentUser.photoIndex, 1);
+  });
 
+
+  testWidgets("Change Name Test", (WidgetTester tester) async {
+    TempCurrentUser mockCurrent = TempCurrentUser();
+    await mockCurrent.loginUserWithEmail("hello123@hello.com", "hello123");
+
+    await tester.pumpWidget(Provider<CurrentUser>(
+      create: (context) => mockCurrent,
+      child: MaterialApp(
+        home: Scaffold(body: TempProfilePage()),
+      ),
+    ),);
+
+    Finder editButton = find.byKey(Key(Keys.EditButton));
+    await tester.tap(editButton);
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+
+    Finder usernameField = find.byKey(Key(Keys.UsernameField));
+    await tester.enterText(usernameField, "test123");
+
+    Finder saveButton = find.byKey(Key(Keys.SaveButton));
+    await tester.tap(saveButton);
+
+    expect(saveButton, findsOneWidget);
+
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pump(const Duration(seconds: 1));
+
+
+    expect(mockCurrent.currentUser.name, "test123");
+
+  });
+
+  testWidgets("Logout Button Test", (WidgetTester tester) async {
+    TempCurrentUser mockCurrent = TempCurrentUser();
+    await mockCurrent.loginUserWithEmail("hello123@hello.com", "hello123");
+
+    await tester.pumpWidget(Provider<CurrentUser>(
+      create: (context) => mockCurrent,
+      child: MaterialApp(
+        home: Scaffold(body: TempProfilePage()),
+      ),
+    ),);
+
+    Finder logoutButton = find.byKey(Key(Keys.LogoutButton));
+    await tester.tap(logoutButton);
+
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
+
+    Finder emailField = find.byKey(Key(Keys.login_email));
+    expect(emailField, findsOneWidget);
+  });
+
+  testWidgets("Edit Sheet Close Test", (WidgetTester tester) async {
+    TempCurrentUser mockCurrent = TempCurrentUser();
+    await mockCurrent.loginUserWithEmail("hello123@hello.com", "hello123");
+
+    await tester.pumpWidget(Provider<CurrentUser>(
+      create: (context) => mockCurrent,
+      child: MaterialApp(
+        home: Scaffold(body: TempProfilePage()),
+      ),
+    ),);
+
+    Finder editButton = find.byKey(Key(Keys.EditButton));
+    await tester.tap(editButton);
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+
+    expect(find.byKey(Key(Keys.SecondAvatarKey)), findsOneWidget);
+    Finder usernameField = find.byKey(Key(Keys.UsernameField));
+    await tester.enterText(usernameField, "test123");
+
+    await tester.tapAt(const Offset(20.0, 20.0));
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+
+    expect(find.byKey(Key(Keys.LogoutButton)), findsOneWidget);
+    expect(mockCurrent.currentUser.name, "Hello123");
+    expect(mockCurrent.currentUser.photoIndex, 12);
   });
 }
