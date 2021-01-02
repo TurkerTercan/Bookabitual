@@ -1,3 +1,4 @@
+import 'package:bookabitual/keys.dart';
 import 'package:bookabitual/screens/root/root.dart';
 import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/utils/avatarPictures.dart';
@@ -317,7 +318,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                           ),
                                       );
                                     else {
-                                      int index = 0;
                                       return RefreshIndicator(
                                         key: _globalKey,
                                         onRefresh: () {
@@ -386,6 +386,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           onPressed: () {
                             editModalBottomSheet(setState);
                           },
+                          key: Key(Keys.EditButton),
                           icon: Icon(
                             Icons.edit,
                             size: 35,
@@ -397,6 +398,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 20,
                         ),
                         IconButton(
+                          key: Key(Keys.LogoutButton),
                           onPressed: () async {
                             CurrentUser _current =
                             Provider.of<CurrentUser>(context, listen: false);

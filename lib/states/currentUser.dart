@@ -8,8 +8,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 Bookworm currentBookworm;
 
 class CurrentUser extends ChangeNotifier {
-  Bookworm _currentUser = Bookworm();
-  Bookworm get getCurrentUser => _currentUser;
+  Bookworm currentUser = Bookworm();
+  Bookworm get getCurrentUser => currentUser;
 
   FirebaseAuth auth;
   CurrentUser({Key key, this.auth});
@@ -20,11 +20,11 @@ class CurrentUser extends ChangeNotifier {
     try {
       User _firebaseUser = auth.currentUser;
       if (_firebaseUser != null) {
-        _currentUser = await BookDatabase().getUserInfo(_firebaseUser.uid);
-        currentBookworm = _currentUser;
-        if (_currentUser != null) retVal = "Success";
+        currentUser = await BookDatabase().getUserInfo(_firebaseUser.uid);
+        currentBookworm = currentUser;
+        if (currentUser != null) retVal = "Success";
       }
-      print(_currentUser.username);
+      print(currentUser.username);
     } on PlatformException catch (e) {
       retVal = e.message;
     } catch (e) {
@@ -39,8 +39,8 @@ class CurrentUser extends ChangeNotifier {
 
     try {
       await auth.signOut();
-      _currentUser = Bookworm();
-      currentBookworm = _currentUser;
+      currentUser = Bookworm();
+      currentBookworm = currentUser;
       retVal = "Success";
     } catch (e) {
       print(e);
@@ -80,9 +80,9 @@ class CurrentUser extends ChangeNotifier {
     try {
       UserCredential _authResult = await auth.signInWithEmailAndPassword(
           email: email.trim(), password: password.trim());
-      _currentUser = await BookDatabase().getUserInfo(_authResult.user.uid);
-      currentBookworm = _currentUser;
-      if (_currentUser != null) retVal = "Success";
+      currentUser = await BookDatabase().getUserInfo(_authResult.user.uid);
+      currentBookworm = currentUser;
+      if (currentUser != null) retVal = "Success";
     } catch (e) {
       retVal = e.message();
       return retVal;
@@ -111,9 +111,9 @@ class CurrentUser extends ChangeNotifier {
         _user.photoIndex = 15;
         BookDatabase().createUser(_user);
       }
-      _currentUser = await BookDatabase().getUserInfo(_authResult.user.uid);
-      currentBookworm = _currentUser;
-      if (_currentUser != null) retVal = "Success";
+      currentUser = await BookDatabase().getUserInfo(_authResult.user.uid);
+      currentBookworm = currentUser;
+      if (currentUser != null) retVal = "Success";
     } catch (e) {
       retVal = e.message();
     }
@@ -121,9 +121,9 @@ class CurrentUser extends ChangeNotifier {
   }
   Future<void> saveInfo(int index , String newName) async {
     try{
-      BookDatabase().setUserInfo(_currentUser.uid, index, newName);
-      _currentUser = await BookDatabase().getUserInfo(_currentUser.uid);
-      currentBookworm = _currentUser;
+      BookDatabase().setUserInfo(currentUser.uid, index, newName);
+      currentUser = await BookDatabase().getUserInfo(currentUser.uid);
+      currentBookworm = currentUser;
     }catch(e){
       print(e);
     }

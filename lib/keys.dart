@@ -12,4 +12,13 @@ class Keys {
   static const String loginButtonwithGoogle = 'GoogleButton';
   static const String Success = 'Success';
   static const String BookScaffold = 'BookScaffold';
+
+
+
+
+  static const String LogoutButton = 'LogoutButton';
+  static const String EditButton = 'EditButton';
+
+
+
 }
