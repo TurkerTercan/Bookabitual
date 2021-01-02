@@ -6,6 +6,7 @@ class Keys {
   static const String signup_password = 'signup_password';
   static const String signup_confirmPassword = 'signup_confirmPassword';
   static const String signupButton = 'signupButton';
+  static const String SignUpSnackBar = 'SignUpSnackBar';
   static const String username = 'username';
   static const String loginButton = 'loginButton';
   static const String loginButtonwithGoogle = 'GoogleButton';
