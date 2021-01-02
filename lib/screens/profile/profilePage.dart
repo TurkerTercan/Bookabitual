@@ -296,73 +296,73 @@ class _ProfilePageState extends State<ProfilePage> {
                         body: TabBarView(
                           children: [
                             Container(
-                              child: ListView(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 7),
-                                    child: FutureBuilder(
-                                      future: profileFuture,
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState == ConnectionState.done) {
-                                          if (postList.length == 0)
-                                            return Center(
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(12.0),
-                                                  child: ProjectContainer(
-                                                    child: Text(
-                                                      "There is nothing to show here. \nShare some of your favorite books!",
-                                                      style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                            );
-                                          else {
-                                            return RefreshIndicator(
-                                              key: _globalKey,
-                                              onRefresh: () {
-                                                return Future.delayed(
-                                                    Duration(milliseconds: 50))
-                                                    .then((value) =>
-                                                {
-                                                  setState(() {
-                                                    profileFuture = getAllPosts(currentUser.uid);
-                                                  })
-                                                });
-                                              },
-                                              child: Container(
-                                                height: MediaQuery.of(context).size.height * 0.65,
-                                                child: ListView.builder(
-                                                  controller: _scrollController,
-                                                  physics: BouncingScrollPhysics(),
-                                                  itemCount: postList.length,
-                                                  itemBuilder: (BuildContext context,
-                                                      int index) {
-                                                    return Container(
-                                                      padding: EdgeInsets.only(
-                                                          left: 5,
-                                                          right: 5,
-                                                          top: 10),
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 5),
-                                                      child: boolList[index] ? SmallPostReview(post: postList[index], canBeDeleted: true,)
-                                                          : SmallPostQuote(post: postList[index], canBeDeleted: true,),
-                                                    );
-                                                  },
+                              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 7),
+                              child: FutureBuilder(
+                                future: profileFuture,
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.done) {
+                                    if (postList.length == 0)
+                                      return Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(12.0),
+                                            child: ProjectContainer(
+                                              child: Text(
+                                                "There is nothing to show here. \nShare some of your favorite books!",
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
                                                 ),
                                               ),
-                                            );
-                                          }
-                                        }
-                                        else {
-                                          return Center(child: CircularProgressIndicator());
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ],
+                                            ),
+                                          ),
+                                      );
+                                    else {
+                                      int index = 0;
+                                      return RefreshIndicator(
+                                        key: _globalKey,
+                                        onRefresh: () {
+                                          return Future.delayed(
+                                              Duration(milliseconds: 1))
+                                              .then((value) =>
+                                          {
+                                            setState(() {
+                                              profileFuture = getAllPosts(currentUser.uid);
+                                            })
+                                          });
+                                        },
+                                        child: Container(
+                                          height: MediaQuery.of(context).size.height * 0.75,
+                                          child: ListView.builder(
+                                            controller: _scrollController,
+                                            physics: BouncingScrollPhysics(),
+                                            itemCount: postList.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return Container(
+                                                padding: EdgeInsets.only(
+                                                    left: 5,
+                                                    right: 5,
+                                                    top: 10),
+                                                margin: EdgeInsets.only(
+                                                    bottom: 5),
+                                                child: boolList[index] ? SmallPostReview(post: postList[index], canBeDeleted: true,)
+                                                    : SmallPostQuote(post: postList[index], canBeDeleted: true,),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                  else {
+                                    return Column(
+                                      children: [
+                                        SizedBox(height: 25,),
+                                        Center(child: CircularProgressIndicator()),
+                                      ],
+                                    );
+                                  }
+                                },
                               ),
                             ), //My Posts Tab
                             Container(), //MY Library Tab

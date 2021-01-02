@@ -145,9 +145,10 @@ class _QuotePostState extends State<QuotePost> {
                       backgroundImage: AssetImage(avatars[widget.user.photoIndex]),
                     ),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => AnotherProfilePage(user: widget.user,),
-                      ),);
+                      if (widget.user.uid != currentOnlineUserId)
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => AnotherProfilePage(user: widget.user,),
+                        ),);
                     },
                   ),
                   SizedBox(width: 5,),
