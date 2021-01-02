@@ -12,6 +12,11 @@ class CurrentUser extends ChangeNotifier {
   Bookworm get getCurrentUser => currentUser;
 
   FirebaseAuth auth;
+  BookDatabase bookDatabase = BookDatabase();
+
+  GoogleSignIn googleSignIn = GoogleSignIn(
+      scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly']);
+
   CurrentUser({Key key, this.auth});
 
   Future<String> onStartUp() async {
@@ -20,7 +25,7 @@ class CurrentUser extends ChangeNotifier {
     try {
       User _firebaseUser = auth.currentUser;
       if (_firebaseUser != null) {
-        currentUser = await BookDatabase().getUserInfo(_firebaseUser.uid);
+        currentUser = await bookDatabase.getUserInfo(_firebaseUser.uid);
         currentBookworm = currentUser;
         if (currentUser != null) retVal = "Success";
       }
@@ -62,7 +67,7 @@ class CurrentUser extends ChangeNotifier {
       _user.username = username.trim();
       _user.name = _user.username;
       _user.photoIndex = 15;
-      String _returnString = await BookDatabase().createUser(_user);
+      String _returnString = await bookDatabase.createUser(_user);
       if (_returnString == "Success") {
         retVal = "Success";
       }
@@ -80,7 +85,7 @@ class CurrentUser extends ChangeNotifier {
     try {
       UserCredential _authResult = await auth.signInWithEmailAndPassword(
           email: email.trim(), password: password.trim());
-      currentUser = await BookDatabase().getUserInfo(_authResult.user.uid);
+      currentUser = await bookDatabase.getUserInfo(_authResult.user.uid);
       currentBookworm = currentUser;
       if (currentUser != null) retVal = "Success";
     } catch (e) {
@@ -92,13 +97,11 @@ class CurrentUser extends ChangeNotifier {
 
   Future<String> loginUserWithGoogle() async {
     String retVal = "Error";
-    GoogleSignIn _googleSignIn = GoogleSignIn(
-        scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly']);
 
     Bookworm _user = Bookworm();
 
     try {
-      GoogleSignInAccount _googleUser = await _googleSignIn.signIn();
+      GoogleSignInAccount _googleUser = await googleSignIn.signIn();
       GoogleSignInAuthentication _googleAuth = await _googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
           idToken: _googleAuth.idToken, accessToken: _googleAuth.accessToken);
@@ -109,20 +112,20 @@ class CurrentUser extends ChangeNotifier {
         _user.username = _authResult.user.displayName;
         _user.name = _user.username;
         _user.photoIndex = 15;
-        BookDatabase().createUser(_user);
+        bookDatabase.createUser(_user);
       }
-      currentUser = await BookDatabase().getUserInfo(_authResult.user.uid);
+      currentUser = await bookDatabase.getUserInfo(_authResult.user.uid);
       currentBookworm = currentUser;
       if (currentUser != null) retVal = "Success";
     } catch (e) {
-      retVal = e.message();
+      retVal = e.toString();
     }
     return retVal;
   }
   Future<void> saveInfo(int index , String newName) async {
     try{
-      BookDatabase().setUserInfo(currentUser.uid, index, newName);
-      currentUser = await BookDatabase().getUserInfo(currentUser.uid);
+      await bookDatabase.setUserInfo(currentUser.uid, index, newName);
+      currentUser = await bookDatabase.getUserInfo(currentUser.uid);
       currentBookworm = currentUser;
     }catch(e){
       print(e);

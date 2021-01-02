@@ -143,10 +143,10 @@ void main() {
           ),
         ),
       ),);
-
-      completer.completeError(42);
-
+      
       await tester.pump();
+      await tester.pump(const Duration(seconds: 1));
+      await tester.idle();
       await tester.pump(const Duration(seconds: 1));
 
       Finder createPostButton = find.byKey(Key(Keys.CreatePostButton));
