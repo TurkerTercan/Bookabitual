@@ -248,7 +248,7 @@ void main() {
 
     await tester.tap(find.byKey(Key(Keys.signupButton)));
 
-    verify(mockCurrent.signUpUser("hello@hello.com", "hello123", "hello123")).called(1);
+    verifyNever(mockCurrent.signUpUser("hello@hello.com", "hello123", "hello123"));
   });
 
   testWidgets("Test of sign up failure - Do not enter mail", (WidgetTester tester) async {
