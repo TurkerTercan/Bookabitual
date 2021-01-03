@@ -13,6 +13,7 @@ import 'localWidgets/modalBottomSheet.dart';
 
 class FeedPage extends StatefulWidget {
   final List<Widget> postList = [];
+  Future feedPageFuture;
 
   @override
   FeedPageState createState() => FeedPageState();
@@ -33,6 +34,7 @@ class FeedPageState extends State<FeedPage> {
   @override
   void initState() {
     userFuture = getAllUserPost();
+    widget.feedPageFuture = userFuture;
     super.initState();
   }
 
@@ -45,7 +47,6 @@ class FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     ScrollController _scrollController = new ScrollController();
-
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
