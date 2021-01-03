@@ -1,3 +1,4 @@
+import 'package:bookabitual/keys.dart';
 import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/utils/avatarPictures.dart';
 import 'package:bookabitual/widgets/ProjectContainer.dart';
@@ -17,10 +18,10 @@ class AnotherProfilePage extends StatefulWidget {
   const AnotherProfilePage({Key key, @required this.user}) : super(key: key);
 
   @override
-  _AnotherProfilePageState createState() => _AnotherProfilePageState();
+  AnotherProfilePageState createState() => AnotherProfilePageState();
 }
 
-class _AnotherProfilePageState extends State<AnotherProfilePage> {
+class AnotherProfilePageState extends State<AnotherProfilePage> {
   TextEditingController _nameController = TextEditingController();
   Bookworm currentUser;
   int currentIndex;
@@ -174,6 +175,7 @@ class _AnotherProfilePageState extends State<AnotherProfilePage> {
                         ),
                         Text(
                           currentUser.name,
+                          key: Key(Keys.AnotherProfileUsername),
                           style: TextStyle(
                               fontSize: 20.0,
                               color: Colors.black,

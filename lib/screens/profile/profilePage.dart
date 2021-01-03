@@ -448,7 +448,7 @@ class ProfilePageState extends State<ProfilePage> {
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: SingleChildScrollView(
               child: Container(
-                height: MediaQuery.of(context).size.height,
+                height: MediaQuery.of(context).size.height / 2,
                 child: ListView(
                   padding: EdgeInsets.all(10.0),
                   children: <Widget>[

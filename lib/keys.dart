@@ -41,6 +41,18 @@ class Keys {
   static const String BookButton = 'BookButton';
   static const String CommentButton = 'CommentButton';
 
+  //BookPage keys
+  static const String BookTitle = 'BookTitle';
+
+  //AnotherProfile keys
+  static const String AnotherProfileUsername = 'AnotherProfileUsername';
+
+  //CommentPage
+  static const String CommentPostContent = 'CommentPostContent';
+  static const String PostCommentButton = 'PostCommentButton';
+  static const String DeleteCommentButton = 'DeleteCommentButton';
+
+
 
 
 

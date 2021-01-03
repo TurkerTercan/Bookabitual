@@ -322,12 +322,10 @@ class _ReviewCommentState extends State<ReviewComment> {
                                           ),
                                         ),
                                         onPressed: () async {
+                                          widget.comments[commentUser.uid].remove(comment);
                                           if (widget.comments[commentUser.uid].isEmpty)
                                             widget.comments.remove(commentUser.uid);
-                                          postReference
-                                              .doc(widget.user.uid)
-                                              .collection("usersReviews")
-                                              .doc(widget.postID)
+                                          postReference.doc(widget.user.uid).collection("usersReviews").doc(widget.postID)
                                               .update({"comments": widget.comments});
                                           setState(() {
                                             commentWidgets.clear();

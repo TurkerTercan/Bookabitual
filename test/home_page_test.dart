@@ -143,4 +143,123 @@ void main() {
 
     expect(page.postList.length, 2);
   });
+
+  testWidgets('OnDoubleClick event on content, BookPage opens', (WidgetTester tester) async {
+    TempCurrentUser tempCurrentUser = TempCurrentUser();
+    await tempCurrentUser.loginUserWithEmail("hello123@hello.com", "hello123");
+    TempFeedPage page;
+    await tester.pumpWidget(
+      Provider<CurrentUser>(
+        create: (context) => tempCurrentUser,
+        child: MaterialApp(
+          home: Scaffold(body: page = TempFeedPage()),
+        ),
+      ),
+    );
+
+    await tester.pump();
+    await tester.pump(Duration(seconds: 1));
+
+    Finder content = find.byKey(Key(Keys.BookButton));
+    GestureDetector gesture = content.first.evaluate().single.widget as GestureDetector;
+    gesture.onDoubleTap.call();
+
+    await tester.pump();
+    await tester.pump(Duration(seconds: 1));
+
+
+    Finder bookTitle = find.byKey(Key(Keys.BookTitle));
+    expect(bookTitle, findsOneWidget);
+  });
+
+  testWidgets('OnClick event on CircleAvatar, AnotherProfile opens', (WidgetTester tester) async {
+    TempCurrentUser tempCurrentUser = TempCurrentUser();
+    await tempCurrentUser.loginUserWithEmail("hello123@hello.com", "hello123");
+    TempFeedPage page;
+    await tester.pumpWidget(
+      Provider<CurrentUser>(
+        create: (context) => tempCurrentUser,
+        child: MaterialApp(
+          home: Scaffold(body: page = TempFeedPage()),
+        ),
+      ),
+    );
+
+    await tester.pump();
+    await tester.pump(Duration(seconds: 1));
+
+    Finder userAvatar = find.byKey(Key(Keys.AvatarButton));
+    GestureDetector gesture = userAvatar.last.evaluate().single.widget as GestureDetector;
+    gesture.onTap.call();
+
+    await tester.pump();
+    await tester.pump(Duration(seconds: 1));
+
+    Finder anotherProfileUsername = find.byKey(Key(Keys.AnotherProfileUsername));
+    expect(anotherProfileUsername, findsOneWidget);
+  });
+
+  testWidgets('OnClick event on View All Comments, CommentPage opens', (WidgetTester tester) async {
+    TempCurrentUser tempCurrentUser = TempCurrentUser();
+    await tempCurrentUser.loginUserWithEmail("hello123@hello.com", "hello123");
+    TempFeedPage page;
+    await tester.pumpWidget(
+      Provider<CurrentUser>(
+        create: (context) => tempCurrentUser,
+        child: MaterialApp(
+          home: Scaffold(body: page = TempFeedPage()),
+        ),
+      ),
+    );
+
+    await tester.pump();
+    await tester.pump(Duration(seconds: 1));
+
+    Finder commentButton = find.byKey(Key(Keys.CommentButton));
+    GestureDetector gesture = commentButton.first.evaluate().single.widget as GestureDetector;
+    gesture.onTap.call();
+
+    await tester.pump();
+    await tester.pump(Duration(seconds: 1));
+
+    Finder commentPostContent = find.byKey(Key(Keys.CommentPostContent));
+    expect(commentPostContent, findsOneWidget);
+  });
+
+  testWidgets('OnClick event on View All Comments, CommentPage opens and return it', (WidgetTester tester) async {
+    TempCurrentUser tempCurrentUser = TempCurrentUser();
+    await tempCurrentUser.loginUserWithEmail("hello123@hello.com", "hello123");
+    TempFeedPage page;
+    await tester.pumpWidget(
+      Provider<CurrentUser>(
+        create: (context) => tempCurrentUser,
+        child: MaterialApp(
+          home: Scaffold(body: page = TempFeedPage()),
+        ),
+      ),
+    );
+
+    await tester.pump();
+    await tester.pump(Duration(seconds: 1));
+
+    Finder commentButton = find.byKey(Key(Keys.CommentButton));
+    GestureDetector gesture = commentButton.first.evaluate().single.widget as GestureDetector;
+    gesture.onTap.call();
+
+    await tester.pump();
+    await tester.pump(Duration(seconds: 1));
+
+    Finder commentPostContent = find.byKey(Key(Keys.CommentPostContent));
+    commentButton = find.byKey(Key(Keys.CommentButton));
+    expect(commentPostContent, findsOneWidget);
+    expect(commentButton, findsNothing);
+
+    await tester.pageBack();
+
+    await tester.pump();
+    await tester.pump(Duration(seconds: 1));
+
+    commentButton = find.byKey(Key(Keys.CommentButton));
+    expect(commentButton, findsWidgets);
+  });
 }

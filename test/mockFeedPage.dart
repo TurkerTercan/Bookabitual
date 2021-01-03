@@ -57,7 +57,7 @@ class TempReview extends ReviewPost {
       accountCreated: Timestamp.now(),
       email: "hello123@hello.com",
       photoIndex: 12,
-      uid: "cBkdfmskAzc0T7xtAif8HcVNrCu2",
+      uid: "asd3242623tyasdasd",
       username: "Hello123",
     );
 
@@ -150,7 +150,7 @@ class TempQuote extends QuotePost {
       accountCreated: Timestamp.now(),
       email: "hello123@hello.com",
       photoIndex: 12,
-      uid: "cBkdfmskAzc0T7xtAif8HcVNrCu2",
+      uid: "asd3242623tyasdasd",
       username: "Hello123",
     );
 

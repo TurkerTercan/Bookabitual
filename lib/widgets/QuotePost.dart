@@ -153,8 +153,8 @@ class QuotePostState extends State<QuotePost> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GestureDetector(
+                    key: Key(Keys.AvatarButton),
                     child: CircleAvatar(
-                      key: Key(Keys.AvatarButton),
                       radius: 20,
                       backgroundImage: AssetImage(avatars[widget.user.photoIndex]),
                     ),
@@ -376,6 +376,7 @@ class QuotePostState extends State<QuotePost> {
                 ),
               ),
               GestureDetector(
+                key: Key(Keys.CommentButton),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -399,7 +400,6 @@ class QuotePostState extends State<QuotePost> {
                       color: Colors.grey[800],
                       decoration: TextDecoration.underline,
                     ),
-                    key: Key(Keys.CommentButton),
                   ),
                 ),
               ),

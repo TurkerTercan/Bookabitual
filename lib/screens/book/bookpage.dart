@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:bookabitual/keys.dart';
 import 'dart:ui';
 
 
@@ -21,10 +22,10 @@ class BookPage extends StatefulWidget {
   BookPage({Key key, this.book}) : super(key: key);
 
   @override
-  _BookPageState createState() => _BookPageState();
+  BookPageState createState() => BookPageState();
 }
 
-class _BookPageState extends State<BookPage> {
+class BookPageState extends State<BookPage> {
   int index = 0;
   List<String> bookState = ["Add to My Library","Finished", "Reading", "Unfinished", "Will Read"];
   List<Widget> bookStateIcon = [
@@ -203,6 +204,7 @@ class _BookPageState extends State<BookPage> {
                   padding: EdgeInsets.only(top: 10),
                   child: Text(
                     widget.book.bookTitle,
+                    key: Key(Keys.BookTitle),
                     style: GoogleFonts.openSans(
                       fontSize: 27,
                       color: Colors.black,

@@ -159,8 +159,8 @@ class ReviewPostState extends State<ReviewPost> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GestureDetector(
+                    key: Key(Keys.AvatarButton),
                     child: CircleAvatar(
-                      key: Key(Keys.AvatarButton),
                       radius: 20,
                       backgroundImage: AssetImage(avatars[widget.user.photoIndex]),
                     ),
@@ -398,6 +398,7 @@ class ReviewPostState extends State<ReviewPost> {
                 ),
               ),
               GestureDetector(
+                key: Key(Keys.CommentButton),
                 onTap: () {
                   Navigator.push(
                       context,
@@ -421,7 +422,6 @@ class ReviewPostState extends State<ReviewPost> {
                       color: Colors.grey[800],
                       decoration: TextDecoration.underline,
                     ),
-                    key: Key(Keys.CommentButton),
                   ),
                 ),
               ),

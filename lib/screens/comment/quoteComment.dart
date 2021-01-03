@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:bookabitual/keys.dart';
 import 'package:bookabitual/models/book.dart';
 import 'package:bookabitual/models/bookworm.dart';
 import 'package:bookabitual/service/database.dart';
@@ -18,27 +19,28 @@ class QuoteComment extends StatefulWidget {
   final Timestamp createTime;
   final String postID;
   final StateSetter beforeState;
+  final List<Widget> commentWidgets = <Widget>[];
 
   QuoteComment({Key key, this.text, this.comments, this.book, this.user, this.createTime, this.postID, this.beforeState}) : super(key: key);
 
   @override
-  _QuoteCommentState createState() => _QuoteCommentState();
+  QuoteCommentState createState() => QuoteCommentState();
 }
 
-class _QuoteCommentState extends State<QuoteComment> {
-  final TextEditingController _controller = new TextEditingController();
-  List<Widget> commentWidgets = <Widget>[];
+class QuoteCommentState extends State<QuoteComment> {
+  final TextEditingController controller = new TextEditingController();
+
 
   Future commentFuture;
 
   @override
   void initState() {
-    commentFuture = _getAllComments();
+    commentFuture = getAllComments();
     super.initState();
   }
 
 
-  _getAllComments() async {
+  getAllComments() async {
     List unsorted = [];
     await Future.delayed(Duration(milliseconds: 100));
     await Future.forEach(widget.comments.keys, (element) async {
@@ -72,7 +74,7 @@ class _QuoteCommentState extends State<QuoteComment> {
       ),
     );
     if(contained.length != 0)
-      commentWidgets.add(column);
+      widget.commentWidgets.add(column);
   }
 
   String readTimestamp(int timestamp) {
@@ -114,7 +116,7 @@ class _QuoteCommentState extends State<QuoteComment> {
   @override
   Widget build(BuildContext context) {
     var firstWidget = buildInfo();
-    commentWidgets.add(firstWidget);
+    widget.commentWidgets.add(firstWidget);
 
     return Scaffold(
       appBar: AppBar(
@@ -146,7 +148,7 @@ class _QuoteCommentState extends State<QuoteComment> {
                   ListView(
                     padding: EdgeInsets.only(bottom: 80),
                     physics: BouncingScrollPhysics(),
-                    children: commentWidgets,
+                    children: widget.commentWidgets,
                   ),
                   Positioned(
                     bottom: 0,
@@ -177,7 +179,7 @@ class _QuoteCommentState extends State<QuoteComment> {
                           ),
                           Expanded(
                             child: TextFormField(
-                              controller: _controller,
+                              controller: controller,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                   prefixIcon: Icon(Icons.comment),
@@ -187,27 +189,28 @@ class _QuoteCommentState extends State<QuoteComment> {
                           TextButton(
                             onPressed: () {
                               FocusScope.of(context).unfocus();
-                              if (_controller.text != "") {
+                              if (controller.text != "") {
                                 var currentUser = Provider.of<CurrentUser>(context, listen: false).getCurrentUser;
-                                var temp = buildComment(currentUser, _controller.text, Timestamp.now());
+                                var temp = buildComment(currentUser, controller.text, Timestamp.now());
 
                                 if (widget.comments[currentUser.uid] == null) {
                                   widget.comments[currentUser.uid] = new Map<String, Timestamp>();
-                                  widget.comments[currentUser.uid][_controller.text] = Timestamp.now();
+                                  widget.comments[currentUser.uid][controller.text] = Timestamp.now();
                                 } else {
-                                  widget.comments[currentUser.uid][_controller.text] = Timestamp.now();
+                                  widget.comments[currentUser.uid][controller.text] = Timestamp.now();
                                 }
                                 postReference.doc(widget.user.uid).collection("usersQuotes").doc(widget.postID)
                                     .update({"comments": widget.comments});
                                 setState(() {
-                                  commentWidgets.clear();
-                                  commentFuture = _getAllComments();
-                                  _controller.clear();
+                                  widget.commentWidgets.clear();
+                                  commentFuture = getAllComments();
+                                  controller.clear();
                                 });
                               }
                             },
                             child: Text(
                               "Post",
+                              key: Key(Keys.PostCommentButton),
                               style: TextStyle(fontSize: 18),
                             ),
                           )
@@ -269,7 +272,7 @@ class _QuoteCommentState extends State<QuoteComment> {
               ),
               commentUser.uid == currentBookworm.uid ? Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: IconButton(icon: Icon(Icons.delete, color: Colors.red[300],), onPressed: () {
+                child: IconButton(icon: Icon(Icons.delete, key: Key(Keys.DeleteCommentButton),color: Colors.red[300],), onPressed: () {
                   showDialog(context: context, builder: (context) {
                     return Dialog(
                       shape: RoundedRectangleBorder(
@@ -299,6 +302,7 @@ class _QuoteCommentState extends State<QuoteComment> {
                                   child: FlatButton(
                                     child: Text(
                                       "yes",
+                                      key: Key(Keys.YesButton),
                                       textAlign: TextAlign.center,
                                       style: GoogleFonts.staatliches(
                                         color: Colors.lightBlueAccent,
@@ -313,8 +317,8 @@ class _QuoteCommentState extends State<QuoteComment> {
                                       postReference.doc(widget.user.uid).collection("usersQuotes").doc(widget.postID)
                                           .update({"comments": widget.comments});
                                       setState(() {
-                                        commentWidgets.clear();
-                                        commentFuture = _getAllComments();
+                                        widget.commentWidgets.clear();
+                                        commentFuture = getAllComments();
                                       });
                                       Navigator.maybePop(context);
                                     },
@@ -326,6 +330,7 @@ class _QuoteCommentState extends State<QuoteComment> {
                                   child: FlatButton(
                                     child: Text(
                                       "no",
+                                      key: Key(Keys.NoButton),
                                       textAlign: TextAlign.center,
                                       style: GoogleFonts.staatliches(
                                         color: Colors.lightBlueAccent,
@@ -433,6 +438,7 @@ class _QuoteCommentState extends State<QuoteComment> {
                     widget.book.bookAuthor +
                     " " +
                     widget.book.bookTitle,
+                key: Key(Keys.CommentPostContent),
                 minFontSize: 14,
                 maxLines: 12,
                 overflow: TextOverflow.ellipsis,
