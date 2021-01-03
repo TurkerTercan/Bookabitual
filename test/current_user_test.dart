@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_sign_in_mocks/google_sign_in_mocks.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mockito/mockito.dart';
 
 class MockBookDatabase extends Mock implements BookDatabase {}
@@ -33,7 +33,23 @@ class MockAdditionalUserInfo extends Mock implements AdditionalUserInfo {
   bool get isNewUser => true;
 }
 
-class TestMockGoogleSignIn extends Mock implements MockGoogleSignIn {}
+class TestMockGoogleSignIn extends Mock implements GoogleSignIn {
+  @override
+  Future<GoogleSignInAccount> signIn() => Future.value(MockGoogleSignInAccount());
+}
+
+class MockGoogleSignInAccount extends Mock implements GoogleSignInAccount {
+  @override
+  Future<GoogleSignInAuthentication> get authentication => Future.value(MockGoogleSignInAuth());
+}
+
+class MockGoogleSignInAuth extends Mock implements GoogleSignInAuthentication {
+  @override
+  String get idToken => "denemeidtoken";
+
+  @override
+  String get accessToken => "denemeAccessToken";
+}
 
 
 void main() {
@@ -161,7 +177,7 @@ void main() {
     final mockFirebaseAuth = TestMockFirebaseAuth();
     final mockBookDatabase = MockBookDatabase();
     final mockUserCredential = MockUserCredential();
-    final testMockGoogleSignIn = MockGoogleSignIn();
+    final testMockGoogleSignIn = TestMockGoogleSignIn();
     final _user = Bookworm(
       uid: mockUserCredential.user.uid,
       email: mockUserCredential.user.email,
@@ -172,7 +188,6 @@ void main() {
 
     when(mockFirebaseAuth.signInWithCredential(any))
         .thenAnswer((realInvocation) => Future.value(mockUserCredential));
-
 
     when(mockBookDatabase.createUser(_user)).thenAnswer((realInvocation) => null);
 
@@ -192,5 +207,7 @@ void main() {
 
 
     expect(await currentUser.loginUserWithGoogle(), "Success");
+    verify(mockBookDatabase.getUserInfo(mockUserCredential.user.uid)).called(1);
+
   });
 }
