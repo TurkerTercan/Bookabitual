@@ -164,6 +164,7 @@ class ProfilePageState extends State<ProfilePage> {
                           ),
                           Text(
                             currentUser.name,
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 20.0,
                                 color: Colors.black,
@@ -177,11 +178,13 @@ class ProfilePageState extends State<ProfilePage> {
                           ),
                           Text(
                             currentUser.username,
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 20.0,
                                 color: Colors.black45,
                                 fontFamily: 'Roboto',
-                                fontWeight: FontWeight.normal),
+                                fontWeight: FontWeight.normal
+                            ),
                           ),
                         ],
                       ),

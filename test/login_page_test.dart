@@ -239,7 +239,7 @@ void main() {
     verify(mockCurrent.loginUserWithEmail("hello@hello.com", "hello1234")).called(1);
   });
 
-
+//
 //  testWidgets('Login in with Google Method', (WidgetTester tester) async {
 //    LoginPage page = LoginPage();
 //    MockCurrentUser mockCurrent = MockCurrentUser();

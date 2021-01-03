@@ -67,7 +67,7 @@ class ReviewPost extends StatefulWidget {
   );
 
   deleteFunction(context) async {
-    await postReference.doc(uid).collection("usersQuotes").doc(postID).delete();
+    await postReference.doc(uid).collection("usersReviews").doc(postID).delete();
     var temp = await bookReference.doc(isbn).get();
     var postMap = temp.data()["posts"];
     postMap[uid].remove(postID);

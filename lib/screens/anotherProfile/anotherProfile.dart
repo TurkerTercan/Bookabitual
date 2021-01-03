@@ -176,6 +176,7 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
                         Text(
                           currentUser.name,
                           key: Key(Keys.AnotherProfileUsername),
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 20.0,
                               color: Colors.black,
@@ -189,6 +190,7 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
                         ),
                         Text(
                           currentUser.username,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 20.0,
                               color: Colors.black45,
