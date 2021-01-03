@@ -92,33 +92,6 @@ void main() {
     verifyNever(mockCurrent.signUpUser("hello@hello.com", "hello123hello123hello", "hello123"));
   });
 
-  testWidgets("Test of sign up failure - Password is too long.", (WidgetTester tester) async {
-    SignUpPage page = SignUpPage();
-    MockCurrentUser mockCurrent = MockCurrentUser();
-
-    when(mockCurrent.signUpUser("hello@hello.com", "hello123hello123hello", "hello123")).thenAnswer((realInvocation) => Future.value("Error"));
-    await tester.pumpWidget(Provider<CurrentUser>(
-      create: (context) => mockCurrent,
-      child: MaterialApp(
-        home: page,
-      ),
-    ),);
-
-    Finder emailField = find.byKey(Key(Keys.signup_email));
-    Finder passwordField = find.byKey(Key(Keys.signup_password));
-    Finder confirmPasswordField = find.byKey(Key(Keys.signup_confirmPassword));
-    Finder usernameField = find.byKey(Key(Keys.username));
-
-    await tester.enterText(emailField, "hello@hello.com");
-    await tester.enterText(passwordField, "hello123hello123hello");
-    await tester.enterText(confirmPasswordField, "hello123hello123hello");
-    await tester.enterText(usernameField, "hello123");
-
-    await tester.tap(find.byKey(Key(Keys.signupButton)));
-
-    verifyNever(mockCurrent.signUpUser("hello@hello.com", "hello123hello123hello", "hello123"));
-  });
-
   testWidgets("Test of sign up failure - Invalid Email.", (WidgetTester tester) async {
     SignUpPage page = SignUpPage();
     MockCurrentUser mockCurrent = MockCurrentUser();
@@ -252,6 +225,33 @@ void main() {
     await tester.tap(find.byKey(Key(Keys.signupButton)));
 
     verifyNever(mockCurrent.signUpUser("", "hello123", "hello123"));
+  });
+
+  testWidgets("Test of invalid character for password", (WidgetTester tester) async {
+    SignUpPage page = SignUpPage();
+    MockCurrentUser mockCurrent = MockCurrentUser();
+
+    when(mockCurrent.signUpUser("hello@hello.com", "hello??", "hello123")).thenAnswer((realInvocation) => Future.value("Error"));
+    await tester.pumpWidget(Provider<CurrentUser>(
+      create: (context) => mockCurrent,
+      child: MaterialApp(
+        home: page,
+      ),
+    ),);
+
+    Finder emailField = find.byKey(Key(Keys.signup_email));
+    Finder passwordField = find.byKey(Key(Keys.signup_password));
+    Finder confirmPasswordField = find.byKey(Key(Keys.signup_confirmPassword));
+    Finder usernameField = find.byKey(Key(Keys.username));
+
+    await tester.enterText(emailField, "hello@hello.com");
+    await tester.enterText(passwordField, "hello??");
+    await tester.enterText(confirmPasswordField, "hello??");
+    await tester.enterText(usernameField, "hello123");
+
+    await tester.tap(find.byKey(Key(Keys.signupButton)));
+
+    verifyNever(mockCurrent.signUpUser("hello@hello.com", "hello??", "hello123"));
   });
 
   testWidgets("The email address is already used by another account", (WidgetTester tester) async {
