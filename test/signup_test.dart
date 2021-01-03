@@ -284,4 +284,31 @@ void main() {
     expect(text.data, "The email address is already in use by another account.");
     verify(mockCurrent.signUpUser("hello@hello.com", "hello123", "hello123")).called(1);
   });
+
+  testWidgets("Test of invalid character for password", (WidgetTester tester) async {
+    SignUpPage page = SignUpPage();
+    MockCurrentUser mockCurrent = MockCurrentUser();
+
+    when(mockCurrent.signUpUser("hello@hello.com", "hello??", "hello123")).thenAnswer((realInvocation) => Future.value("Error"));
+    await tester.pumpWidget(Provider<CurrentUser>(
+      create: (context) => mockCurrent,
+      child: MaterialApp(
+        home: page,
+      ),
+    ),);
+
+    Finder emailField = find.byKey(Key(Keys.signup_email));
+    Finder passwordField = find.byKey(Key(Keys.signup_password));
+    Finder confirmPasswordField = find.byKey(Key(Keys.signup_confirmPassword));
+    Finder usernameField = find.byKey(Key(Keys.username));
+
+    await tester.enterText(emailField, "hello@hello.com");
+    await tester.enterText(passwordField, "hello??");
+    await tester.enterText(confirmPasswordField, "hello??");
+    await tester.enterText(usernameField, "hello123");
+
+    await tester.tap(find.byKey(Key(Keys.signupButton)));
+
+    verifyNever(mockCurrent.signUpUser("hello@hello.com", "hello??", "hello123"));
+  });
 }

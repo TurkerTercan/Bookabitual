@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bookabitual/widgets/ProjectContainer.dart';
 import 'mockModalBottomSheet.dart';
+import 'mockQuoteComment.dart';
 
 
 class TempReview extends ReviewPost {
@@ -176,6 +177,7 @@ class TempQuote extends QuotePost {
     deleteFunc();
     Navigator.maybePop(context);
   }
+
 }
 
 class TempQuotePostState extends QuotePostState{
@@ -198,6 +200,21 @@ class TempQuotePostState extends QuotePostState{
         likes[currentOnlineUserId] = true;
       });
     }
+  }
+
+  @override
+  onCommentTap() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MockQuoteComment(
+          comments: widget.comments,
+          book: widget.book,
+          user: widget.user,
+          text: widget.text,
+          createTime: widget.createTime,
+          postID: widget.postID,
+        ))
+    );
   }
 }
 

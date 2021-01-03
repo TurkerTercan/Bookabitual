@@ -170,6 +170,76 @@ void main() {
     expect(snackbar, findsOneWidget);
   });
 
+  testWidgets('Empty password', (WidgetTester tester) async {
+    LoginPage page = LoginPage();
+    MockCurrentUser mockCurrent = MockCurrentUser();
+
+    when(mockCurrent.loginUserWithEmail("hello@hello.com", "")).thenAnswer((realInvocation) => Future.value("Error"));
+    await tester.pumpWidget(Provider<CurrentUser>(
+      create: (context) => mockCurrent,
+      child: MaterialApp(
+        home: page,
+      ),
+    ),);
+
+    Finder emailField = find.byKey(Key(Keys.login_email));
+    Finder passwordField = find.byKey(Key(Keys.login_password));
+
+    await tester.enterText(emailField, "hello@hello.com");
+    await tester.enterText(passwordField, "");
+
+    await tester.tap(find.byKey(Key(Keys.loginButton)));
+
+    verifyNever(mockCurrent.loginUserWithEmail("hello@hello.com", ""));
+  });
+
+  testWidgets('Empty mail', (WidgetTester tester) async {
+    LoginPage page = LoginPage();
+    MockCurrentUser mockCurrent = MockCurrentUser();
+
+    when(mockCurrent.loginUserWithEmail("", "hello123")).thenAnswer((realInvocation) => Future.value("Error"));
+    await tester.pumpWidget(Provider<CurrentUser>(
+      create: (context) => mockCurrent,
+      child: MaterialApp(
+        home: page,
+      ),
+    ),);
+
+    Finder emailField = find.byKey(Key(Keys.login_email));
+    Finder passwordField = find.byKey(Key(Keys.login_password));
+
+    await tester.enterText(emailField, "");
+    await tester.enterText(passwordField, "hello123");
+
+    await tester.tap(find.byKey(Key(Keys.loginButton)));
+
+    verifyNever(mockCurrent.loginUserWithEmail("", "hello123"));
+  });
+
+  testWidgets('Wrong password', (WidgetTester tester) async {
+    LoginPage page = LoginPage();
+    MockCurrentUser mockCurrent = MockCurrentUser();
+
+    when(mockCurrent.loginUserWithEmail("hello@hello.com", "hello1234")).thenAnswer((realInvocation) => Future.value("Error"));
+    await tester.pumpWidget(Provider<CurrentUser>(
+      create: (context) => mockCurrent,
+      child: MaterialApp(
+        home: page,
+      ),
+    ),);
+
+    Finder emailField = find.byKey(Key(Keys.login_email));
+    Finder passwordField = find.byKey(Key(Keys.login_password));
+
+    await tester.enterText(emailField, "hello@hello.com");
+    await tester.enterText(passwordField, "hello1234");
+
+    await tester.tap(find.byKey(Key(Keys.loginButton)));
+
+    verify(mockCurrent.loginUserWithEmail("hello@hello.com", "hello1234")).called(1);
+  });
+
+
 //  testWidgets('Login in with Google Method', (WidgetTester tester) async {
 //    LoginPage page = LoginPage();
 //    MockCurrentUser mockCurrent = MockCurrentUser();

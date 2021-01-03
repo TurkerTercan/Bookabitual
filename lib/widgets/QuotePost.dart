@@ -137,6 +137,20 @@ class QuotePostState extends State<QuotePost> {
     return counter;
   }
 
+  onCommentTap() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => QuoteComment(
+          comments: widget.comments,
+          book: widget.book,
+          user: widget.user,
+          text: widget.text,
+          createTime: widget.createTime,
+          postID: widget.postID,
+        ))
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isQuoteOwner = currentOnlineUserId == widget.uid;
@@ -378,17 +392,7 @@ class QuotePostState extends State<QuotePost> {
               GestureDetector(
                 key: Key(Keys.CommentButton),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => QuoteComment(
-                      comments: widget.comments,
-                      book: widget.book,
-                      user: widget.user,
-                      text: widget.text,
-                      createTime: widget.createTime,
-                      postID: widget.postID,
-                    ))
-                  );
+                  onCommentTap();
                 },
                 child: Container(
                   margin: EdgeInsets.only(right: 7),

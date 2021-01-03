@@ -16,6 +16,8 @@ class MockQuoteComment extends QuoteComment {
 }
 
 class MockQuoteCommentState extends QuoteCommentState {
+  Future tempFuture;
+  List<Widget> showWidgets = [];
 
   @override
   void initState() {
@@ -24,8 +26,14 @@ class MockQuoteCommentState extends QuoteCommentState {
     widget.commentWidgets.add(firstWidget);
   }
 
+  getComment() async {
+    showWidgets.clear();
+    showWidgets.addAll(widget.commentWidgets);
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).accentColor,
@@ -46,73 +54,82 @@ class MockQuoteCommentState extends QuoteCommentState {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        child: Stack(
-          children: [
-            ListView(
-              padding: EdgeInsets.only(bottom: 80),
-              physics: BouncingScrollPhysics(),
-              children: widget.commentWidgets,
-            ),
-            Positioned(
-              bottom: 0,
-              child: Container(
-                height: 75,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
-                decoration: BoxDecoration(color: Theme
-                    .of(context)
-                    .accentColor),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 7,
-                    ),
-                    CircleAvatar(
-                      radius: 20,
-                      backgroundImage: AssetImage(avatars[
-                      Provider
-                          .of<CurrentUser>(context)
-                          .getCurrentUser
-                          .photoIndex]),
-                    ),
-                    SizedBox(
-                      width: 7,
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        controller: controller,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.comment),
-                            hintText: "Add Comment"),
+      body: FutureBuilder(
+        future: tempFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done)
+            return Container(
+              child: Stack(
+                children: [
+                  ListView(
+                    padding: EdgeInsets.only(bottom: 80),
+                    physics: BouncingScrollPhysics(),
+                    children: widget.commentWidgets,
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    child: Container(
+                      height: 75,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
+                      decoration: BoxDecoration(color: Theme
+                          .of(context)
+                          .accentColor),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 7,
+                          ),
+                          CircleAvatar(
+                            radius: 20,
+                            backgroundImage: AssetImage(avatars[
+                            Provider
+                                .of<CurrentUser>(context)
+                                .getCurrentUser
+                                .photoIndex]),
+                          ),
+                          SizedBox(
+                            width: 7,
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              controller: controller,
+                              key: Key(Keys.CommentTextField),
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.comment),
+                                  hintText: "Add Comment"),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              if (controller.text != "") {
+                                var currentUser = Provider.of<CurrentUser>(context, listen: false).getCurrentUser;
+                                widget.commentWidgets.insert(1, buildComment(currentUser, controller.text, Timestamp.now()));
+                                controller.clear();
+                                setState(() {
+                                  tempFuture = getComment();
+                                });
+                              }
+                            },
+                            child: Text(
+                              "Post",
+                              key: Key(Keys.PostCommentButton),
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        FocusScope.of(context).unfocus();
-                        if (controller.text != "") {
-                          var currentUser = Provider.of<CurrentUser>(context, listen: false).getCurrentUser;
-                          setState(() {
-                            widget.commentWidgets.add(buildComment(currentUser, controller.text, Timestamp.now()));
-                            controller.clear();
-                          });
-                        }
-                      },
-                      child: Text(
-                        "Post",
-                        key: Key(Keys.PostCommentButton),
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
+            );
+          else
+            return Container();
+        },
       ),
     );
   }

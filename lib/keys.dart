@@ -51,6 +51,7 @@ class Keys {
   static const String CommentPostContent = 'CommentPostContent';
   static const String PostCommentButton = 'PostCommentButton';
   static const String DeleteCommentButton = 'DeleteCommentButton';
+  static const String CommentTextField = 'CommentTextField';
 
 
 
