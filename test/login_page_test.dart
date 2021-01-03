@@ -140,21 +140,21 @@ void main() {
     verifyNever(mockCurrent.loginUserWithEmail("hello", "hello123"));
   });
 
-  /*testWidgets('Login in with Google Method', (WidgetTester tester) async {
-    LoginPage page = LoginPage();
-    MockCurrentUser mockCurrent = MockCurrentUser();
-
-    when(mockCurrent.loginUserWithGoogle()).thenAnswer((realInvocation) => Future.value("Success"));
-    await tester.pumpWidget(Provider<CurrentUser>(
-      create: (context) => mockCurrent,
-      child: makeTestableWidget(child: page, user: mockCurrent),
-    ),);
-
-    Finder googleButton = find.byKey(Key(Keys.loginButtonwithGoogle));
-    print(googleButton);
-    await tester.tap(googleButton);
-
-    verify(mockCurrent.loginUserWithGoogle()).called(1);
-  });*/
+//  testWidgets('Login in with Google Method', (WidgetTester tester) async {
+//    LoginPage page = LoginPage();
+//    MockCurrentUser mockCurrent = MockCurrentUser();
+//
+//    when(mockCurrent.loginUserWithGoogle()).thenAnswer((realInvocation) => Future.value("Success"));
+//    await tester.pumpWidget(Provider<CurrentUser>(
+//      create: (context) => mockCurrent,
+//      child: makeTestableWidget(child: page, user: mockCurrent),
+//    ),);
+//
+//    Finder googleButton = find.byKey(Key(Keys.loginButtonwithGoogle));
+//    print(googleButton);
+//    await tester.tap(googleButton);
+//
+//    verify(mockCurrent.loginUserWithGoogle()).called(1);
+//  });
 
 }

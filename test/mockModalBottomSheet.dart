@@ -1,15 +1,11 @@
 import 'package:bookabitual/keys.dart';
-import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/widgets/ProjectContainer.dart';
-import 'package:bookabitual/widgets/QuotePost.dart';
-import 'package:bookabitual/widgets/reviewPost.dart';
 import 'package:bookabitual/validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
-import 'home_page_test.dart';
+import 'mockFeedPage.dart';
 
 
 class Item{

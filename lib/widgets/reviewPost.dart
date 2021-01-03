@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../utils/avatarPictures.dart';
 import 'ProjectContainer.dart';
+import 'package:bookabitual/keys.dart';
 
 // ignore: must_be_immutable
 class ReviewPost extends StatefulWidget {
@@ -60,22 +61,34 @@ class ReviewPost extends StatefulWidget {
   }
 
   @override
-  _ReviewPostState createState() => _ReviewPostState(
+  ReviewPostState createState() => ReviewPostState(
     likes: this.likes,
     likeCount: getTotalNumberOfLikes(this.likes),
   );
+
+  deleteFunction(context) async {
+    await postReference.doc(uid).collection("usersQuotes").doc(postID).delete();
+    var temp = await bookReference.doc(isbn).get();
+    var postMap = temp.data()["posts"];
+    postMap[uid].remove(postID);
+    if (postMap[uid].isEmpty)
+      postMap.remove(uid);
+    await bookReference.doc(isbn).update({"posts": postMap});
+    trigger();
+    Navigator.maybePop(context);
+  }
 }
 
-class _ReviewPostState extends State<ReviewPost> {
+class ReviewPostState extends State<ReviewPost> {
 
   int likeCount;
-  bool _isLiked = false;
+  bool isLiked = false;
   Map likes;
 
   Future reviewFuture;
   final currentOnlineUserId = currentBookworm.uid;
 
-  _ReviewPostState({this.likes, this.likeCount});
+  ReviewPostState({this.likes, this.likeCount});
 
   String readTimestamp(int timestamp) {
     var now = DateTime.now();
@@ -128,10 +141,12 @@ class _ReviewPostState extends State<ReviewPost> {
     return counter;
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     bool isQuoteOwner = currentOnlineUserId == widget.uid;
-    _isLiked = likes[currentOnlineUserId] == true;
+    isLiked = likes[currentOnlineUserId] == true;
 
     return ProjectContainer(
       child: Column(
@@ -145,6 +160,7 @@ class _ReviewPostState extends State<ReviewPost> {
                 children: [
                   GestureDetector(
                     child: CircleAvatar(
+                      key: Key(Keys.AvatarButton),
                       radius: 20,
                       backgroundImage: AssetImage(avatars[widget.user.photoIndex]),
                     ),
@@ -189,6 +205,7 @@ class _ReviewPostState extends State<ReviewPost> {
                 ],
               ),
               isQuoteOwner ? IconButton(
+                key: Key(Keys.VertIcon),
                 icon: Icon(Icons.more_vert),
                   onPressed: () async {
                     showDialog(context: context, builder: (context) {
@@ -220,6 +237,7 @@ class _ReviewPostState extends State<ReviewPost> {
                                     child: FlatButton(
                                       child: Text(
                                         "yes",
+                                        key: Key(Keys.YesButton),
                                         textAlign: TextAlign.center,
                                         style: GoogleFonts.staatliches(
                                           color: Colors.lightBlueAccent,
@@ -228,15 +246,7 @@ class _ReviewPostState extends State<ReviewPost> {
                                         ),
                                       ),
                                       onPressed: () async {
-                                        await postReference.doc(widget.uid).collection("usersQuotes").doc(widget.postID).delete();
-                                        var temp = await bookReference.doc(widget.isbn).get();
-                                        var postMap = temp.data()["posts"];
-                                        postMap[widget.uid].remove(widget.postID);
-                                        if (postMap[widget.uid].isEmpty)
-                                          postMap.remove(widget.uid);
-                                        await bookReference.doc(widget.isbn).update({"posts": postMap});
-                                        widget.trigger();
-                                        Navigator.maybePop(context);
+                                        await widget.deleteFunction(context);
                                       },
                                     ),
                                     width: MediaQuery.of(context).size.width * 0.25,
@@ -246,6 +256,7 @@ class _ReviewPostState extends State<ReviewPost> {
                                     child: FlatButton(
                                       child: Text(
                                         "no",
+                                        key: Key(Keys.NoButton),
                                         textAlign: TextAlign.center,
                                         style: GoogleFonts.staatliches(
                                           color: Colors.lightBlueAccent,
@@ -296,6 +307,7 @@ class _ReviewPostState extends State<ReviewPost> {
                   child: Container(
                     child: Center(
                       child: GestureDetector(
+                        key: Key(Keys.BookButton),
                         onDoubleTap: () {
                           Navigator.push(context, MaterialPageRoute(
                             builder: (context) => BookPage(book: widget.book,),
@@ -365,8 +377,9 @@ class _ReviewPostState extends State<ReviewPost> {
                 bottom: 10,
                 right: 10,
                 child: IconButton(
+                  key: Key(Keys.LikeButton),
                   onPressed: ()=> controlLikeReview(),
-                  icon: _isLiked ? Icon(Icons.favorite, size: 35, color: Colors.red.withOpacity(1)) :
+                  icon: isLiked ? Icon(Icons.favorite, size: 35, color: Colors.red.withOpacity(1)) :
                   Icon(Icons.favorite, size: 35, color: Colors.white.withOpacity(0.7),),
                 ),
               ),
@@ -408,6 +421,7 @@ class _ReviewPostState extends State<ReviewPost> {
                       color: Colors.grey[800],
                       decoration: TextDecoration.underline,
                     ),
+                    key: Key(Keys.CommentButton),
                   ),
                 ),
               ),
@@ -429,7 +443,7 @@ class _ReviewPostState extends State<ReviewPost> {
       removeLike();
       setState(() {
         likeCount = likeCount - 1;
-        _isLiked = false;
+        isLiked = false;
         likes[currentOnlineUserId] = false;
       });
     }
@@ -441,7 +455,7 @@ class _ReviewPostState extends State<ReviewPost> {
       addLike();
       setState(() {
         likeCount = likeCount + 1;
-        _isLiked = true;
+        isLiked = true;
         likes[currentOnlineUserId] = true;
       });
     }

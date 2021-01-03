@@ -119,7 +119,7 @@ void main() {
     verifyNever(mockCurrent.signUpUser("hello@hello.com", "hello123hello123hello", "hello123"));
   });
 
-  testWidgets("Test of sign up failure - Password is too short.", (WidgetTester tester) async {
+  testWidgets("Test of sign up failure - Invalid Email.", (WidgetTester tester) async {
     SignUpPage page = SignUpPage();
     MockCurrentUser mockCurrent = MockCurrentUser();
 

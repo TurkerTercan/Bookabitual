@@ -21,7 +21,7 @@ class Keys {
   static const String SaveButton = 'SaveButton';
   static const String UsernameField = 'UsernameField';
 
-  //HomePage keys
+  //CreatePost keys
   static const String CreatePostButton = 'CreatePostButton';
   static const String CategoryDropButton = 'CategoryDropButton';
   static const String QuoteChoice = 'QuoteChoice';
@@ -31,6 +31,15 @@ class Keys {
   static const String RatingDropButton = 'RatingDropButton';
   static const String Rating3 = 'Rating3';
   static const String CreatePostButton2 = 'CreatePostButton2';
+
+  //FeedPage keys
+  static const String LikeButton = 'LikeButton';
+  static const String VertIcon = 'VertIcon';
+  static const String YesButton = 'YesButton';
+  static const String NoButton = 'NoButton';
+  static const String AvatarButton = 'AvatarButton';
+  static const String BookButton = 'BookButton';
+  static const String CommentButton = 'CommentButton';
 
 
 
