@@ -25,6 +25,7 @@ class TempReview extends ReviewPost {
   var trigger;
   var isbn;
   var rating;
+  var deleteFunc;
 
   TempReview({this.isbn,
     this.uid,
@@ -35,7 +36,8 @@ class TempReview extends ReviewPost {
     this.createTime,
     this.likes,
     this.status,
-    this.rating
+    this.rating,
+    this.deleteFunc,
   }) : super(
     isbn: isbn,
     uid: uid,
@@ -78,7 +80,7 @@ class TempReview extends ReviewPost {
 
   @override
   deleteFunction(context) {
-    trigger();
+    deleteFunc();
     Navigator.maybePop(context);
   }
 }
@@ -116,6 +118,7 @@ class TempQuote extends QuotePost {
   var text;
   var trigger;
   var isbn;
+  var deleteFunc;
 
   TempQuote(
       {this.isbn,
@@ -126,7 +129,9 @@ class TempQuote extends QuotePost {
         this.comments,
         this.createTime,
         this.likes,
-        this.status})
+        this.status,
+        this.deleteFunc
+      })
       : super(
       isbn: isbn,
       uid: uid,
@@ -168,7 +173,7 @@ class TempQuote extends QuotePost {
 
   @override
   deleteFunction(context) {
-    trigger();
+    deleteFunc();
     Navigator.maybePop(context);
   }
 }
@@ -223,20 +228,26 @@ class TempFeedPageState extends FeedPageState {
     Future.delayed(Duration(milliseconds: 10));
   }
 
+  deleteFunction() {
+    widget.postList.removeAt(0);
+  }
+
   @override
   void initState() {
     super.initState();
     var temp = TempQuote(
         postID: "8105338f-eb03-4bce-b1f7-62c6b778febf",
         isbn: "006440501X",
-        uid: "n3lxf47e8gNTER14Ms9xDnkR5Ha2",
+        uid: "cBkdfmskAzc0T7xtAif8HcVNrCu2",
         text:
         "Child said the Lion, 'I am telling you your story, not hers. No one is told any story but their own.",
         createTime: Timestamp.now(),
         status: "reading",
         likes: {},
         comments: {},
-        trigger: triggerFuture);
+        trigger: triggerFuture,
+        deleteFunc: deleteFunction,
+    );
     temp.updateInfo();
     widget.postList.add(temp);
 
@@ -250,7 +261,9 @@ class TempFeedPageState extends FeedPageState {
         status: "reading",
         likes: {},
         comments: {},
-        trigger: triggerFuture);
+        trigger: triggerFuture,
+        deleteFunc: deleteFunction
+    );
     temp.updateInfo();
     widget.postList.add(temp);
   }
