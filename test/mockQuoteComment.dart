@@ -12,7 +12,7 @@ import 'package:bookabitual/models/book.dart';
 
 class MockQuoteComment extends QuoteComment {
   MockQuoteComment(
-  {text, Map<String, dynamic> comments, book, user, createTime, postID, beforeState}) : super(text: text,
+  {text, comments, book, user, createTime, postID, beforeState}) : super(text: text,
   comments: comments, book: book, user: user, createTime: createTime, postID: postID, beforeState: beforeState);
 
   @override
