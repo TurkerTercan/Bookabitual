@@ -33,7 +33,7 @@ class QuotePost extends StatefulWidget {
   QuotePost({Key key, @required  this.postID,
     @required this.isbn,
     @required this.uid,
-    @required  this.text,
+    @required this.text,
     @required this.createTime,
     @required this.status,
     @required this.likes,

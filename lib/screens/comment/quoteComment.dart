@@ -229,6 +229,19 @@ class QuoteCommentState extends State<QuoteComment> {
     );
   }
 
+  removeFunction(commentUser, comment) {
+    widget.comments[commentUser.uid].remove(comment);
+    if (widget.comments[commentUser.uid].isEmpty)
+      widget.comments.remove(commentUser.uid);
+    postReference.doc(widget.user.uid).collection("usersQuotes").doc(widget.postID)
+        .update({"comments": widget.comments});
+    setState(() {
+      widget.commentWidgets.clear();
+      commentFuture = getAllComments();
+    });
+    Navigator.maybePop(context);
+  }
+
   Widget buildComment(Bookworm commentUser, String comment, Timestamp createTime) {
     return Container(
       padding: EdgeInsets.only(left: 10, right: 10, top: 10),
@@ -311,16 +324,7 @@ class QuoteCommentState extends State<QuoteComment> {
                                       ),
                                     ),
                                     onPressed: () async {
-                                      widget.comments[commentUser.uid].remove(comment);
-                                      if (widget.comments[commentUser.uid].isEmpty)
-                                        widget.comments.remove(commentUser.uid);
-                                      postReference.doc(widget.user.uid).collection("usersQuotes").doc(widget.postID)
-                                          .update({"comments": widget.comments});
-                                      setState(() {
-                                        widget.commentWidgets.clear();
-                                        commentFuture = getAllComments();
-                                      });
-                                      Navigator.maybePop(context);
+                                      removeFunction(commentUser, comment);
                                     },
                                   ),
                                   width: MediaQuery.of(context).size.width * 0.25,
