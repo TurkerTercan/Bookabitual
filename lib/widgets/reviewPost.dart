@@ -204,7 +204,8 @@ class ReviewPostState extends State<ReviewPost> {
                   )
                 ],
               ),
-              isQuoteOwner ? IconButton(
+              //isQuoteOwner ?
+              IconButton(
                 key: Key(Keys.VertIcon),
                 icon: Icon(Icons.more_vert),
                   onPressed: () async {
@@ -277,7 +278,7 @@ class ReviewPostState extends State<ReviewPost> {
                       );
                     });
                   },
-              ) : Container(),
+              ), //: Container(),
             ],
           ),
           SizedBox(height: 10,),
@@ -440,7 +441,7 @@ class ReviewPostState extends State<ReviewPost> {
           .collection("usersReviews")
           .doc(widget.postID)
           .update({"likes.$currentOnlineUserId": false});
-      removeLike();
+      //removeLike();
       setState(() {
         likeCount = likeCount - 1;
         isLiked = false;
@@ -452,7 +453,7 @@ class ReviewPostState extends State<ReviewPost> {
           .collection("usersReviews")
           .doc(widget.postID)
           .update({"likes.$currentOnlineUserId": true});
-      addLike();
+      //addLike();
       setState(() {
         likeCount = likeCount + 1;
         isLiked = true;
@@ -461,7 +462,7 @@ class ReviewPostState extends State<ReviewPost> {
     }
   }
 
-  removeLike(){
+  /*removeLike(){
     bool isNotPostOwner = currentOnlineUserId != widget.uid;
     if(isNotPostOwner){
       activityFeedReference.doc(widget.uid)
@@ -474,9 +475,9 @@ class ReviewPostState extends State<ReviewPost> {
         }
       });
     }
-  }
+  }*/
 
-  addLike(){
+  /*addLike(){
     bool isNotPostOwner = currentOnlineUserId != widget.uid;
     if(isNotPostOwner){
       activityFeedReference
@@ -493,6 +494,6 @@ class ReviewPostState extends State<ReviewPost> {
         "userAvatarIndex": currentBookworm.photoIndex,
       });
     }
-  }
+  }*/
 
 }

@@ -367,7 +367,7 @@ class _SmallPostReviewState extends State<SmallPostReview> {
     }
     if(_like){
       postReference.doc(widget.post.uid).collection("usersReviews").doc(widget.post.postID).update({"likes.$currentOnlineUserId": false});
-      removeLike();
+      //removeLike();
       setState(() {
         likeCount = likeCount - 1;
         _isLiked = false;
@@ -376,7 +376,7 @@ class _SmallPostReviewState extends State<SmallPostReview> {
     }
     else if(!_like){
       postReference.doc(widget.post.uid).collection("usersReviews").doc(widget.post.postID).update({"likes.$currentOnlineUserId": true});
-      addLike();
+      //addLike();
       setState(() {
         likeCount = likeCount + 1;
         _isLiked = true;
@@ -386,7 +386,7 @@ class _SmallPostReviewState extends State<SmallPostReview> {
   }
 
 
-  removeLike(){
+  /*removeLike(){
     bool isNotPostOwner = currentBookworm.uid != widget.post.uid;
     if(isNotPostOwner){
       activityFeedReference.doc(widget.post.uid).collection("feedItems").doc(widget.post.postID).get().then((document){
@@ -395,9 +395,9 @@ class _SmallPostReviewState extends State<SmallPostReview> {
         }
       });
     }
-  }
+  }*/
 
-  addLike(){
+  /*addLike(){
     bool isNotPostOwner = currentBookworm.uid != widget.post.uid;
     if(isNotPostOwner){
       activityFeedReference.doc(widget.post.uid).collection("feedItems").doc(widget.post.postID).set({
@@ -410,5 +410,5 @@ class _SmallPostReviewState extends State<SmallPostReview> {
         "userAvatarIndex": currentBookworm.photoIndex,
       });
     }
-  }
+  }*/
 }

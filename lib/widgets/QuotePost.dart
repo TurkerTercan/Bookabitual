@@ -30,7 +30,8 @@ class QuotePost extends StatefulWidget {
   Bookworm user;
   Book book;
 
-  QuotePost({Key key, @required  this.postID,
+  QuotePost({Key key,
+    @required this.postID,
     @required this.isbn,
     @required this.uid,
     @required this.text,
@@ -214,7 +215,8 @@ class QuotePostState extends State<QuotePost> {
                   )
                 ],
               ),
-              isQuoteOwner ? IconButton(
+              //isQuoteOwner ?
+              IconButton(
                 key: Key(Keys.VertIcon),
                 icon: Icon(Icons.more_vert),
                 onPressed: () async {
@@ -287,7 +289,7 @@ class QuotePostState extends State<QuotePost> {
                     );
                   });
                 },
-              ) : Container(),
+              ), //: Container(),
             ],
           ),
           SizedBox(height: 10,),
@@ -419,7 +421,7 @@ class QuotePostState extends State<QuotePost> {
 
     if(_like){
       postReference.doc(widget.uid).collection("usersQuotes").doc(widget.postID).update({"likes.$currentOnlineUserId": false});
-      removeLike();
+      //removeLike();
       setState(() {
         likeCount = likeCount - 1;
         isLiked = false;
@@ -428,7 +430,7 @@ class QuotePostState extends State<QuotePost> {
     }
     else if(!_like){
       postReference.doc(widget.uid).collection("usersQuotes").doc(widget.postID).update({"likes.$currentOnlineUserId": true});
-      addLike();
+      //addLike();
       setState(() {
         likeCount = likeCount + 1;
         isLiked = true;
@@ -438,7 +440,7 @@ class QuotePostState extends State<QuotePost> {
   }
 
 
-  removeLike(){
+  /*removeLike(){
     bool isNotPostOwner = currentOnlineUserId != widget.uid;
     if(isNotPostOwner){
       activityFeedReference.doc(widget.uid).collection("feedItems").doc(widget.postID).get().then((document){
@@ -447,9 +449,9 @@ class QuotePostState extends State<QuotePost> {
         }
       });
     }
-  }
+  }*/
 
-  addLike(){
+  /*addLike(){
     bool isNotPostOwner = currentOnlineUserId != widget.uid;
     if(isNotPostOwner){
       activityFeedReference.doc(widget.uid).collection("feedItems").doc(widget.postID).set({
@@ -462,7 +464,7 @@ class QuotePostState extends State<QuotePost> {
         "userAvatarIndex": currentBookworm.photoIndex,
       });
     }
-  }
+  }*/
 
 }
 

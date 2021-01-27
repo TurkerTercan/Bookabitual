@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 final userReference = FirebaseFirestore.instance.collection("users");
 final postReference = FirebaseFirestore.instance.collection("Posts");
-final activityFeedReference = FirebaseFirestore.instance.collection("feed");
+//final activityFeedReference = FirebaseFirestore.instance.collection("feed");
 final bookReference = FirebaseFirestore.instance.collection("books");
 
 class BookDatabase {
