@@ -1,8 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bookabitual/models/book.dart';
 import 'package:bookabitual/models/bookworm.dart';
+import 'package:bookabitual/screens/anotherProfile/anotherProfile.dart';
 import 'package:bookabitual/screens/book/bookpage.dart';
 import 'package:bookabitual/service/database.dart';
+import 'package:bookabitual/utils/avatarPictures.dart';
 import 'package:bookabitual/widgets/ProjectContainer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -58,6 +60,8 @@ class _SearchPageState extends State<SearchPage> {
   var searchName = "";
 
   var items = List<String>();
+  List results = [];
+  List resultsbool = [];
 
   @override
   void initState() {
@@ -78,6 +82,10 @@ class _SearchPageState extends State<SearchPage> {
                   onFieldSubmitted: (value) async {
                     setState(() {
                       searchName = value;
+                      if (searchName == "" || searchName == null)
+                        label = "Popular";
+                      else
+                        label = "Top Results";
                     });
                     //filterSearchResults(value);
                   },
@@ -110,120 +118,130 @@ class _SearchPageState extends State<SearchPage> {
               color: Colors.grey[800],
             ),
             Expanded(
-              child: StreamBuilder<QuerySnapshot>(
+              child: StreamBuilder(
                 stream: (searchName == null || searchName == "")
-                    ? null
-                    : bookReference
-                        .limit(5)
+                    ? null : userReference.limit(5)
+                    .where("username", isGreaterThanOrEqualTo: searchName)
+                    .where("username",
+                    isLessThanOrEqualTo: searchName + "zzzzzz")
+                    .snapshots(),
+                builder: (context, snapshot_2) {
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: (searchName == null || searchName == "")
+                        ? null : bookReference.limit(5)
                         .where("Book-Title", isGreaterThanOrEqualTo: searchName)
                         .where("Book-Title",
-                            isLessThanOrEqualTo: searchName + "zzzzzz")
+                        isLessThanOrEqualTo: searchName + "zzzzzz")
                         .snapshots(),
-                builder: (context, snapshot) {
-                  if (searchName == null || searchName == "") {
-                    label = "Popular";
-                    return ListView.builder(
-                        padding: EdgeInsets.only(top: 10, right: 25, left: 25),
-                        physics: BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: bookList.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      BookPage(book: bookList[index]),
-                                ),
-                              );
-                            },
-                            child: Column(
-                              children: [
-                                ProjectContainer(
-                                  child: Container(
-                                    height:
-                                        MediaQuery.of(context).size.height / 8,
-                                    child: Row(
-                                      mainAxisAlignment:
+                    builder: (context, snapshot) {
+                      if (searchName == null || searchName == "") {
+                        return ListView.builder(
+                            padding: EdgeInsets.only(
+                                top: 5, right: 25, left: 25),
+                            physics: BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: bookList.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          BookPage(book: bookList[index]),
+                                    ),
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    ProjectContainer(
+                                      child: Container(
+                                        height:
+                                        MediaQuery
+                                            .of(context)
+                                            .size
+                                            .height / 8,
+                                        child: Row(
+                                          mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Image(
-                                          image: CachedNetworkImageProvider(
-                                            bookList[index].imageUrlM,
-                                          ),
-                                          fit: BoxFit.fitHeight,
-                                        ),
-                                        Center(
-                                          child: Container(
-                                            width: MediaQuery.of(context)
+                                          children: [
+                                            Image(
+                                              image: CachedNetworkImageProvider(
+                                                bookList[index].imageUrlM,
+                                              ),
+                                              fit: BoxFit.fitHeight,
+                                            ),
+                                            Center(
+                                              child: Container(
+                                                width: MediaQuery
+                                                    .of(context)
                                                     .size
                                                     .width /
-                                                3,
-                                            child: AutoSizeText(
-                                              bookList[index].bookTitle,
-                                              minFontSize: 10,
-                                              maxLines: 3,
-                                              wrapWords: true,
-                                              overflow: TextOverflow.clip,
-                                              style: GoogleFonts.openSans(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.star,
-                                                  color: Colors.yellow[300],
-                                                ),
-                                                Text(
-                                                  bookList[index].ratings,
+                                                    3,
+                                                child: AutoSizeText(
+                                                  bookList[index].bookTitle,
+                                                  minFontSize: 10,
+                                                  maxLines: 3,
+                                                  wrapWords: true,
+                                                  overflow: TextOverflow.clip,
                                                   style: GoogleFonts.openSans(
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.w600,
-                                                    color: Colors.yellow[300],
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.star,
+                                                      color: Colors.yellow[300],
+                                                    ),
+                                                    Text(
+                                                      bookList[index].ratings,
+                                                      style: GoogleFonts
+                                                          .openSans(
+                                                        fontSize: 20,
+                                                        fontWeight: FontWeight
+                                                            .w600,
+                                                        color: Colors
+                                                            .yellow[300],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Text(
+                                                  bookList[index]
+                                                      .yearOfPublication
+                                                      .toString(),
+                                                  style: GoogleFonts.openSans(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.black,
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                            Text(
-                                              bookList[index]
-                                                  .yearOfPublication
-                                                  .toString(),
-                                              style: GoogleFonts.openSans(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.black,
-                                              ),
-                                            ),
                                           ],
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                    SizedBox(height: 10,),
+                                  ],
                                 ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          );
-                        });
-                  } else {
-                    label = "Top Results";
-                    return (snapshot.connectionState == ConnectionState.waiting)
-                        ? Center(child: CircularProgressIndicator())
-                        : ListView.builder(
-                            itemCount: snapshot.data.docs.length,
-                            itemBuilder: (contetx, index) {
+                              );
+                            });
+                      } else {
+                        return (snapshot.connectionState == ConnectionState.waiting)
+                            ? Center(child: CircularProgressIndicator()) : ListView.builder(
+                          itemCount: snapshot.data.docs.length + snapshot_2.data.docs.length,
+                          itemBuilder: (context, index) {
+                            if (index < snapshot.data.docs.length) {
                               DocumentSnapshot data = snapshot.data.docs[index];
                               Book tempBook = Book(
                                 bookTitle: data["Book-Title"],
@@ -236,89 +254,179 @@ class _SearchPageState extends State<SearchPage> {
                                 imageUrlM: data["Image-URL-M"],
                                 imageUrlL: data["Image-URL-L"],
                               );
-                              /*Bookworm user = Bookworm(
-                          accountCreated: data['accountCreated'],
-                          name: data['name'],
-                          username: data['username'],
-                          email: data['email'],
-                          photoIndex: data['photoIndex'],
-                        );*/
-
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ProjectContainer(
-                                  child: Container(
-                                    height:
-                                        MediaQuery.of(context).size.height / 8,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Image(
-                                          image: CachedNetworkImageProvider(
-                                            tempBook.imageUrlM,
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => BookPage(book: tempBook),),);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 5),
+                                  child: ProjectContainer(
+                                    child: Container(
+                                      height: MediaQuery.of(context).size.height / 8,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context).size.width / 5,
+                                            child: Image(
+                                              image: CachedNetworkImageProvider(
+                                                tempBook.imageUrlM,
+                                              ),
+                                              fit: BoxFit.contain,
+                                            ),
                                           ),
-                                          fit: BoxFit.fitHeight,
-                                        ),
-                                        Center(
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                3,
-                                            child: AutoSizeText(
-                                              tempBook.bookTitle,
-                                              minFontSize: 10,
-                                              maxLines: 3,
-                                              wrapWords: true,
-                                              overflow: TextOverflow.clip,
-                                              style: GoogleFonts.openSans(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.black,
+                                          Center(
+                                            child: Container(
+                                              width: MediaQuery.of(context).size.width / 3,
+                                              child: AutoSizeText(
+                                                tempBook.bookTitle,
+                                                minFontSize: 10,
+                                                maxLines: 3,
+                                                wrapWords: true,
+                                                overflow: TextOverflow.clip,
+                                                style: GoogleFonts.openSans(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.black,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.star,
-                                                  color: Colors.yellow[300],
-                                                ),
-                                                Text(
-                                                  tempBook.ratings,
-                                                  style: GoogleFonts.openSans(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.yellow[300],
+                                          Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Icon(Icons.star, color: Colors.yellow[300],),
+                                                  Text(
+                                                    tempBook.ratings,
+                                                    style: GoogleFonts.openSans(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                      FontWeight.w600,
+                                                      color: Colors.yellow[300],
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              tempBook.yearOfPublication
-                                                  .toString(),
-                                              style: GoogleFonts.openSans(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.black,
+                                                ],
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                              Text(
+                                                tempBook.yearOfPublication.toString(),
+                                                style: GoogleFonts.openSans(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
                               );
-                            },
-                          );
-                  }
+                            } else {
+                              DocumentSnapshot data = snapshot_2.data.docs[index - snapshot.data.docs.length];
+                              Bookworm tempUser = Bookworm(
+                                photoIndex: data["photoIndex"],
+                                uid: data.id,
+                                email: data["email"],
+                                username: data["username"],
+                                name: data["name"],
+                                accountCreated: data["accountCreated"],
+                              );
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => AnotherProfilePage(user: tempUser),),);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 5),
+                                  child: ProjectContainer(
+                                    child: Container(
+                                      height: MediaQuery.of(context).size.height / 8,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          CircleAvatar(backgroundImage: AssetImage(avatars[tempUser.photoIndex]), radius: 40,),
+                                          SizedBox(width: 20,),
+                                          Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Icon(Icons.person_outline, color: Colors.grey[300],),
+                                                  Container(
+                                                    width: MediaQuery.of(context).size.width * 0.5,
+                                                    child: AutoSizeText(
+                                                      tempUser.username,
+                                                      minFontSize: 10,
+                                                      maxLines: 1,
+                                                      overflow: TextOverflow.clip,
+                                                      style: GoogleFonts.openSans(
+                                                        fontSize: 20,
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Icon(Icons.mail_outline, color: Colors.grey[300],),
+                                                  Container(
+                                                    width: MediaQuery.of(context).size.width * 0.5,
+                                                    child: AutoSizeText(
+                                                      tempUser.email,
+                                                      minFontSize: 10,
+                                                      maxLines: 1,
+                                                      overflow: TextOverflow.clip,
+                                                      style: GoogleFonts.openSans(
+                                                        fontSize: 20,
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Icon(Icons.adb, color: Colors.grey[300],),
+                                                  Container(
+                                                    width: MediaQuery.of(context).size.width * 0.5,
+                                                    child: AutoSizeText(
+                                                      tempUser.name,
+                                                      minFontSize: 10,
+                                                      maxLines: 1,
+                                                      overflow: TextOverflow.clip,
+                                                      style: GoogleFonts.openSans(
+                                                        fontSize: 20,
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        );
+                      }
+                    },
+                  );
                 },
               ),
             ),
@@ -328,3 +436,4 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 }
+
