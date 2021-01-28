@@ -1,4 +1,5 @@
 import 'package:bookabitual/keys.dart';
+import 'package:bookabitual/models/book.dart';
 import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/widgets/ProjectContainer.dart';
@@ -6,7 +7,9 @@ import 'package:bookabitual/widgets/QuotePost.dart';
 import 'package:bookabitual/widgets/reviewPost.dart';
 import 'package:bookabitual/validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdownfield/dropdownfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -54,6 +57,8 @@ void onButtonPressed(
 
   final TextEditingController isbn = TextEditingController();
   final TextEditingController text = TextEditingController();
+  final bookList = [];
+  var selectedBook;
 
   Item selectedItem = postChoice[0];
   Rating selectedRating = postRating[0];
@@ -73,7 +78,7 @@ void onButtonPressed(
       String postID = Uuid().v4();
       if (selectedItem == postChoice[1]) {
         ReviewPost temp = ReviewPost(
-          isbn: isbn.text,
+          isbn: selectedBook.isbn,
           uid: Provider
               .of<CurrentUser>(context, listen: false)
               .getCurrentUser
@@ -99,7 +104,7 @@ void onButtonPressed(
         });
       } else {
         QuotePost temp = QuotePost(
-          isbn: isbn.text,
+          isbn: selectedBook.isbn,
           uid: Provider
               .of<CurrentUser>(context, listen: false)
               .getCurrentUser
@@ -189,20 +194,59 @@ void onButtonPressed(
                     Container(
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: ProjectContainer(child:
-                        TextFormField(
-                          key: Key(Keys.BooknameField),
-                          controller: isbn,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.book),
-                            hintText: "Book"
+                          TypeAheadField(
+                            hideSuggestionsOnKeyboardHide: false,
+                            textFieldConfiguration: TextFieldConfiguration(
+                              controller: isbn,
+                              decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.book),
+                                  hintText: "Book"
+                              ),
+                            ),
+                            onSuggestionSelected: (suggestion) {
+                              setState(() {
+                                isbn.text = suggestion["Book-Title"];
+                              });
+                              var temp = Book(
+                                isbn: suggestion.id,
+                                bookTitle: suggestion["Book-Title"],
+                                bookAuthor: suggestion["Book-Author"],
+                                ratings: suggestion["Ratings"],
+                                publisher: suggestion["Publisher"],
+                                yearOfPublication: suggestion["Year-Of-Publication"],
+                                imageUrlS: suggestion["Image-URL-S"],
+                                imageUrlM: suggestion["Image-URL-M"],
+                                imageUrlL: suggestion["Image-URL-L"],
+                              );
+                              selectedBook = temp;
+                            },
+                            itemBuilder: (context, suggestion) {
+                              return Container(
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                height: MediaQuery.of(context).size.height * 0.1,
+                                child: Row(
+                                  children: [
+                                    Image(image: NetworkImage(suggestion["Image-URL-S"]),fit: BoxFit.fitHeight,),
+                                    Expanded(
+                                      child: ListTile(
+                                        title: Text(suggestion["Book-Title"]),
+                                        subtitle: Text(suggestion["Book-Author"]),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            suggestionsCallback: (String pattern) async {
+                              if (pattern == "" || pattern == null)
+                                return null;
+                              return (await bookReference
+                                  .limit(5)
+                                  .where("Book-Title", isGreaterThanOrEqualTo: pattern)
+                                  .where("Book-Title", isLessThanOrEqualTo: pattern + "zzzzzzzz")
+                                  .get().then((value) {return value.docs;})).toList();
+                            },
                           ),
-                          validator: (value) {
-                            if (isbn.text == "")
-                              return "Can not be empty";
-                            else
-                              return "";
-                          },
-                        ),
                       ),
                     ),
                     SizedBox(height: 10,),
@@ -276,7 +320,7 @@ void onButtonPressed(
                       key: Key(Keys.CreatePostButton2),
                       onPressed: () async {
                         _validateInputs();
-                        if (_autovalidateMode != AutovalidateMode.always) {
+                        if (_autovalidateMode != AutovalidateMode.always && selectedBook != null) {
                           createPostFunction();
                         }
                       },

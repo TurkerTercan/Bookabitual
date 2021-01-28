@@ -284,15 +284,20 @@ class ProfilePageState extends State<ProfilePage> {
                           ),
                           tabs: [
                             Tab(
-                              child: Center(
-                                child: Text("My Posts"),
-                                widthFactor: 2,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.43,
+                                child: Center(
+                                  child: Text("My Posts"),
+                                ),
                               ),
                             ),
                             Tab(
-                              child: Center(
-                                child: Text("My Library"),
-                                widthFactor: 2,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.43,
+                                child: Center(
+                                  child: Text("My Library"),
+                                  widthFactor: 2,
+                                ),
                               ),
                             ),
                           ],

@@ -295,15 +295,19 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
                         ),
                         tabs: [
                           Tab(
-                            child: Center(
-                              child: Text("My Posts"),
-                              widthFactor: 2,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.43,
+                              child: Center(
+                                child: Text("Post"),
+                              ),
                             ),
                           ),
                           Tab(
-                            child: Center(
-                              child: Text("My Library"),
-                              widthFactor: 2,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.43,
+                              child: Center(
+                                child: Text("Library"),
+                              ),
                             ),
                           ),
                         ],
