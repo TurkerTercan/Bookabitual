@@ -195,6 +195,9 @@ void onButtonPressed(
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: ProjectContainer(child:
                           TypeAheadField(
+                            suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                              color: Color.fromARGB(255, 255, 255, 255),
+                            ),
                             hideSuggestionsOnKeyboardHide: false,
                             textFieldConfiguration: TextFieldConfiguration(
                               controller: isbn,
@@ -221,20 +224,30 @@ void onButtonPressed(
                               selectedBook = temp;
                             },
                             itemBuilder: (context, suggestion) {
-                              return Container(
-                                width: MediaQuery.of(context).size.width * 0.7,
-                                height: MediaQuery.of(context).size.height * 0.1,
-                                child: Row(
-                                  children: [
-                                    Image(image: NetworkImage(suggestion["Image-URL-S"]),fit: BoxFit.fitHeight,),
-                                    Expanded(
-                                      child: ListTile(
-                                        title: Text(suggestion["Book-Title"]),
-                                        subtitle: Text(suggestion["Book-Author"]),
-                                      ),
+                              return Column(
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width * 0.7,
+                                    height: MediaQuery.of(context).size.height * 0.1,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Container(
+                                          child: Image(image: NetworkImage(suggestion["Image-URL-S"]),
+                                              fit: BoxFit.fitHeight,),
+                                          width: MediaQuery.of(context).size.width * 0.2,
+                                        ),
+                                        Expanded(
+                                          child: ListTile(
+                                            title: Text(suggestion["Book-Title"]),
+                                            subtitle: Text(suggestion["Book-Author"]),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  SizedBox(height: 4,),
+                                ],
                               );
                             },
                             suggestionsCallback: (String pattern) async {

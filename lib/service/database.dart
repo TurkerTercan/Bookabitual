@@ -1,5 +1,6 @@
 import 'package:bookabitual/models/book.dart';
 import 'package:bookabitual/models/bookworm.dart';
+import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/widgets/QuotePost.dart';
 import 'package:bookabitual/widgets/reviewPost.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -90,6 +91,10 @@ class BookDatabase {
         'accountCreated' : Timestamp.now(),
         'photoIndex': user.photoIndex,
         'name': user.name,
+        'following': user.following,
+        'followers': user.followers,
+        'library': user.library,
+        'currentBookName': user.currentBookName,
       });
       retVal = "Success";
     }catch(e) {
@@ -120,6 +125,10 @@ class BookDatabase {
       retVal.accountCreated = _docSnapshot.get("accountCreated");
       retVal.name = _docSnapshot.get("name");
       retVal.photoIndex = _docSnapshot.get("photoIndex");
+      retVal.currentBookName = _docSnapshot.get("currentBookName");
+      retVal.library = _docSnapshot.get("library");
+      retVal.followers = _docSnapshot.get("followers");
+      retVal.following = _docSnapshot.get("following");
     } catch(e) {
       print(e);
     }
@@ -154,6 +163,53 @@ class BookDatabase {
         'name': name,
       });
     }catch(e){
+      print(e);
+    }
+  }
+
+  Future<void> addBookToMyLibrary(String isbn, int index) async {
+    Bookworm tempBookworm = currentBookworm;
+    try{
+      switch (index) {
+        case 1: //Finished
+          tempBookworm.library[isbn] = "Finished";
+          await userReference.doc(tempBookworm.uid).update({
+            'library': tempBookworm.library
+          });
+          break;
+        case 2: //Reading
+          tempBookworm.library[isbn] = "Reading";
+          await userReference.doc(tempBookworm.uid).update({
+            'library': tempBookworm.library,
+            'currentBookName': isbn,
+          });
+          break;
+        case 3: //Unfinished
+          tempBookworm.library[isbn] = "Unfinished";
+          await userReference.doc(tempBookworm.uid).update({
+            'library': tempBookworm.library
+          });
+          break;
+        case 4: //Will Read
+          tempBookworm.library[isbn] = "Will Read";
+          await userReference.doc(tempBookworm.uid).update({
+            'library': tempBookworm.library
+          });
+          break;
+      }
+    }
+    catch(e) {
+      print(e);
+    }
+  }
+  Future<void> followFunction(String otherUid, int index) {
+    try {
+      if (index == 0) {
+
+      } else {
+
+      }
+    } catch(e) {
       print(e);
     }
   }

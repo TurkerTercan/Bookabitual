@@ -30,6 +30,7 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
   List<Widget> reviewPosts = <Widget>[];
   List<Widget> quotePosts = <Widget>[];
   final List boolList = [];
+  bool status = false;
 
   Future profileFuture;
 
@@ -54,7 +55,6 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
     quotePosts.clear();
     boolList.clear();
     postMap.clear();
-
     QuerySnapshot queryQuoteSnapshot = await BookDatabase().getUserQuotes(uid);
     QuerySnapshot queryReviewSnapshot = await BookDatabase().getUserReviews(uid);
 
@@ -154,246 +154,265 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
         child: SingleChildScrollView(
           child: Container(
             height: MediaQuery.of(context).size.height * 1.1,
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 20),
-                Container(
-                  width: MediaQuery.of(context).size.width / 2,
-                  child: ProjectContainer(
-                    child: Column(
-                      children: [
-                        Center(
-                          child: CircleAvatar(
-                            backgroundImage:
-                            AssetImage(avatars[currentUser.photoIndex]),
-                            radius: 40.0,
-                          ),
-                        ),
-                        Divider(
-                          height: 7,
-                          color: Colors.green[100],
-                        ),
-                        Text(
-                          currentUser.name,
-                          key: Key(Keys.AnotherProfileUsername),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              color: Colors.black,
-                              letterSpacing: 1.0,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Divider(
-                          height: 5,
-                          color: Colors.green[100],
-                        ),
-                        Text(
-                          currentUser.username,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              color: Colors.black45,
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.normal),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Divider(
-                  height: 12,
-                  color: Colors.green[100],
-                ),
-                Text(
-                  'I am reading The Lord of the Rings',
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.purple[400],
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.bold),
-                ),
-                Divider(
-                  height: 10,
-                  color: Colors.green[100],
-                  thickness: 0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: Stack(
+              children: [
+                Column(
                   children: <Widget>[
+                    SizedBox(height: 20),
                     Container(
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Container(
-                          child: Column(
-                            children: [
-                              Text(
-                                "180",
-                                style: TextStyle(
-                                  fontSize: 22,
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: ProjectContainer(
+                        child: Column(
+                          children: [
+                            Center(
+                              child: CircleAvatar(
+                                backgroundImage:
+                                AssetImage(avatars[currentUser.photoIndex]),
+                                radius: 40.0,
+                              ),
+                            ),
+                            Divider(
+                              height: 7,
+                              color: Colors.green[100],
+                            ),
+                            Text(
+                              currentUser.name,
+                              key: Key(Keys.AnotherProfileUsername),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: Colors.black,
+                                  letterSpacing: 1.0,
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Divider(
+                              height: 5,
+                              color: Colors.green[100],
+                            ),
+                            Text(
+                              currentUser.username,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 20.0,
                                   color: Colors.black45,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                "Followers",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black45,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            ],
-                          ),
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.normal),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    Container(
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Container(
-                          child: Column(
-                            children: [
-                              Text(
-                                "195",
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  color: Colors.black45,
-                                  fontWeight: FontWeight.bold,
+                    Divider(
+                      height: 12,
+                      color: Colors.green[100],
+                    ),
+                    Text(
+                      'I am reading The Lord of the Rings',
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          color: Colors.purple[400],
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Divider(
+                      height: 10,
+                      color: Colors.green[100],
+                      thickness: 0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Container(
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Container(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "180",
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      color: Colors.black45,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Followers",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black45,
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Container(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "195",
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      color: Colors.black45,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Following",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black45,
+                                        fontWeight: FontWeight.normal),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: DefaultTabController(
+                        length: 2,
+                        child: Scaffold(
+                          appBar: TabBar(
+                            isScrollable: true,
+                            labelColor: Colors.black,
+                            unselectedLabelColor: Colors.grey,
+                            labelStyle: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                            unselectedLabelStyle:
+                            TextStyle(fontSize: 18.0, color: Colors.grey),
+                            indicator: UnderlineTabIndicator(
+                              borderSide:
+                              BorderSide(width: 2.0, color: Colors.blueGrey),
+                            ),
+                            tabs: [
+                              Tab(
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width * 0.43,
+                                  child: Center(
+                                    child: Text("Posts"),
+                                  ),
                                 ),
                               ),
-                              Text(
-                                "Following",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black45,
-                                    fontWeight: FontWeight.normal),
+                              Tab(
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width * 0.43,
+                                  child: Center(
+                                    child: Text("Library"),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
+                          body: TabBarView(
+                            children: [
+                              Container(
+                                child: ListView(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 7),
+                                      child: FutureBuilder(
+                                        future: profileFuture,
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState == ConnectionState.done) {
+                                            if (postList.length == 0)
+                                              return Center(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.symmetric(vertical: 30),
+                                                  child: ProjectContainer(
+                                                    child: Text(
+                                                      "There is nothing to show here. \nShare some of your favorite books!",
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            else {
+                                              return RefreshIndicator(
+                                                key: _globalKey,
+                                                onRefresh: () {
+                                                  return Future.delayed(
+                                                      Duration(milliseconds: 50))
+                                                      .then((value) =>
+                                                  {
+                                                    setState(() {
+                                                      profileFuture = getAllPosts(currentUser.uid);
+                                                    })
+                                                  });
+                                                },
+                                                child: Container(
+                                                  height: MediaQuery.of(context).size.height * 0.65,
+                                                  child: ListView.builder(
+                                                    controller: _scrollController,
+                                                    physics: BouncingScrollPhysics(),
+                                                    itemCount: postList.length,
+                                                    itemBuilder: (BuildContext context,
+                                                        int index) {
+                                                      return Padding(
+                                                        padding: EdgeInsets.only(
+                                                            left: 5,
+                                                            right: 5,
+                                                            top: 10),
+                                                        child: Container(
+                                                          margin: EdgeInsets.only(
+                                                              bottom: 5),
+                                                          child: boolList[index] ? SmallPostReview(post: postList[index], canBeDeleted: false,)
+                                                              : SmallPostQuote(post: postList[index], canBeDeleted: false,),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          }
+                                          else {
+                                            return Padding(
+                                              padding: const EdgeInsets.only(top: 30.0),
+                                              child: Center(child: CircularProgressIndicator()),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ), //My Posts Tab
+                              Container(), //MY Library Tab
+                            ],
+                          ),
                         ),
+                        initialIndex: 0,
                       ),
                     ),
                   ],
                 ),
-                Expanded(
-                  child: DefaultTabController(
-                    length: 2,
-                    child: Scaffold(
-                      appBar: TabBar(
-                        isScrollable: true,
-                        labelColor: Colors.black,
-                        unselectedLabelColor: Colors.grey,
-                        labelStyle: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                        unselectedLabelStyle:
-                        TextStyle(fontSize: 18.0, color: Colors.grey),
-                        indicator: UnderlineTabIndicator(
-                          borderSide:
-                          BorderSide(width: 2.0, color: Colors.blueGrey),
-                        ),
-                        tabs: [
-                          Tab(
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.43,
-                              child: Center(
-                                child: Text("Post"),
-                              ),
-                            ),
-                          ),
-                          Tab(
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.43,
-                              child: Center(
-                                child: Text("Library"),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      body: TabBarView(
-                        children: [
-                          Container(
-                            child: ListView(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 7),
-                                  child: FutureBuilder(
-                                    future: profileFuture,
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState == ConnectionState.done) {
-                                        if (postList.length == 0)
-                                          return Center(
-                                            child: Padding(
-                                              padding: const EdgeInsets.symmetric(vertical: 30),
-                                              child: ProjectContainer(
-                                                child: Text(
-                                                  "There is nothing to show here. \nShare some of your favorite books!",
-                                                  style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        else {
-                                          return RefreshIndicator(
-                                            key: _globalKey,
-                                            onRefresh: () {
-                                              return Future.delayed(
-                                                  Duration(milliseconds: 50))
-                                                  .then((value) =>
-                                              {
-                                                setState(() {
-                                                  profileFuture = getAllPosts(currentUser.uid);
-                                                })
-                                              });
-                                            },
-                                            child: Container(
-                                              height: MediaQuery.of(context).size.height * 0.65,
-                                              child: ListView.builder(
-                                                controller: _scrollController,
-                                                physics: BouncingScrollPhysics(),
-                                                itemCount: postList.length,
-                                                itemBuilder: (BuildContext context,
-                                                    int index) {
-                                                  return Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 5,
-                                                        right: 5,
-                                                        top: 10),
-                                                    child: Container(
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 5),
-                                                      child: boolList[index] ? SmallPostReview(post: postList[index], canBeDeleted: false,)
-                                                          : SmallPostQuote(post: postList[index], canBeDeleted: false,),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                          );
-                                        }
-                                      }
-                                      else {
-                                        return Padding(
-                                          padding: const EdgeInsets.only(top: 30.0),
-                                          child: Center(child: CircularProgressIndicator()),
-                                        );
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ), //My Posts Tab
-                          Container(), //MY Library Tab
-                        ],
-                      ),
-                    ),
-                    initialIndex: 0,
+                Positioned(
+                  right: MediaQuery.of(context).size.width * 0.253,
+                  top: MediaQuery.of(context).size.width * 0.05,
+                  child: IconButton(
+                    iconSize: 45,
+                    icon: Icon(status ? Icons.add_circle_outline : Icons.remove_circle_outline, color: Colors.grey[500],),
+                    padding: EdgeInsets.zero,
+                    constraints: BoxConstraints(),
+                    onPressed: () {
+                      setState(() {
+                        status = !status;
+                      });
+                    },
                   ),
                 ),
               ],

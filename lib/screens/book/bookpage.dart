@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bookabitual/models/book.dart';
 import 'package:bookabitual/screens/anotherProfile/anotherProfile.dart';
 import 'package:bookabitual/service/database.dart';
+import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/utils/avatarPictures.dart';
 import 'package:bookabitual/widgets/ProjectContainer.dart';
 import 'package:bookabitual/widgets/QuotePost.dart';
@@ -45,9 +46,18 @@ class BookPageState extends State<BookPage> {
   @override
   void initState() {
     super.initState();
-
     bookpageFuture = getAllBookPost();
-
+    String temp = currentBookworm.library[widget.book.isbn];
+    if (temp != null) {
+      if (temp == "Finished")
+        index = 1;
+      else if (temp == "Reading")
+        index = 2;
+      else if (temp == "Unfinished")
+        index = 3;
+      else if (temp == "Will Read")
+        index = 4;
+    }
   }
 
   getAllBookPost() async {
@@ -345,6 +355,7 @@ class BookPageState extends State<BookPage> {
               setState(() {
                 index = 1;
               });
+              BookDatabase().addBookToMyLibrary(widget.book.isbn, index);
               Navigator.maybePop(context);
             },
           ),
@@ -355,6 +366,7 @@ class BookPageState extends State<BookPage> {
               setState(() {
                 index = 2;
               });
+              BookDatabase().addBookToMyLibrary(widget.book.isbn, index);
               Navigator.maybePop(context);
             },
           ),
@@ -365,6 +377,7 @@ class BookPageState extends State<BookPage> {
               setState(() {
                 index = 3;
               });
+              BookDatabase().addBookToMyLibrary(widget.book.isbn, index);
               Navigator.maybePop(context);
             },
           ),
@@ -375,6 +388,7 @@ class BookPageState extends State<BookPage> {
               setState(() {
                 index = 4;
               });
+              BookDatabase().addBookToMyLibrary(widget.book.isbn, index);
               Navigator.maybePop(context);
             },
           ),

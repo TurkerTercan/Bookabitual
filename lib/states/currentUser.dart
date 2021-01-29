@@ -67,6 +67,10 @@ class CurrentUser extends ChangeNotifier {
       _user.username = username.trim();
       _user.name = _user.username;
       _user.photoIndex = 15;
+      _user.currentBookName = "";
+      _user.library = {};
+      _user.followers = {};
+      _user.following = {};
       String _returnString = await bookDatabase.createUser(_user);
       if (_returnString == "Success") {
         retVal = "Success";
@@ -112,6 +116,10 @@ class CurrentUser extends ChangeNotifier {
         _user.username = _authResult.user.displayName;
         _user.name = _user.username;
         _user.photoIndex = 15;
+        _user.currentBookName = "";
+        _user.library = {};
+        _user.followers = {};
+        _user.following = {};
         bookDatabase.createUser(_user);
       }
       currentUser = await bookDatabase.getUserInfo(_authResult.user.uid);

@@ -237,8 +237,10 @@ class _SearchPageState extends State<SearchPage> {
                               );
                             });
                       } else {
-                        return (snapshot.connectionState == ConnectionState.waiting)
-                            ? Center(child: CircularProgressIndicator()) : ListView.builder(
+                        if ((snapshot.connectionState == ConnectionState.waiting)) {
+                          return Center(child: CircularProgressIndicator());
+                        } else {
+                          return ListView.builder(
                           itemCount: snapshot.data.docs.length + snapshot_2.data.docs.length,
                           itemBuilder: (context, index) {
                             if (index < snapshot.data.docs.length) {
@@ -424,6 +426,7 @@ class _SearchPageState extends State<SearchPage> {
                             }
                           },
                         );
+                        }
                       }
                     },
                   );

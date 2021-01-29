@@ -6,11 +6,17 @@ class Bookworm{
   String name;
   String email;
   int photoIndex;
+  dynamic followers;
+  dynamic following;
+  Map library;
+  String currentBookName;
+
   Timestamp accountCreated;
 
-  Bookworm({this.uid, this.username, this.name, this.email, this.photoIndex, this.accountCreated});
+  Bookworm({this.uid, this.username, this.name, this.email, this.photoIndex, this.accountCreated,
+  this.followers, this.following, this.library, this.currentBookName});
 
-  factory Bookworm.fromDocument(DocumentSnapshot doc){
+  /*factory Bookworm.fromDocument(DocumentSnapshot doc){
     return Bookworm(
       uid: doc['uid'],
       username: doc['username'],
@@ -19,5 +25,5 @@ class Bookworm{
       photoIndex: doc['photoIndex'],
       accountCreated: doc['accountCreated'],
     );
-  }
+  }*/
 }
