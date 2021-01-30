@@ -7,7 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 final userReference = FirebaseFirestore.instance.collection("users");
 final postReference = FirebaseFirestore.instance.collection("Posts");
-//final activityFeedReference = FirebaseFirestore.instance.collection("feed");
 final bookReference = FirebaseFirestore.instance.collection("books");
 
 class BookDatabase {
@@ -202,13 +201,25 @@ class BookDatabase {
       print(e);
     }
   }
-  Future<void> followFunction(String otherUid, int index) {
+  Future<void> followFunction(String otherUid, bool index) async {
+    Bookworm temp = currentBookworm;
+    Bookworm otherUser = await getUserInfo(otherUid);
+
     try {
-      if (index == 0) {
-
+      if (!index) {
+        temp.following[otherUid] = true;
+        otherUser.followers[temp.uid] = true;
       } else {
-
+        temp.following.remove(otherUid);
+        otherUser.followers.remove(temp.uid);
       }
+      await userReference.doc(temp.uid).update({
+        'following': temp.following
+      });
+      await userReference.doc(otherUser.uid).update({
+        'followers': otherUser.followers
+      });
+
     } catch(e) {
       print(e);
     }

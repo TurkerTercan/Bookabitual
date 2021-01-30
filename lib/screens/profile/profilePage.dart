@@ -1,4 +1,5 @@
 import 'package:bookabitual/keys.dart';
+import 'package:bookabitual/screens/profile/listOfUsers.dart';
 import 'package:bookabitual/screens/root/root.dart';
 import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/utils/avatarPictures.dart';
@@ -212,12 +213,15 @@ class ProfilePageState extends State<ProfilePage> {
                     children: <Widget>[
                       Container(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            List<String> uids = currentUser.followers.keys.toList();
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ListOfUsers(uids: uids, title: "Followers",)));
+                          },
                           child: Container(
                             child: Column(
                               children: [
                                 Text(
-                                  "180",
+                                  currentUser.followers.length.toString(),
                                   style: TextStyle(
                                     fontSize: 22,
                                     color: Colors.black45,
@@ -238,12 +242,15 @@ class ProfilePageState extends State<ProfilePage> {
                       ),
                       Container(
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            List<String> uids = currentUser.following.keys.toList();
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ListOfUsers(uids: uids, title: "Following",)));
+                          },
                           child: Container(
                             child: Column(
                               children: [
                                 Text(
-                                  "195",
+                                  currentUser.following.length.toString(),
                                   style: TextStyle(
                                     fontSize: 22,
                                     color: Colors.black45,

@@ -6,8 +6,8 @@ class Bookworm{
   String name;
   String email;
   int photoIndex;
-  dynamic followers;
-  dynamic following;
+  Map followers;
+  Map following;
   Map library;
   String currentBookName;
 

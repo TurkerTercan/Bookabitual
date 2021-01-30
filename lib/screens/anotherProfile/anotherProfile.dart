@@ -1,4 +1,5 @@
 import 'package:bookabitual/keys.dart';
+import 'package:bookabitual/screens/profile/listOfUsers.dart';
 import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/utils/avatarPictures.dart';
 import 'package:bookabitual/widgets/ProjectContainer.dart';
@@ -41,6 +42,12 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
     super.initState();
     currentUser = widget.user;
     profileFuture = getAllPosts(currentUser.uid);
+    var temp = currentBookworm.following[currentUser.uid];
+    if (temp != null)
+      status = false;
+    else
+      status = true;
+    print(temp);
   }
 
   void triggerFuture() {
@@ -225,12 +232,15 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
                       children: <Widget>[
                         Container(
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              List<String> uids = currentUser.followers.keys.toList();
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => ListOfUsers(uids: uids, title: "Followers",)));
+                            },
                             child: Container(
                               child: Column(
                                 children: [
                                   Text(
-                                    "180",
+                                    currentUser.followers.length.toString(),
                                     style: TextStyle(
                                       fontSize: 22,
                                       color: Colors.black45,
@@ -251,12 +261,15 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
                         ),
                         Container(
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              List<String> uids = currentUser.following.keys.toList();
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => ListOfUsers(uids: uids, title: "Following",)));
+                            },
                             child: Container(
                               child: Column(
                                 children: [
                                   Text(
-                                    "195",
+                                    currentUser.following.length.toString(),
                                     style: TextStyle(
                                       fontSize: 22,
                                       color: Colors.black45,
@@ -408,7 +421,8 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
                     icon: Icon(status ? Icons.add_circle_outline : Icons.remove_circle_outline, color: Colors.grey[500],),
                     padding: EdgeInsets.zero,
                     constraints: BoxConstraints(),
-                    onPressed: () {
+                    onPressed: () async {
+                      await BookDatabase().followFunction(widget.user.uid, !status);
                       setState(() {
                         status = !status;
                       });
