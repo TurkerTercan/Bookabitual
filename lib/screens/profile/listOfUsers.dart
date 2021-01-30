@@ -31,37 +31,38 @@ class _ListOfUsersState extends State<ListOfUsers> {
   @override
   void initState() {
     super.initState();
-    listFuture = getAllUserInfo();
   }
 
   @override
   Widget build(BuildContext context)  {
-    return FutureBuilder(
-      future: listFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done)
-          return Center(child: CircularProgressIndicator(),);
-        return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Theme.of(context).accentColor,
-            title: Text("bookabitual",
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight:
-                FontWeight.bold,
-                fontStyle: FontStyle.italic,
-                color: Theme.of(context).bottomAppBarColor,
-              ),
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-              ),
-            ),
-            centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).accentColor,
+        title: Text("bookabitual",
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight:
+            FontWeight.bold,
+            fontStyle: FontStyle.italic,
+            color: Theme.of(context).bottomAppBarColor,
           ),
-          body: Column(
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomRight: Radius.circular(10),
+            bottomLeft: Radius.circular(10),
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: FutureBuilder(
+        future: getAllUserInfo(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done)
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          return Column(
             children: [
               SizedBox(height: 10,),
               Container(
@@ -89,8 +90,8 @@ class _ListOfUsersState extends State<ListOfUsers> {
                       SizedBox(height: 15,),
                       ProjectContainer(
                         child: Text(
-                            "There is nothing to show here.",
-                            style: TextStyle(
+                          "There is nothing to show here.",
+                          style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
@@ -124,7 +125,6 @@ class _ListOfUsersState extends State<ListOfUsers> {
                                       children: [
                                         Icon(Icons.alternate_email_outlined, color: Colors.grey[300],),
                                         Container(
-                                          width: MediaQuery.of(context).size.width * 0.5,
                                           child: AutoSizeText(
                                             users[index].username,
                                             minFontSize: 10,
@@ -143,7 +143,6 @@ class _ListOfUsersState extends State<ListOfUsers> {
                                       children: [
                                         Icon(Icons.book_outlined, color: Colors.grey[300],),
                                         Container(
-                                          width: MediaQuery.of(context).size.width * 0.5,
                                           child: AutoSizeText(
                                             users[index].currentBook.bookTitle,
                                             minFontSize: 10,
@@ -162,7 +161,6 @@ class _ListOfUsersState extends State<ListOfUsers> {
                                       children: [
                                         Icon(Icons.person_outline, color: Colors.grey[300],),
                                         Container(
-                                          width: MediaQuery.of(context).size.width * 0.5,
                                           child: AutoSizeText(
                                             users[index].name,
                                             minFontSize: 10,
@@ -189,9 +187,9 @@ class _ListOfUsersState extends State<ListOfUsers> {
                 ),
               ),
             ],
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

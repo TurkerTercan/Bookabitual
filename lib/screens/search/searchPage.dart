@@ -392,7 +392,6 @@ class _SearchPageState extends State<SearchPage> {
                                                     children: [
                                                       Icon(Icons.alternate_email_outlined, color: Colors.grey[300],),
                                                       Container(
-                                                        width: MediaQuery.of(context).size.width * 0.5,
                                                         child: AutoSizeText(
                                                           tempUser.username,
                                                           minFontSize: 10,
@@ -411,7 +410,6 @@ class _SearchPageState extends State<SearchPage> {
                                                     children: [
                                                       Icon(Icons.book_outlined, color: Colors.grey[300],),
                                                       Container(
-                                                        width: MediaQuery.of(context).size.width * 0.5,
                                                         child: AutoSizeText(
                                                           tempUser.currentBook.bookTitle,
                                                           minFontSize: 10,
@@ -430,7 +428,6 @@ class _SearchPageState extends State<SearchPage> {
                                                     children: [
                                                       Icon(Icons.person_outline, color: Colors.grey[300],),
                                                       Container(
-                                                        width: MediaQuery.of(context).size.width * 0.5,
                                                         child: AutoSizeText(
                                                           tempUser.name,
                                                           minFontSize: 10,

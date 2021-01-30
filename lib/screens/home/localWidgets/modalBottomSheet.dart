@@ -7,7 +7,6 @@ import 'package:bookabitual/widgets/QuotePost.dart';
 import 'package:bookabitual/widgets/reviewPost.dart';
 import 'package:bookabitual/validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropdownfield/dropdownfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
@@ -57,17 +56,19 @@ void onButtonPressed(
 
   final TextEditingController isbn = TextEditingController();
   final TextEditingController text = TextEditingController();
-  final bookList = [];
   var selectedBook;
 
   Item selectedItem = postChoice[0];
   Rating selectedRating = postRating[0];
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKeyTwo = GlobalKey<FormState>();
   AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
 
   void _validateInputs() {
-    if (_formKey.currentState.validate())
+    var temp1 = _formKeyTwo.currentState.validate();
+    var temp2 = _formKey.currentState.validate();
+    if (temp1 && temp2)
       _autovalidateMode = AutovalidateMode.disabled;
     else
       _autovalidateMode = AutovalidateMode.always;
@@ -194,71 +195,80 @@ void onButtonPressed(
                     Container(
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: ProjectContainer(child:
-                          TypeAheadField(
-                            suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                              color: Color.fromARGB(255, 255, 255, 255),
-                            ),
-                            hideSuggestionsOnKeyboardHide: false,
-                            textFieldConfiguration: TextFieldConfiguration(
-                              controller: isbn,
-                              decoration: InputDecoration(
-                                  prefixIcon: Icon(Icons.book),
-                                  hintText: "Book"
+                          Form(
+                            key: _formKeyTwo,
+                            child: TypeAheadFormField(
+                              suggestionsBoxDecoration: SuggestionsBoxDecoration(
+                                color: Color.fromARGB(255, 255, 255, 255),
                               ),
-                            ),
-                            onSuggestionSelected: (suggestion) {
-                              setState(() {
-                                isbn.text = suggestion["Book-Title"];
-                              });
-                              var temp = Book(
-                                isbn: suggestion.id,
-                                bookTitle: suggestion["Book-Title"],
-                                bookAuthor: suggestion["Book-Author"],
-                                ratings: suggestion["Ratings"],
-                                publisher: suggestion["Publisher"],
-                                yearOfPublication: suggestion["Year-Of-Publication"],
-                                imageUrlS: suggestion["Image-URL-S"],
-                                imageUrlM: suggestion["Image-URL-M"],
-                                imageUrlL: suggestion["Image-URL-L"],
-                              );
-                              selectedBook = temp;
-                            },
-                            itemBuilder: (context, suggestion) {
-                              return Column(
-                                children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width * 0.7,
-                                    height: MediaQuery.of(context).size.height * 0.1,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Container(
-                                          child: Image(image: NetworkImage(suggestion["Image-URL-S"]),
-                                              fit: BoxFit.fitHeight,),
-                                          width: MediaQuery.of(context).size.width * 0.2,
-                                        ),
-                                        Expanded(
-                                          child: ListTile(
-                                            title: Text(suggestion["Book-Title"]),
-                                            subtitle: Text(suggestion["Book-Author"]),
+                              hideSuggestionsOnKeyboardHide: false,
+                              textFieldConfiguration: TextFieldConfiguration(
+                                controller: isbn,
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.book),
+                                    hintText: "Book"
+                                ),
+                              ),
+                              onSuggestionSelected: (suggestion) {
+                                setState(() {
+                                  isbn.text = suggestion["Book-Title"];
+                                });
+                                var temp = Book(
+                                  isbn: suggestion.id,
+                                  bookTitle: suggestion["Book-Title"],
+                                  bookAuthor: suggestion["Book-Author"],
+                                  ratings: suggestion["Ratings"],
+                                  publisher: suggestion["Publisher"],
+                                  yearOfPublication: suggestion["Year-Of-Publication"],
+                                  imageUrlS: suggestion["Image-URL-S"],
+                                  imageUrlM: suggestion["Image-URL-M"],
+                                  imageUrlL: suggestion["Image-URL-L"],
+                                );
+                                selectedBook = temp;
+                              },
+                              validator: (value) {
+                                if (selectedBook == null) {
+                                  return 'Please choose a book';
+                                } else
+                                  return null;
+                              },
+                              itemBuilder: (context, suggestion) {
+                                return Column(
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width * 0.7,
+                                      height: MediaQuery.of(context).size.height * 0.1,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Container(
+                                            child: Image(image: NetworkImage(suggestion["Image-URL-S"]),
+                                                fit: BoxFit.fitHeight,),
+                                            width: MediaQuery.of(context).size.width * 0.2,
                                           ),
-                                        ),
-                                      ],
+                                          Expanded(
+                                            child: ListTile(
+                                              title: Text(suggestion["Book-Title"]),
+                                              subtitle: Text(suggestion["Book-Author"]),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(height: 4,),
-                                ],
-                              );
-                            },
-                            suggestionsCallback: (String pattern) async {
-                              if (pattern == "" || pattern == null)
-                                return null;
-                              return (await bookReference
-                                  .limit(5)
-                                  .where("Book-Title", isGreaterThanOrEqualTo: pattern)
-                                  .where("Book-Title", isLessThanOrEqualTo: pattern + "zzzzzzzz")
-                                  .get().then((value) {return value.docs;})).toList();
-                            },
+                                    SizedBox(height: 4,),
+                                  ],
+                                );
+                              },
+                              suggestionsCallback: (String pattern) async {
+                                if (pattern == "" || pattern == null)
+                                  return null;
+                                return (await bookReference
+                                    .limit(5)
+                                    .where("Book-Title", isGreaterThanOrEqualTo: pattern)
+                                    .where("Book-Title", isLessThanOrEqualTo: pattern + "zzzzzzzz")
+                                    .get().then((value) {return value.docs;})).toList();
+                              },
+                            ),
                           ),
                       ),
                     ),

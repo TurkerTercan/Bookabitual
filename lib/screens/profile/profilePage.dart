@@ -14,13 +14,14 @@ import 'package:bookabitual/widgets/smallPostReview.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../models/bookworm.dart';
 import '../../states/currentUser.dart';
 
 class ProfilePage extends StatefulWidget {
+
   @override
   ProfilePageState createState() => ProfilePageState();
 }
@@ -53,6 +54,12 @@ class ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  void setCurrentBookworm() {
+    setState(() {
+      currentUser = currentBookworm;
+    });
+  }
+
   getAllPosts(String uid) async {
     postList.clear();
     reviewPosts.clear();
@@ -64,7 +71,6 @@ class ProfilePageState extends State<ProfilePage> {
     QuerySnapshot queryReviewSnapshot = await BookDatabase().getUserReviews(uid);
 
 
-    //List unsorted = [];
     reviewPosts = queryReviewSnapshot.docs.map((documentSnapshot)  {
       ReviewPost reviewPost = ReviewPost(
         isbn: documentSnapshot.data()["isbn"],
@@ -126,15 +132,6 @@ class ProfilePageState extends State<ProfilePage> {
         }
       }
     }
-    /*unsorted.sort((a, b) {
-      Timestamp x = a.createTime;
-      Timestamp y = b.createTime;
-      return y.compareTo(x);
-    });
-
-    unsorted.forEach((element) {
-      postList.add(element);
-    });*/
   }
 
   @override
@@ -202,36 +199,41 @@ class ProfilePageState extends State<ProfilePage> {
                     height: 12,
                     color: Colors.green[100],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      currentUser.currentBookName != "" ? Text(
-                        'I am reading ',
-                        style: TextStyle(
-                            fontSize: 22.0,
-                            color: Colors.grey[600],
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.bold),
-                      ) : Container(),
-                      currentUser.currentBookName != ""
-                          ? GestureDetector(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => BookPage(book: currentUser.currentBook,)));
-                        },
-                        child: Text(
-                          currentUser.currentBook.bookTitle,
-                          style: TextStyle(
-                              fontSize: 22.0,
-                              color: Colors.grey[850],
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.bold),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => BookPage(book: currentBookworm.currentBook,)));
+                      },
+                      child: AutoSizeText.rich(
+                        TextSpan(
+                            children: [
+                              TextSpan(
+                                text: currentBookworm.currentBookName != "" ? 'I am reading ' : "",
+                                style: TextStyle(
+                                    fontSize: 22.0,
+                                    color: Colors.grey[600],
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                              TextSpan(
+                                text: currentBookworm.currentBookName != "" ? currentBookworm.currentBook.bookTitle : "",
+                                style: TextStyle(
+                                    fontSize: 22.0,
+                                    color: Colors.grey[850],
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ],
                         ),
-                      ) : Container(child: Text("", style: TextStyle(
-                          fontSize: 22.0,
-                          color: Colors.grey[850],
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.bold),)),
-                    ],
+                        minFontSize: 15,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
                   Divider(
                     height: 10,
@@ -410,70 +412,81 @@ class ProfilePageState extends State<ProfilePage> {
                                 },
                               ),
                             ),
-                            Container(  //MY Library Tab
+                            Container(
                               margin: EdgeInsets.symmetric(horizontal: 5, vertical: 7),
-                              child: GridView.builder(
-                                itemCount: currentUser.library.keys.length,
-                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 5,
-                                  mainAxisSpacing: 5,
-                                  childAspectRatio: 4 / 6,
-                                ),
-                                itemBuilder: (context, index) {
-                                  return FutureBuilder(
-                                    future: getBookData(currentUser.library.keys.elementAt(index), index),
-                                    builder: (context, snapshot) {
-                                      return Card(
-                                        elevation: 10,
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(builder: (context) => BookPage(book: libraryBooks[index],))
-                                            );
-                                            },
-                                          child: Container(
-                                            child: snapshot.connectionState != ConnectionState.done ?
-                                                Center(child: CircularProgressIndicator())
-                                            : Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(30),
-                                                image: DecorationImage(
-                                                  image: CachedNetworkImageProvider(libraryBooks[index].imageUrlL),
-                                                  fit: BoxFit.fill,
-                                                ),
-                                              ),
-                                              child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.end,
-                                                children: [
-                                                  Container(
-                                                    child: currentUser.library[libraryBooks[index].isbn] == "Finished" ? Icon(
-                                                      Icons.book,
-                                                      size: 25,
-                                                    ) : currentUser.library[libraryBooks[index].isbn] == "Reading" ? Icon(
-                                                      Icons.chrome_reader_mode,
-                                                      size: 25,
-                                                    ) : currentUser.library[libraryBooks[index].isbn] == "Unfinished" ? Icon(
-                                                      Icons.close_rounded,
-                                                      size: 25,
-                                                    ) : Icon(
-                                                      Icons.access_time,
-                                                      size: 25,
-                                                    ),
-                                                    padding: EdgeInsets.all(10),
+                              child: Container(  //MY Library Tab,
+                                child: GridView.builder(
+                                  itemCount: currentUser.library.keys.length,
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 5,
+                                    mainAxisSpacing: 5,
+                                    childAspectRatio: 4 / 6,
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    return FutureBuilder(
+                                      future: getBookData(currentUser.library.keys.elementAt(index), index),
+                                      builder: (context, snapshot) {
+                                        return Card(
+                                          elevation: 20,
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => BookPage(book: libraryBooks[index], funct: setCurrentBookName,))
+                                              );
+                                              },
+                                            child: Container(
+                                              child: snapshot.connectionState != ConnectionState.done ?
+                                                  Center(child: CircularProgressIndicator())
+                                              : Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(30),
+                                                  image: DecorationImage(
+                                                    image: CachedNetworkImageProvider(libraryBooks[index].imageUrlL),
+                                                    fit: BoxFit.fill,
                                                   ),
-                                                ],
+                                                ),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                                  children: [
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50), topRight: Radius.circular(30)),
+                                                        color: Colors.amber,
+                                                        gradient: LinearGradient(
+                                                          begin: Alignment.topLeft,
+                                                          end: Alignment.bottomRight,
+                                                          colors: [Colors.white, Colors.grey[500]],
+                                                        ),
+                                                      ),
+                                                      child: currentUser.library[libraryBooks[index].isbn] == "Finished" ? Icon(
+                                                        Icons.book,
+                                                        size: 25,
+                                                      ) : currentUser.library[libraryBooks[index].isbn] == "Reading" ? Icon(
+                                                        Icons.chrome_reader_mode,
+                                                        size: 25,
+                                                      ) : currentUser.library[libraryBooks[index].isbn] == "Unfinished" ? Icon(
+                                                        Icons.close_rounded,
+                                                        size: 25,
+                                                      ) : Icon(
+                                                        Icons.access_time,
+                                                        size: 25,
+                                                      ),
+                                                      padding: EdgeInsets.only(left: 20, right: 10, top: 10, bottom: 20),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
                               ),
                             ),
                           ],
@@ -639,7 +652,7 @@ class ProfilePageState extends State<ProfilePage> {
                     SizedBox(height: 20, width: 30),
                     RaisedButton(
                       onPressed: () {
-                        saveFuction(beforeState);
+                        saveFunction(beforeState);
                       },
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 100),
@@ -660,7 +673,7 @@ class ProfilePageState extends State<ProfilePage> {
       },
     );
   }
-  saveFuction(beforeState) {
+  saveFunction(beforeState) {
     if (nameController.text != "") {
       Provider.of<CurrentUser>(context, listen: false)
           .saveInfo(currentIndex, nameController.text);
@@ -669,8 +682,17 @@ class ProfilePageState extends State<ProfilePage> {
         currentUser = Provider.of<CurrentUser>(context, listen: false)
             .getCurrentUser;
         profileFuture = getAllPosts(currentUser.uid);
+        currentUser.photoIndex = currentIndex;
+        currentUser.name = nameController.text;
       });
     }
+  }
+
+  setCurrentBookName(Book book, String bookName) {
+    setState(() {
+      currentBookworm.currentBook = book;
+      currentBookworm.currentBookName = bookName;
+    });
   }
 
   getAvatars(int index, StateSetter setState) {

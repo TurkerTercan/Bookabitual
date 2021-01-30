@@ -22,7 +22,7 @@ class ReviewPost extends StatefulWidget {
   final String text;
   final String rating;
   final Timestamp createTime;
-  final String status;
+  String status;
   final dynamic likes;
   final dynamic comments;
   final Function trigger;
@@ -58,6 +58,12 @@ class ReviewPost extends StatefulWidget {
   updateInfo() async {
     user = await BookDatabase().getUserInfo(uid);
     book = await BookDatabase().getBookInfo(isbn);
+
+    status = user.library[book.isbn];
+    if (status == null)
+      status = "";
+    else
+      status = " · " + status;
   }
 
   @override
@@ -193,7 +199,7 @@ class ReviewPostState extends State<ReviewPost> {
                         ],
                       ),
                       Text(
-                        readTimestamp(widget.createTime.seconds),
+                        readTimestamp(widget.createTime.seconds) + widget.status,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,

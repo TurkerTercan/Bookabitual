@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bookabitual/keys.dart';
 import 'package:bookabitual/models/book.dart';
 import 'package:bookabitual/screens/book/bookpage.dart';
@@ -218,36 +219,41 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
                       height: 12,
                       color: Colors.green[100],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        currentUser.currentBookName != "" ? Text(
-                          'I am reading ',
-                          style: TextStyle(
-                              fontSize: 22.0,
-                              color: Colors.grey[600],
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.bold),
-                        ) : Container(),
-                        currentUser.currentBookName != ""
-                            ? GestureDetector(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => BookPage(book: currentUser.currentBook,)));
-                          },
-                          child: Text(
-                            currentUser.currentBook.bookTitle,
-                            style: TextStyle(
-                                fontSize: 22.0,
-                                color: Colors.grey[850],
-                                fontFamily: 'Roboto',
-                                fontWeight: FontWeight.bold),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => BookPage(book: currentUser.currentBook,)));
+                        },
+                        child: AutoSizeText.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: currentUser.currentBookName != "" ? 'I am reading ' : "",
+                                style: TextStyle(
+                                    fontSize: 22.0,
+                                    color: Colors.grey[600],
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                              TextSpan(
+                                text: currentUser.currentBookName != "" ? currentUser.currentBook.bookTitle : "",
+                                style: TextStyle(
+                                    fontSize: 22.0,
+                                    color: Colors.grey[850],
+                                    fontFamily: 'Roboto',
+                                    fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ],
                           ),
-                        ) : Container(child: Text("", style: TextStyle(
-                            fontSize: 22.0,
-                            color: Colors.grey[850],
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.bold),)),
-                      ],
+                          minFontSize: 15,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     ),
                     Divider(
                       height: 10,

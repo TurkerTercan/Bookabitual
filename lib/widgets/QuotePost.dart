@@ -88,6 +88,7 @@ class QuotePostState extends State<QuotePost> {
   int likeCount;
   bool isLiked = false;
   Map likes;
+  int commentNumber;
 
   Future reviewFuture;
   final currentOnlineUserId = currentBookworm.uid;
@@ -145,6 +146,23 @@ class QuotePostState extends State<QuotePost> {
     return counter;
   }
 
+  void increaseComment() {
+    setState(() {
+      commentNumber++;
+    });
+  }
+  void decreaseComment() {
+    setState(() {
+      commentNumber--;
+    });
+  }
+  void changeComment(bool status) {
+    if(status)
+      increaseComment();
+    else
+      decreaseComment();
+  }
+
   onCommentTap() {
     Navigator.push(
         context,
@@ -155,6 +173,7 @@ class QuotePostState extends State<QuotePost> {
           text: widget.text,
           createTime: widget.createTime,
           postID: widget.postID,
+          changeComment: changeComment,
         ))
     );
   }
@@ -163,6 +182,7 @@ class QuotePostState extends State<QuotePost> {
   Widget build(BuildContext context) {
     bool isQuoteOwner = currentOnlineUserId == widget.uid;
     isLiked = likes[currentOnlineUserId] == true;
+    commentNumber = getTotalNumberOfComments(widget.comments);
 
     return ProjectContainer(
       child: Column(
@@ -200,7 +220,6 @@ class QuotePostState extends State<QuotePost> {
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
-
                           ),
                           Text(
                             " added a quote.",
@@ -405,7 +424,7 @@ class QuotePostState extends State<QuotePost> {
                 child: Container(
                   margin: EdgeInsets.only(right: 7),
                   child: Text(
-                    "View all "+ getTotalNumberOfComments(widget.comments).toString() + " comments",
+                    "View all "+ commentNumber.toString() + " comments",
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,

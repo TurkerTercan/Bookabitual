@@ -133,7 +133,8 @@ class CurrentUser extends ChangeNotifier {
   Future<void> saveInfo(int index , String newName) async {
     try{
       await bookDatabase.setUserInfo(currentUser.uid, index, newName);
-      currentUser = await bookDatabase.getUserInfo(currentUser.uid);
+      currentUser.photoIndex = index;
+      currentUser.name = newName;
       currentBookworm = currentUser;
     }catch(e){
       print(e);

@@ -18,10 +18,10 @@ class QuoteComment extends StatefulWidget {
   final dynamic comments;
   final Timestamp createTime;
   final String postID;
-  final StateSetter beforeState;
+  final Function changeComment;
   final List<Widget> commentWidgets = <Widget>[];
 
-  QuoteComment({Key key, this.text, this.comments, this.book, this.user, this.createTime, this.postID, this.beforeState}) : super(key: key);
+  QuoteComment({Key key, this.text, this.comments, this.book, this.user, this.createTime, this.postID, this.changeComment}) : super(key: key);
 
   @override
   QuoteCommentState createState() => QuoteCommentState();
@@ -30,7 +30,6 @@ class QuoteComment extends StatefulWidget {
 class QuoteCommentState extends State<QuoteComment> {
   final TextEditingController controller = new TextEditingController();
 
-
   Future commentFuture;
 
   @override
@@ -38,7 +37,6 @@ class QuoteCommentState extends State<QuoteComment> {
     commentFuture = getAllComments();
     super.initState();
   }
-
 
   getAllComments() async {
     List unsorted = [];
@@ -191,7 +189,6 @@ class QuoteCommentState extends State<QuoteComment> {
                               FocusScope.of(context).unfocus();
                               if (controller.text != "") {
                                 var currentUser = Provider.of<CurrentUser>(context, listen: false).getCurrentUser;
-                                var temp = buildComment(currentUser, controller.text, Timestamp.now());
 
                                 if (widget.comments[currentUser.uid] == null) {
                                   widget.comments[currentUser.uid] = new Map<String, Timestamp>();
@@ -206,6 +203,7 @@ class QuoteCommentState extends State<QuoteComment> {
                                   commentFuture = getAllComments();
                                   controller.clear();
                                 });
+                                widget.changeComment(true);
                               }
                             },
                             child: Text(
@@ -239,6 +237,7 @@ class QuoteCommentState extends State<QuoteComment> {
       widget.commentWidgets.clear();
       commentFuture = getAllComments();
     });
+    widget.changeComment(false);
     Navigator.maybePop(context);
   }
 

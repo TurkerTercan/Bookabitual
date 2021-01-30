@@ -72,7 +72,7 @@ class TempProfilePageState extends ProfilePageState {
   }
 
   @override
-  saveFuction(beforeState) {
+  saveFunction(beforeState) {
     beforeState(() {
       currentUser.photoIndex = currentIndex;
       currentUser.name = nameController.text;

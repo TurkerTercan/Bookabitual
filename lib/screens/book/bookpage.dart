@@ -4,7 +4,6 @@ import 'package:bookabitual/screens/anotherProfile/anotherProfile.dart';
 import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/utils/avatarPictures.dart';
-import 'package:bookabitual/widgets/ProjectContainer.dart';
 import 'package:bookabitual/widgets/QuotePost.dart';
 import 'package:bookabitual/widgets/reviewPost.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -19,8 +18,9 @@ import 'dart:ui';
 
 class BookPage extends StatefulWidget {
   final Book book;
+  final Function funct;
 
-  BookPage({Key key, this.book}) : super(key: key);
+  BookPage({Key key, this.book, this.funct}) : super(key: key);
 
   @override
   BookPageState createState() => BookPageState();
@@ -365,7 +365,12 @@ class BookPageState extends State<BookPage> {
             onTap: (){
               setState(() {
                 index = 2;
+                currentBookworm.currentBookName = widget.book.isbn;
+                currentBookworm.currentBook = widget.book;
               });
+              if (widget.funct != null)
+                widget.funct(widget.book, widget.book.isbn);
+
               BookDatabase().addBookToMyLibrary(widget.book.isbn, index);
               Navigator.maybePop(context);
             },
