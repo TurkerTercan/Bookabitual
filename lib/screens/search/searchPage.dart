@@ -4,6 +4,7 @@ import 'package:bookabitual/models/bookworm.dart';
 import 'package:bookabitual/screens/anotherProfile/anotherProfile.dart';
 import 'package:bookabitual/screens/book/bookpage.dart';
 import 'package:bookabitual/service/database.dart';
+import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/utils/avatarPictures.dart';
 import 'package:bookabitual/widgets/ProjectContainer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -12,6 +13,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SearchPage extends StatefulWidget {
+  final Function pageAnimation;
+
+  const SearchPage({Key key, this.pageAnimation}) : super(key: key);
+
+
   @override
   _SearchPageState createState() => _SearchPageState();
 }
@@ -62,6 +68,7 @@ class _SearchPageState extends State<SearchPage> {
   var items = List<String>();
   List results = [];
   List resultsbool = [];
+  Future myFuture;
 
   @override
   void initState() {
@@ -256,6 +263,7 @@ class _SearchPageState extends State<SearchPage> {
                                 imageUrlM: data["Image-URL-M"],
                                 imageUrlL: data["Image-URL-L"],
                               );
+
                               return GestureDetector(
                                 onTap: () {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => BookPage(book: tempBook),),);
@@ -338,90 +346,114 @@ class _SearchPageState extends State<SearchPage> {
                                 username: data["username"],
                                 name: data["name"],
                                 accountCreated: data["accountCreated"],
+                                currentBookName: data["currentBookName"],
+                                followers: data["followers"],
+                                following: data["following"],
+                                library: data["library"],
                               );
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => AnotherProfilePage(user: tempUser),),);
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 25, vertical: 5),
-                                  child: ProjectContainer(
-                                    child: Container(
-                                      height: MediaQuery.of(context).size.height / 8,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          CircleAvatar(backgroundImage: AssetImage(avatars[tempUser.photoIndex]), radius: 40,),
-                                          SizedBox(width: 20,),
-                                          Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+
+                              return FutureBuilder(
+                                future: getCurrentBook(tempUser),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState != ConnectionState.done)
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 25, vertical: 5),
+                                      child: ProjectContainer(
+                                          child: Container(
+                                            child: Center(child: CircularProgressIndicator()),
+                                            height: MediaQuery.of(context).size.height / 8,
+                                          ),
+                                      ),
+                                    );
+                                  return GestureDetector(
+                                    onTap: () {
+                                      if (tempUser.uid == currentBookworm.uid)
+                                        widget.pageAnimation();
+                                      else
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => AnotherProfilePage(user: tempUser),),);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 25, vertical: 5),
+                                      child: ProjectContainer(
+                                        child: Container(
+                                          height: MediaQuery.of(context).size.height / 8,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
                                             children: [
-                                              Row(
+                                              CircleAvatar(backgroundImage: AssetImage(avatars[tempUser.photoIndex]), radius: 40,),
+                                              SizedBox(width: 20,),
+                                              Column(
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  Icon(Icons.person_outline, color: Colors.grey[300],),
-                                                  Container(
-                                                    width: MediaQuery.of(context).size.width * 0.5,
-                                                    child: AutoSizeText(
-                                                      tempUser.username,
-                                                      minFontSize: 10,
-                                                      maxLines: 1,
-                                                      overflow: TextOverflow.clip,
-                                                      style: GoogleFonts.openSans(
-                                                        fontSize: 20,
-                                                        fontWeight: FontWeight.w600,
-                                                        color: Colors.black,
+                                                  Row(
+                                                    children: [
+                                                      Icon(Icons.alternate_email_outlined, color: Colors.grey[300],),
+                                                      Container(
+                                                        width: MediaQuery.of(context).size.width * 0.5,
+                                                        child: AutoSizeText(
+                                                          tempUser.username,
+                                                          minFontSize: 10,
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow.clip,
+                                                          style: GoogleFonts.openSans(
+                                                            fontSize: 20,
+                                                            fontWeight: FontWeight.w600,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
+                                                    ],
                                                   ),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(Icons.mail_outline, color: Colors.grey[300],),
-                                                  Container(
-                                                    width: MediaQuery.of(context).size.width * 0.5,
-                                                    child: AutoSizeText(
-                                                      tempUser.email,
-                                                      minFontSize: 10,
-                                                      maxLines: 1,
-                                                      overflow: TextOverflow.clip,
-                                                      style: GoogleFonts.openSans(
-                                                        fontSize: 20,
-                                                        fontWeight: FontWeight.w600,
-                                                        color: Colors.black,
+                                                  Row(
+                                                    children: [
+                                                      Icon(Icons.book_outlined, color: Colors.grey[300],),
+                                                      Container(
+                                                        width: MediaQuery.of(context).size.width * 0.5,
+                                                        child: AutoSizeText(
+                                                          tempUser.currentBook.bookTitle,
+                                                          minFontSize: 10,
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow.clip,
+                                                          style: GoogleFonts.openSans(
+                                                            fontSize: 20,
+                                                            fontWeight: FontWeight.w600,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
+                                                    ],
                                                   ),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Icon(Icons.adb, color: Colors.grey[300],),
-                                                  Container(
-                                                    width: MediaQuery.of(context).size.width * 0.5,
-                                                    child: AutoSizeText(
-                                                      tempUser.name,
-                                                      minFontSize: 10,
-                                                      maxLines: 1,
-                                                      overflow: TextOverflow.clip,
-                                                      style: GoogleFonts.openSans(
-                                                        fontSize: 20,
-                                                        fontWeight: FontWeight.w600,
-                                                        color: Colors.black,
+                                                  Row(
+                                                    children: [
+                                                      Icon(Icons.person_outline, color: Colors.grey[300],),
+                                                      Container(
+                                                        width: MediaQuery.of(context).size.width * 0.5,
+                                                        child: AutoSizeText(
+                                                          tempUser.name,
+                                                          minFontSize: 10,
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow.clip,
+                                                          style: GoogleFonts.openSans(
+                                                            fontSize: 20,
+                                                            fontWeight: FontWeight.w600,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
                                                       ),
-                                                    ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
                                             ],
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
+                                  );
+                                },
                               );
                             }
                           },
@@ -437,6 +469,10 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ),
     );
+  }
+
+  getCurrentBook(Bookworm tempUser) async{
+    tempUser.currentBook = await BookDatabase().getBookInfo(tempUser.currentBookName);
   }
 }
 

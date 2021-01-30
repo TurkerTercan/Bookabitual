@@ -23,12 +23,13 @@ class QuotePost extends StatefulWidget {
   final String postID;
   final String text;
   final Timestamp createTime;
-  final String status;
+  String status;
   final dynamic likes;
   final dynamic comments;
   final Function trigger;
   Bookworm user;
   Book book;
+
 
   QuotePost({Key key,
     @required this.postID,
@@ -56,6 +57,12 @@ class QuotePost extends StatefulWidget {
   updateInfo() async {
     user = await BookDatabase().getUserInfo(uid);
     book = await BookDatabase().getBookInfo(isbn);
+
+    status = user.library[book.isbn];
+    if (status == null)
+      status = "";
+    else
+      status = " · " + status;
   }
 
   @override
@@ -204,7 +211,7 @@ class QuotePostState extends State<QuotePost> {
                         ],
                       ),
                       Text(
-                        readTimestamp(widget.createTime.seconds),
+                        readTimestamp(widget.createTime.seconds) + widget.status,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -215,8 +222,7 @@ class QuotePostState extends State<QuotePost> {
                   )
                 ],
               ),
-              //isQuoteOwner ?
-              IconButton(
+              isQuoteOwner ? IconButton(
                 key: Key(Keys.VertIcon),
                 icon: Icon(Icons.more_vert),
                 onPressed: () async {
@@ -289,7 +295,7 @@ class QuotePostState extends State<QuotePost> {
                     );
                   });
                 },
-              ), //: Container(),
+              ) : Container(),
             ],
           ),
           SizedBox(height: 10,),

@@ -128,6 +128,9 @@ class BookDatabase {
       retVal.library = _docSnapshot.get("library");
       retVal.followers = _docSnapshot.get("followers");
       retVal.following = _docSnapshot.get("following");
+      if (retVal.currentBookName != "" && retVal.currentBookName != null)
+        retVal.currentBook = await getBookInfo(retVal.currentBookName);
+
     } catch(e) {
       print(e);
     }
@@ -178,6 +181,7 @@ class BookDatabase {
           break;
         case 2: //Reading
           tempBookworm.library[isbn] = "Reading";
+          tempBookworm.currentBookName = isbn;
           await userReference.doc(tempBookworm.uid).update({
             'library': tempBookworm.library,
             'currentBookName': isbn,
@@ -196,6 +200,7 @@ class BookDatabase {
           });
           break;
       }
+      currentBookworm = tempBookworm;
     }
     catch(e) {
       print(e);
@@ -219,7 +224,7 @@ class BookDatabase {
       await userReference.doc(otherUser.uid).update({
         'followers': otherUser.followers
       });
-
+      currentBookworm = temp;
     } catch(e) {
       print(e);
     }

@@ -152,13 +152,16 @@ class FeedPageState extends State<FeedPage> {
 
   getAllUserPost() async {
     widget.postList.clear();
-    var temp = await FirebaseFirestore.instance.collection("Posts").get();
+    var userList = {};
+    userList.addAll(currentBookworm.following);
+    userList[currentBookworm.uid] = true;
+
     List unsorted = [];
-    await Future.forEach(temp.docs, (element) async {
+    await Future.forEach(userList.keys, (element) async {
       QuerySnapshot queryQuoteSnapshot =
-          await BookDatabase().getUserQuotes(element.id);
+          await BookDatabase().getUserQuotes(element);
       QuerySnapshot queryReviewSnapshot =
-          await BookDatabase().getUserReviews(element.id);
+          await BookDatabase().getUserReviews(element);
       countPost +=
           queryReviewSnapshot.docs.length + queryQuoteSnapshot.docs.length;
 

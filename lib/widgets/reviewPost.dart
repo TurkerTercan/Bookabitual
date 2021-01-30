@@ -204,8 +204,7 @@ class ReviewPostState extends State<ReviewPost> {
                   )
                 ],
               ),
-              //isQuoteOwner ?
-              IconButton(
+              isQuoteOwner ? IconButton(
                 key: Key(Keys.VertIcon),
                 icon: Icon(Icons.more_vert),
                   onPressed: () async {
@@ -278,7 +277,7 @@ class ReviewPostState extends State<ReviewPost> {
                       );
                     });
                   },
-              ), //: Container(),
+              ) : Container(),
             ],
           ),
           SizedBox(height: 10,),

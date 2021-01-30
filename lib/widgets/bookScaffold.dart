@@ -13,15 +13,24 @@ class BookScaffold extends StatefulWidget {
 }
 
 class _BookScaffoldState extends State<BookScaffold> {
-  int _selectedItemIndex;
-  var _pages = [FeedPage(), SearchPage(), ProfilePage()];
+  int selectedItemIndex;
+  var pages;
   PageController _pageController = PageController();
+  dynamic animation;
+
+  void searchToProfilePage() {
+    selectedItemIndex = 2;
+    _pageController.animateToPage(2,
+        duration: Duration(milliseconds: 300), curve: Curves.linearToEaseOut);
+  }
 
   @override
   void initState() {
     super.initState();
-    _selectedItemIndex = 0;
+    selectedItemIndex = 0;
     _pageController = PageController();
+    animation = searchToProfilePage;
+    pages = [FeedPage(), SearchPage(pageAnimation: animation), ProfilePage()];
   }
 
   @override
@@ -48,10 +57,10 @@ class _BookScaffoldState extends State<BookScaffold> {
         centerTitle: true,
       ),
       body: PageView(
-        children: _pages,
+        children: pages,
         onPageChanged: (index) {
           setState(() {
-            _selectedItemIndex = index;
+            selectedItemIndex = index;
           });
         },
         controller: _pageController,
@@ -63,15 +72,16 @@ class _BookScaffoldState extends State<BookScaffold> {
           BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
-        currentIndex: _selectedItemIndex,
+        currentIndex: selectedItemIndex,
         onTap: (index) {
-          _selectedItemIndex = index;
+          selectedItemIndex = index;
           _pageController.animateToPage(index,
               duration: Duration(milliseconds: 300), curve: Curves.linearToEaseOut);
         },
       ),
-
     );
   }
+
+
 }
 

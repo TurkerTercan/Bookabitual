@@ -122,7 +122,7 @@ class _ListOfUsersState extends State<ListOfUsers> {
                                   children: [
                                     Row(
                                       children: [
-                                        Icon(Icons.person_outline, color: Colors.grey[300],),
+                                        Icon(Icons.alternate_email_outlined, color: Colors.grey[300],),
                                         Container(
                                           width: MediaQuery.of(context).size.width * 0.5,
                                           child: AutoSizeText(
@@ -141,11 +141,11 @@ class _ListOfUsersState extends State<ListOfUsers> {
                                     ),
                                     Row(
                                       children: [
-                                        Icon(Icons.mail_outline, color: Colors.grey[300],),
+                                        Icon(Icons.book_outlined, color: Colors.grey[300],),
                                         Container(
                                           width: MediaQuery.of(context).size.width * 0.5,
                                           child: AutoSizeText(
-                                            users[index].currentBookName,
+                                            users[index].currentBook.bookTitle,
                                             minFontSize: 10,
                                             maxLines: 1,
                                             overflow: TextOverflow.clip,
@@ -160,7 +160,7 @@ class _ListOfUsersState extends State<ListOfUsers> {
                                     ),
                                     Row(
                                       children: [
-                                        Icon(Icons.adb, color: Colors.grey[300],),
+                                        Icon(Icons.person_outline, color: Colors.grey[300],),
                                         Container(
                                           width: MediaQuery.of(context).size.width * 0.5,
                                           child: AutoSizeText(

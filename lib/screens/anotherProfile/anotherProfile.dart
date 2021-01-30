@@ -1,4 +1,6 @@
 import 'package:bookabitual/keys.dart';
+import 'package:bookabitual/models/book.dart';
+import 'package:bookabitual/screens/book/bookpage.dart';
 import 'package:bookabitual/screens/profile/listOfUsers.dart';
 import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/utils/avatarPictures.dart';
@@ -7,6 +9,7 @@ import 'package:bookabitual/widgets/QuotePost.dart';
 import 'package:bookabitual/widgets/reviewPost.dart';
 import 'package:bookabitual/widgets/smallPostQuote.dart';
 import 'package:bookabitual/widgets/smallPostReview.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +34,7 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
   List<Widget> reviewPosts = <Widget>[];
   List<Widget> quotePosts = <Widget>[];
   final List boolList = [];
+  final List<Book> libraryBooks = [];
   bool status = false;
 
   Future profileFuture;
@@ -214,13 +218,36 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
                       height: 12,
                       color: Colors.green[100],
                     ),
-                    Text(
-                      'I am reading The Lord of the Rings',
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.purple[400],
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        currentUser.currentBookName != "" ? Text(
+                          'I am reading ',
+                          style: TextStyle(
+                              fontSize: 22.0,
+                              color: Colors.grey[600],
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.bold),
+                        ) : Container(),
+                        currentUser.currentBookName != ""
+                            ? GestureDetector(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => BookPage(book: currentUser.currentBook,)));
+                          },
+                          child: Text(
+                            currentUser.currentBook.bookTitle,
+                            style: TextStyle(
+                                fontSize: 22.0,
+                                color: Colors.grey[850],
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ) : Container(child: Text("", style: TextStyle(
+                            fontSize: 22.0,
+                            color: Colors.grey[850],
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.bold),)),
+                      ],
                     ),
                     Divider(
                       height: 10,
@@ -404,7 +431,72 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
                                   ],
                                 ),
                               ), //My Posts Tab
-                              Container(), //MY Library Tab
+                              Container(  //MY Library Tab
+                                margin: EdgeInsets.symmetric(horizontal: 5, vertical: 7),
+                                child: GridView.builder(
+                                  itemCount: currentUser.library.keys.length,
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 5,
+                                    mainAxisSpacing: 5,
+                                    childAspectRatio: 4 / 6,
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    return FutureBuilder(
+                                      future: getBookData(currentUser.library.keys.elementAt(index), index),
+                                      builder: (context, snapshot) {
+                                        return Card(
+                                          elevation: 10,
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => BookPage(book: libraryBooks[index],))
+                                              );
+                                            },
+                                            child: Container(
+                                              child: snapshot.connectionState != ConnectionState.done ?
+                                              Center(child: CircularProgressIndicator())
+                                                  : Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(30),
+                                                  image: DecorationImage(
+                                                    image: CachedNetworkImageProvider(libraryBooks[index].imageUrlL),
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                                ),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                                  children: [
+                                                    Container(
+                                                      child: currentUser.library[libraryBooks[index].isbn] == "Finished" ? Icon(
+                                                        Icons.book,
+                                                        size: 25,
+                                                      ) : currentUser.library[libraryBooks[index].isbn] == "Reading" ? Icon(
+                                                        Icons.chrome_reader_mode,
+                                                        size: 25,
+                                                      ) : currentUser.library[libraryBooks[index].isbn] == "Unfinished" ? Icon(
+                                                        Icons.close_rounded,
+                                                        size: 25,
+                                                      ) : Icon(
+                                                        Icons.access_time,
+                                                        size: 25,
+                                                      ),
+                                                      padding: EdgeInsets.all(10),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                              ), //MY Library Tab
                             ],
                           ),
                         ),
@@ -424,6 +516,10 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
                     onPressed: () async {
                       await BookDatabase().followFunction(widget.user.uid, !status);
                       setState(() {
+                        if (status)
+                          currentUser.followers[currentBookworm.uid] = true;
+                        else
+                          currentUser.followers.remove(currentBookworm.uid);
                         status = !status;
                       });
                     },
@@ -581,4 +677,10 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
     );
   }
 
+  getBookData(String uid, int index) async {
+    if (libraryBooks.length <= index) {
+      Book temp = await BookDatabase().getBookInfo(uid);
+      libraryBooks.add(temp);
+    }
+  }
 }

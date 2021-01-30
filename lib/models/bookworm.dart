@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'book.dart';
+
 class Bookworm{
   String uid;
   String username;
@@ -10,6 +12,7 @@ class Bookworm{
   Map following;
   Map library;
   String currentBookName;
+  Book currentBook;
 
   Timestamp accountCreated;
 
