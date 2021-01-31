@@ -476,6 +476,15 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
                                                   crossAxisAlignment: CrossAxisAlignment.end,
                                                   children: [
                                                     Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(50), topRight: Radius.circular(30)),
+                                                        color: Colors.amber,
+                                                        gradient: LinearGradient(
+                                                          begin: Alignment.topLeft,
+                                                          end: Alignment.bottomRight,
+                                                          colors: [Colors.white, Colors.grey[500]],
+                                                        ),
+                                                      ),
                                                       child: currentUser.library[libraryBooks[index].isbn] == "Finished" ? Icon(
                                                         Icons.book,
                                                         size: 25,
@@ -489,7 +498,7 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
                                                         Icons.access_time,
                                                         size: 25,
                                                       ),
-                                                      padding: EdgeInsets.all(10),
+                                                      padding: EdgeInsets.only(left: 20, right: 10, top: 10, bottom: 20),
                                                     ),
                                                   ],
                                                 ),

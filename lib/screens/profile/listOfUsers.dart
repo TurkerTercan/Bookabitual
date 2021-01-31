@@ -140,7 +140,7 @@ class _ListOfUsersState extends State<ListOfUsers> {
                                         ),
                                       ],
                                     ),
-                                    users[index].currentBook.bookTitle != null ? Row(
+                                    users[index].currentBookName != "" ? Row(
                                       children: [
                                         Icon(Icons.book_outlined, color: Colors.grey[300],),
                                         Container(
