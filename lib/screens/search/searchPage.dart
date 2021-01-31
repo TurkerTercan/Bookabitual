@@ -39,15 +39,15 @@ class _SearchPageState extends State<SearchPage> {
       imageUrlL: "http://images.amazon.com/images/P/0316116726.01.LZZZZZZZ.jpg",
     ),
     new Book(
-      isbn: "316107417",
-      bookTitle: "Happy Trails",
-      bookAuthor: "Berke Breathed",
-      yearOfPublication: 1990,
-      publisher: "Little Brown & Co",
-      imageUrlS: "http://images.amazon.com/images/P/0679764046.01.THUMBZZZ.jpg",
-      imageUrlM: "http://images.amazon.com/images/P/0679764046.01.MZZZZZZZ.jpg",
-      imageUrlL: "http://images.amazon.com/images/P/0679764046.01.LZZZZZZZ.jpg",
-      ratings: "1,58",
+      isbn: "375815260",
+      bookTitle: "Charlie and the Chocolate Factory",
+      bookAuthor: "ROALD DAHL",
+      yearOfPublication: 2001,
+      publisher: "Knopf Books for Young Readers",
+      imageUrlS: "http://images.amazon.com/images/P/0375815260.01.THUMBZZZ.jpg",
+      imageUrlM: "http://images.amazon.com/images/P/0375815260.01.MZZZZZZZ.jpg",
+      imageUrlL: "http://images.amazon.com/images/P/0375815260.01.LZZZZZZZ.jpg",
+      ratings: "0,05",
     ),
     new Book(
       isbn: "312868308",
@@ -187,8 +187,8 @@ class _SearchPageState extends State<SearchPage> {
                                                     3,
                                                 child: AutoSizeText(
                                                   bookList[index].bookTitle,
-                                                  minFontSize: 10,
-                                                  maxLines: 3,
+                                                  minFontSize: 12,
+                                                  maxLines: 5,
                                                   wrapWords: true,
                                                   overflow: TextOverflow.clip,
                                                   style: GoogleFonts.openSans(
@@ -291,8 +291,8 @@ class _SearchPageState extends State<SearchPage> {
                                               width: MediaQuery.of(context).size.width / 3,
                                               child: AutoSizeText(
                                                 tempBook.bookTitle,
-                                                minFontSize: 10,
-                                                maxLines: 3,
+                                                minFontSize: 12,
+                                                maxLines: 5,
                                                 wrapWords: true,
                                                 overflow: TextOverflow.clip,
                                                 style: GoogleFonts.openSans(
@@ -392,11 +392,12 @@ class _SearchPageState extends State<SearchPage> {
                                                     children: [
                                                       Icon(Icons.alternate_email_outlined, color: Colors.grey[300],),
                                                       Container(
+                                                        width: MediaQuery.of(context).size.width / 2,
                                                         child: AutoSizeText(
                                                           tempUser.username,
+                                                          overflow: TextOverflow.ellipsis,
                                                           minFontSize: 10,
                                                           maxLines: 1,
-                                                          overflow: TextOverflow.clip,
                                                           style: GoogleFonts.openSans(
                                                             fontSize: 20,
                                                             fontWeight: FontWeight.w600,
@@ -410,11 +411,12 @@ class _SearchPageState extends State<SearchPage> {
                                                     children: [
                                                       Icon(Icons.book_outlined, color: Colors.grey[300],),
                                                       Container(
+                                                        width: MediaQuery.of(context).size.width * 0.5,
                                                         child: AutoSizeText(
                                                           tempUser.currentBook.bookTitle,
                                                           minFontSize: 10,
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow.clip,
+                                                          maxLines: 2,
+                                                          overflow: TextOverflow.ellipsis,
                                                           style: GoogleFonts.openSans(
                                                             fontSize: 20,
                                                             fontWeight: FontWeight.w600,
@@ -428,11 +430,12 @@ class _SearchPageState extends State<SearchPage> {
                                                     children: [
                                                       Icon(Icons.person_outline, color: Colors.grey[300],),
                                                       Container(
+                                                        width: MediaQuery.of(context).size.width / 2,
                                                         child: AutoSizeText(
                                                           tempUser.name,
+                                                          overflow: TextOverflow.ellipsis,
                                                           minFontSize: 10,
                                                           maxLines: 1,
-                                                          overflow: TextOverflow.clip,
                                                           style: GoogleFonts.openSans(
                                                             fontSize: 20,
                                                             fontWeight: FontWeight.w600,

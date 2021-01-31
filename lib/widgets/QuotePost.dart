@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bookabitual/models/book.dart';
 import 'package:bookabitual/models/bookworm.dart';
@@ -95,6 +94,13 @@ class QuotePostState extends State<QuotePost> {
 
   QuotePostState({this.likes, this.likeCount});
 
+
+  @override
+  void initState() {
+    super.initState();
+    isLiked = likes[currentOnlineUserId] == true;
+  }
+
   String readTimestamp(int timestamp) {
     var now = DateTime.now();
     var date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
@@ -181,7 +187,6 @@ class QuotePostState extends State<QuotePost> {
   @override
   Widget build(BuildContext context) {
     bool isQuoteOwner = currentOnlineUserId == widget.uid;
-    isLiked = likes[currentOnlineUserId] == true;
     commentNumber = getTotalNumberOfComments(widget.comments);
 
     return ProjectContainer(
