@@ -353,7 +353,6 @@ class QuoteCommentState extends State<QuoteComment> {
                       ),
                     );
                   });
-                  /**/
                 }),
               ) : Container(),
             ],

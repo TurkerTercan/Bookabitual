@@ -52,7 +52,6 @@ class AnotherProfilePageState extends State<AnotherProfilePage> {
       status = false;
     else
       status = true;
-    print(temp);
   }
 
   void triggerFuture() {

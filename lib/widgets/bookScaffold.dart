@@ -33,7 +33,7 @@ class _BookScaffoldState extends State<BookScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    //Provider.of<CurrentUser>(context).signOut();
+    //Provider.of<CurrentUser>(context).signOut();    //Allah kurtarsin kardesim
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).accentColor,

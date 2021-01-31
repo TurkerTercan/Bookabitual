@@ -4,8 +4,6 @@ import 'package:bookabitual/screens/comment/quoteComment.dart';
 import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/utils/avatarPictures.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,7 +22,6 @@ class SmallPostQuote extends StatefulWidget {
 
 class _SmallPostQuoteState extends State<SmallPostQuote> {
   int likeCount;
-  bool _isLiked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -354,7 +351,6 @@ class _SmallPostQuoteState extends State<SmallPostQuote> {
       //removeLike();
       setState(() {
         likeCount = likeCount - 1;
-        _isLiked = false;
         widget.post.likes[currentOnlineUserId] = false;
       });
     }
@@ -363,7 +359,6 @@ class _SmallPostQuoteState extends State<SmallPostQuote> {
       //addLike();
       setState(() {
         likeCount = likeCount + 1;
-        _isLiked = true;
         widget.post.likes[currentOnlineUserId] = true;
       });
     }

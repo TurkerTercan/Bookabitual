@@ -4,8 +4,6 @@ import 'package:bookabitual/screens/comment/reviewComment.dart';
 import 'package:bookabitual/service/database.dart';
 import 'package:bookabitual/states/currentUser.dart';
 import 'package:bookabitual/utils/avatarPictures.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -23,7 +21,6 @@ class SmallPostReview extends StatefulWidget {
 
 class _SmallPostReviewState extends State<SmallPostReview> {
   int likeCount;
-  bool _isLiked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -367,48 +364,17 @@ class _SmallPostReviewState extends State<SmallPostReview> {
     }
     if(_like){
       postReference.doc(widget.post.uid).collection("usersReviews").doc(widget.post.postID).update({"likes.$currentOnlineUserId": false});
-      //removeLike();
       setState(() {
         likeCount = likeCount - 1;
-        _isLiked = false;
         widget.post.likes[currentOnlineUserId] = false;
       });
     }
     else if(!_like){
       postReference.doc(widget.post.uid).collection("usersReviews").doc(widget.post.postID).update({"likes.$currentOnlineUserId": true});
-      //addLike();
       setState(() {
         likeCount = likeCount + 1;
-        _isLiked = true;
         widget.post.likes[currentOnlineUserId] = true;
       });
     }
   }
-
-
-  /*removeLike(){
-    bool isNotPostOwner = currentBookworm.uid != widget.post.uid;
-    if(isNotPostOwner){
-      activityFeedReference.doc(widget.post.uid).collection("feedItems").doc(widget.post.postID).get().then((document){
-        if(document.exists){
-          document.reference.delete();
-        }
-      });
-    }
-  }*/
-
-  /*addLike(){
-    bool isNotPostOwner = currentBookworm.uid != widget.post.uid;
-    if(isNotPostOwner){
-      activityFeedReference.doc(widget.post.uid).collection("feedItems").doc(widget.post.postID).set({
-        "type": "like",
-        "username": currentBookworm.username,
-        "userId": currentBookworm.uid,
-        "timestamp": Timestamp.now(),
-        "url": widget.post.book.imageUrlL,
-        "quoteId": widget.post.postID,
-        "userAvatarIndex": currentBookworm.photoIndex,
-      });
-    }
-  }*/
 }

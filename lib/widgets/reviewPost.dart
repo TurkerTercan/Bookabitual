@@ -304,7 +304,6 @@ class ReviewPostState extends State<ReviewPost> {
                   image: DecorationImage(
                     colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.55), BlendMode.darken),
                     image: CachedNetworkImageProvider(widget.book.imageUrlL),
-                    // image: NetworkImage(widget.book.imageUrlL),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -446,7 +445,6 @@ class ReviewPostState extends State<ReviewPost> {
           .collection("usersReviews")
           .doc(widget.postID)
           .update({"likes.$currentOnlineUserId": false});
-      //removeLike();
       setState(() {
         likeCount = likeCount - 1;
         isLiked = false;
@@ -458,7 +456,6 @@ class ReviewPostState extends State<ReviewPost> {
           .collection("usersReviews")
           .doc(widget.postID)
           .update({"likes.$currentOnlineUserId": true});
-      //addLike();
       setState(() {
         likeCount = likeCount + 1;
         isLiked = true;
@@ -466,39 +463,4 @@ class ReviewPostState extends State<ReviewPost> {
       });
     }
   }
-
-  /*removeLike(){
-    bool isNotPostOwner = currentOnlineUserId != widget.uid;
-    if(isNotPostOwner){
-      activityFeedReference.doc(widget.uid)
-          .collection("feedItems")
-          .doc(widget.postID)
-          .get()
-          .then((document){
-        if(document.exists){
-          document.reference.delete();
-        }
-      });
-    }
-  }*/
-
-  /*addLike(){
-    bool isNotPostOwner = currentOnlineUserId != widget.uid;
-    if(isNotPostOwner){
-      activityFeedReference
-          .doc(widget.uid)
-          .collection("feedItems")
-          .doc(widget.postID)
-          .set({
-        "type": "like",
-        "username": currentBookworm.username,
-        "userId": currentBookworm.uid,
-        "timestamp": Timestamp.now(),
-        "url": widget.book.imageUrlL,
-        "quoteId": widget.postID,
-        "userAvatarIndex": currentBookworm.photoIndex,
-      });
-    }
-  }*/
-
 }
