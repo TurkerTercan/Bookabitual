@@ -11,6 +11,7 @@ import 'package:uuid/uuid.dart';
 import '../../states/currentUser.dart';
 import 'localWidgets/modalBottomSheet.dart';
 
+// ignore: must_be_immutable
 class FeedPage extends StatefulWidget {
   final List<Widget> postList = [];
   Future feedPageFuture;

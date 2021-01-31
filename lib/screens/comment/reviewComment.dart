@@ -360,20 +360,6 @@ class _ReviewCommentState extends State<ReviewComment> {
                           ),
                         );
                       });
-
-
-                      /*widget.comments[commentUser.uid].remove(comment);
-                      if (widget.comments[commentUser.uid].isEmpty)
-                        widget.comments.remove(commentUser.uid);
-                      postReference
-                          .doc(widget.user.uid)
-                          .collection("usersReviews")
-                          .doc(widget.postID)
-                          .update({"comments": widget.comments});
-                      setState(() {
-                        commentWidgets.clear();
-                        commentFuture = _getAllComments();
-                      });*/
                     }),
               ) : Container(),
             ],

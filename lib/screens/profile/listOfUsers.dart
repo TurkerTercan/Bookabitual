@@ -125,11 +125,12 @@ class _ListOfUsersState extends State<ListOfUsers> {
                                       children: [
                                         Icon(Icons.alternate_email_outlined, color: Colors.grey[300],),
                                         Container(
+                                          width: MediaQuery.of(context).size.width / 2,
                                           child: AutoSizeText(
                                             users[index].username,
-                                            minFontSize: 10,
+                                            minFontSize: 20,
                                             maxLines: 1,
-                                            overflow: TextOverflow.clip,
+                                            overflow: TextOverflow.ellipsis,
                                             style: GoogleFonts.openSans(
                                               fontSize: 20,
                                               fontWeight: FontWeight.w600,
@@ -143,11 +144,12 @@ class _ListOfUsersState extends State<ListOfUsers> {
                                       children: [
                                         Icon(Icons.book_outlined, color: Colors.grey[300],),
                                         Container(
+                                          width: MediaQuery.of(context).size.width * 0.5,
                                           child: AutoSizeText(
                                             users[index].currentBook.bookTitle,
-                                            minFontSize: 10,
+                                            minFontSize: 20,
                                             maxLines: 1,
-                                            overflow: TextOverflow.clip,
+                                            overflow: TextOverflow.ellipsis,
                                             style: GoogleFonts.openSans(
                                               fontSize: 20,
                                               fontWeight: FontWeight.w600,
@@ -161,11 +163,12 @@ class _ListOfUsersState extends State<ListOfUsers> {
                                       children: [
                                         Icon(Icons.person_outline, color: Colors.grey[300],),
                                         Container(
+                                          width: MediaQuery.of(context).size.width * 0.5,
                                           child: AutoSizeText(
                                             users[index].name,
-                                            minFontSize: 10,
+                                            minFontSize: 20,
                                             maxLines: 1,
-                                            overflow: TextOverflow.clip,
+                                            overflow: TextOverflow.ellipsis,
                                             style: GoogleFonts.openSans(
                                               fontSize: 20,
                                               fontWeight: FontWeight.w600,

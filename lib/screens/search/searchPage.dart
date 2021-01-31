@@ -414,8 +414,8 @@ class _SearchPageState extends State<SearchPage> {
                                                         width: MediaQuery.of(context).size.width * 0.5,
                                                         child: AutoSizeText(
                                                           tempUser.currentBook.bookTitle,
-                                                          minFontSize: 10,
-                                                          maxLines: 2,
+                                                          minFontSize: 20,
+                                                          maxLines: 1,
                                                           overflow: TextOverflow.ellipsis,
                                                           style: GoogleFonts.openSans(
                                                             fontSize: 20,
