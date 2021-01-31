@@ -50,6 +50,7 @@ class QuotePost extends StatefulWidget {
       if (value)
         counter = counter + 1;
     });
+    print(counter);
     return counter;
   }
 
@@ -188,7 +189,6 @@ class QuotePostState extends State<QuotePost> {
   Widget build(BuildContext context) {
     bool isQuoteOwner = currentOnlineUserId == widget.uid;
     commentNumber = getTotalNumberOfComments(widget.comments);
-
     return ProjectContainer(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

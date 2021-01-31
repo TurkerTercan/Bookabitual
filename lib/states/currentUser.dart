@@ -29,7 +29,6 @@ class CurrentUser extends ChangeNotifier {
         currentBookworm = currentUser;
         if (currentUser != null) retVal = "Success";
       }
-      print(currentUser.username);
     } on PlatformException catch (e) {
       retVal = e.message;
     } catch (e) {

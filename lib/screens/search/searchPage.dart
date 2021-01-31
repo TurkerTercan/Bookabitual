@@ -407,7 +407,7 @@ class _SearchPageState extends State<SearchPage> {
                                                       ),
                                                     ],
                                                   ),
-                                                  Row(
+                                                  tempUser.currentBookName == null ? Row(
                                                     children: [
                                                       Icon(Icons.book_outlined, color: Colors.grey[300],),
                                                       Container(
@@ -425,7 +425,7 @@ class _SearchPageState extends State<SearchPage> {
                                                         ),
                                                       ),
                                                     ],
-                                                  ),
+                                                  ) : Container(),
                                                   Row(
                                                     children: [
                                                       Icon(Icons.person_outline, color: Colors.grey[300],),

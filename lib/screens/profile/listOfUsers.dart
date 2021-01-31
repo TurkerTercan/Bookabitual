@@ -140,7 +140,7 @@ class _ListOfUsersState extends State<ListOfUsers> {
                                         ),
                                       ],
                                     ),
-                                    Row(
+                                    users[index].currentBookName == null ? Row(
                                       children: [
                                         Icon(Icons.book_outlined, color: Colors.grey[300],),
                                         Container(
@@ -158,7 +158,7 @@ class _ListOfUsersState extends State<ListOfUsers> {
                                           ),
                                         ),
                                       ],
-                                    ),
+                                    ) : Container(),
                                     Row(
                                       children: [
                                         Icon(Icons.person_outline, color: Colors.grey[300],),
