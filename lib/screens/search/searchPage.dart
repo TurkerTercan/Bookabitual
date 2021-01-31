@@ -396,7 +396,7 @@ class _SearchPageState extends State<SearchPage> {
                                                         child: AutoSizeText(
                                                           tempUser.username,
                                                           overflow: TextOverflow.ellipsis,
-                                                          minFontSize: 10,
+                                                          minFontSize: 20,
                                                           maxLines: 1,
                                                           style: GoogleFonts.openSans(
                                                             fontSize: 20,
@@ -434,7 +434,7 @@ class _SearchPageState extends State<SearchPage> {
                                                         child: AutoSizeText(
                                                           tempUser.name,
                                                           overflow: TextOverflow.ellipsis,
-                                                          minFontSize: 10,
+                                                          minFontSize: 20,
                                                           maxLines: 1,
                                                           style: GoogleFonts.openSans(
                                                             fontSize: 20,
