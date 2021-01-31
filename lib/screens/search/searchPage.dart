@@ -407,7 +407,7 @@ class _SearchPageState extends State<SearchPage> {
                                                       ),
                                                     ],
                                                   ),
-                                                  tempUser.currentBookName == null ? Row(
+                                                  tempUser.currentBook.bookTitle != null ? Row(
                                                     children: [
                                                       Icon(Icons.book_outlined, color: Colors.grey[300],),
                                                       Container(
